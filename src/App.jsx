@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 function RippleButton({ children, variant = 'ghost', href, download, target, rel }) {
   const rippleRef = useRef(null)
@@ -28,9 +28,13 @@ function RippleButton({ children, variant = 'ghost', href, download, target, rel
   )
 }
 
-function MediaBetweenText({ firstText, secondText, imageSrc, imageAlt, breakOnMobile = false }) {
+function MediaBetweenText({ firstText, secondText, imageSrc, imageAlt, isActive, onPointerEnter, onPointerLeave }) {
   return (
-    <span className="media-between-text">
+    <span
+      className={`media-between-text${isActive ? ' is-active' : ''}`}
+      onPointerEnter={onPointerEnter}
+      onPointerLeave={onPointerLeave}
+    >
       <span>{firstText}</span>
       <span className="media-frame" aria-hidden="true">
         <span>(</span>
@@ -39,9 +43,51 @@ function MediaBetweenText({ firstText, secondText, imageSrc, imageAlt, breakOnMo
         </span>
         <span>)</span>
       </span>
-      <span className={breakOnMobile ? 'mobile-new-row' : undefined}>{secondText}</span>
+      <span>{secondText}</span>
     </span>
   )
+}
+
+function MediaStatement() {
+  const [activeIndex, setActiveIndex] = useState(0)
+  const [hoveredIndex, setHoveredIndex] = useState(null)
+  const rows = [
+    { firstText: 'Hi! I’m', secondText: 'Leonarda,', imageSrc: '/assets/selfie.gif', imageAlt: 'Selfie of Leonarda' },
+    { firstText: 'product designer', secondText: 'with', imageSrc: '/assets/product_design.gif', imageAlt: 'Product design work' },
+    { firstText: 'a', secondText: 'CS background', imageSrc: '/assets/CS.gif', imageAlt: 'Computer science work' },
+  ]
+
+  useEffect(() => {
+    if (hoveredIndex !== null) {
+      return undefined
+    }
+
+    const timer = window.setInterval(() => {
+      setActiveIndex((currentIndex) => (currentIndex + 1) % rows.length)
+    }, 2000)
+
+    return () => window.clearInterval(timer)
+  }, [hoveredIndex, rows.length])
+
+  function handlePointerEnter(index) {
+    setHoveredIndex(index)
+    setActiveIndex(index)
+  }
+
+  function handlePointerLeave() {
+    setHoveredIndex(null)
+    setActiveIndex((currentIndex) => (currentIndex + 1) % rows.length)
+  }
+
+  return rows.map((row, index) => (
+    <MediaBetweenText
+      {...row}
+      isActive={activeIndex === index}
+      onPointerEnter={() => handlePointerEnter(index)}
+      onPointerLeave={handlePointerLeave}
+      key={row.imageSrc}
+    />
+  ))
 }
 
 function AnnouncementRibbon({ className = '', decorative = false }) {
@@ -76,9 +122,7 @@ function App() {
     <main className="portfolio portfolio-page">
       <section className="intro" aria-labelledby="intro-title">
         <h1 id="intro-title" className="statement">
-          <MediaBetweenText firstText="Hi! I’m" secondText="Leonarda," imageSrc="/assets/selfie.gif" imageAlt="Selfie of Leonarda" />
-          <MediaBetweenText firstText="product designer" secondText="with" imageSrc="/assets/product_design.gif" imageAlt="Product design work" />
-          <MediaBetweenText firstText="a" secondText="CS background" imageSrc="/assets/CS.gif" imageAlt="Computer science work" breakOnMobile />
+          <MediaStatement />
         </h1>
         <p className="status">web development is in progress, view the projects in a PDF format</p>
 

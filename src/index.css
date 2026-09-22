@@ -170,12 +170,12 @@ p {
   transition: transform 240ms ease;
 }
 
-.media-between-text:hover .media-frame,
+.media-between-text.is-active .media-frame,
 .media-between-text:focus-within .media-frame {
   width: auto;
 }
 
-.media-between-text:hover .media-image,
+.media-between-text.is-active .media-image,
 .media-between-text:focus-within .media-image {
   max-width: 2.25em;
   opacity: 1;
@@ -254,10 +254,6 @@ p {
 }
 
 @media (max-width: 560px) {
-  .mobile-new-row {
-    flex-basis: 100%;
-  }
-
   .portfolio-page {
     padding: 3rem 1rem 10rem;
   }
