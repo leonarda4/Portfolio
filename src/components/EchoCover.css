@@ -1,0 +1,49 @@
+.project-cover.project-cover--graphic {
+  background:var(--cover-background,var(--project-accent,#B2FFFF));
+}
+.echo-cover {
+  --echo-cover-background:var(--cover-background,var(--project-accent,#B2FFFF));
+  width:100%;
+  height:100%;
+  min-width:0;
+  min-height:0;
+  color:#000;
+  background:var(--echo-cover-background);
+  isolation:isolate;
+}
+.echo-cover__scenes { width:100%; height:100%; position:relative; }
+.echo-cover--card .echo-cover__scenes { overflow:hidden; }
+.echo-cover__scene { display:flex; flex-direction:column; justify-content:center; min-width:0; min-height:0; }
+.echo-cover--card .echo-cover__scene { position:absolute; inset:0; padding:var(--echo-card-header-space,12px) 12px 24px; overflow:hidden; }
+.echo-cover__graphic {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:100%;
+  min-width:0;
+  min-height:0;
+  flex:1;
+}
+.echo-cover .echo-cover__graphic > .echo-fitted-graphic {
+  width:100%;
+  height:100%;
+}
+/* Keep the original diagram annotations and match every fill to the cover. */
+.echo-cover__graphic svg {
+  --echo-bg:var(--echo-cover-background) !important;
+  --echo-ink:#000 !important;
+  --echo-muted:#000 !important;
+  --echo-line:#000 !important;
+  --echo-faint:#000 !important;
+  color:#000 !important;
+}
+.echo-cover__graphic [stroke]:not([stroke="none"]) {
+  stroke:#000;
+  vector-effect:non-scaling-stroke;
+  stroke-width:.85px;
+}
+.echo-cover__graphic :is([fill="#e7e9e5"],[fill="#f5f5f3"],[fill="#e8e8e4"]) { fill:#000; }
+.echo-cover__graphic :is([fill="#101112"],[fill="var(--echo-bg)"]) { fill:var(--echo-cover-background) !important; }
+.echo-cover__graphic text { fill:#000; }
+.echo-cover--hero .echo-cover__scenes { display:flex; padding:76px 12px 24px; }
+.echo-cover--hero .echo-cover__scene { width:100%; height:100%; }

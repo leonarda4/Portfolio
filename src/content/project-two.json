@@ -1,0 +1,104 @@
+{
+  "slug": "brainy-storm",
+  "title": "brainy storm: Making room for the conversation",
+  "summary": "A shared workspace that turns spoken brainstorming into evolving ideas. I worked on the 0→1 product design and a digital-first identity, bringing the interface, characters, and motion into one system. Work is ongoing.",
+  "tags": [
+    "0→1 Product Design",
+    "Digital-first Branding",
+    "In progress"
+  ],
+  "tint": "#eaeae8",
+  "accent": "#5148ff",
+  "variant": "desktop",
+  "coverAlt": "brainy storm logo with named agents rushing in and out of view.",
+  "metadata": [
+    {
+      "label": "Context",
+      "value": "Zurich Agentic AI Hack · Team project"
+    },
+    {
+      "label": "My role",
+      "value": "0→1 product design · Brand identity"
+    },
+    {
+      "label": "Focus",
+      "value": "Web experience · Visual system · Motion"
+    },
+    {
+      "label": "Status",
+      "value": "In progress"
+    }
+  ],
+  "sections": [
+    {
+      "id": "overview",
+      "label": "Why we built it",
+      "blocks": [
+        {
+          "type": "text",
+          "title": "The brainstorm became the problem",
+          "body": "During a hackathon, we kept moving between ideas, raising objections, checking what already existed, and returning to earlier suggestions. Keeping track took attention away from the discussion. We built brainy storm to help a team stay in the conversation and return to the reasoning behind each idea."
+        }
+      ]
+    },
+    {
+      "id": "product",
+      "label": "Product design",
+      "blocks": [
+        {
+          "type": "text",
+          "title": "Give ideas somewhere to grow",
+          "body": "The starting point is a conversation. brainy storm captures it and organizes ideas into a shared workspace, where summaries, trade-offs, and open questions develop as people keep talking. My design focus was to make that growing context easy to follow and revisit."
+        },
+        {
+          "type": "brainyWorkspace",
+          "caption": "Ideas take shape in the shared workspace."
+        }
+      ]
+    },
+    {
+      "id": "identity",
+      "label": "Digital-first branding",
+      "blocks": [
+        {
+          "type": "text",
+          "title": "An identity designed to move",
+          "body": "I approached the brand through its life on screen: how it behaves in the interface, moves, and introduces the product. Distinct characters, shapes, and colors give the agents a recognizable presence. The same graphic language carries through the workspace and motion content."
+        },
+        {
+          "type": "brainyScene",
+          "caption": "“Just talk, let ideas take shape.” Characters from the visual system."
+        }
+      ]
+    },
+    {
+      "id": "movement",
+      "label": "Movement builder",
+      "blocks": [
+        {
+          "type": "text",
+          "title": "Give each agent its own character",
+          "body": "I built a movement tool to explore how each agent behaves. Choose an agent and adjust its body movement, expression, and tempo. Each keeps its own mix as you move between them."
+        },
+        {
+          "type": "brainyBuilder"
+        }
+      ]
+    },
+    {
+      "id": "graphics",
+      "label": "Graphics playground",
+      "blocks": [
+        {
+          "type": "text",
+          "title": "A graphic language to play with",
+          "body": "The same shapes extend into a flexible set of compositions. Explore the recipes, mix their colors, and adjust scale and spacing to see how the visual language holds together."
+        },
+        {
+          "type": "brainyGraphics"
+        }
+      ]
+    }
+  ],
+  "coverGraphic": "brainy"
+}

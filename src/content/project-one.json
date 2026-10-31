@@ -1,0 +1,548 @@
+{
+  "slug": "echo",
+  "title": "Echo: Audiovisual system reinforcing expressive movement",
+  "summary": "I designed, built, and tested an interactive installation that translates body movement into generative visuals and sound. The challenge was making its responses understandable and expressive while keeping the movement physically sustainable.",
+  "teaser": {
+    "type": "testingPhotos",
+    "items": [
+      {
+        "src": "/assets/echo-testing/korisnik1.jpg?v=fad9b54b07",
+        "alt": "A participant moves through the gallery in front of a blue and green projection."
+      },
+      {
+        "src": "/assets/echo-testing/korisnik2.jpg?v=3c8b321bfd",
+        "alt": "A participant raises their arms in front of a colorful geometric projection."
+      },
+      {
+        "src": "/assets/echo-testing/20260605-153919585.jpg?v=5ec8d8ce19",
+        "alt": "A participant explores Echo while an observer watches the testing session."
+      },
+      {
+        "src": "/assets/echo-testing/echo-cover.jpg?v=67878b26f3",
+        "alt": "A participant extends both arms in front of a yellow swirling projection."
+      },
+      {
+        "src": "/assets/echo-testing/20260605-153934661.jpg?v=22c3859efe",
+        "alt": "A participant wearing headphones faces a blue and green audiovisual projection."
+      },
+      {
+        "src": "/assets/echo-testing/faza2.jpg?v=9c91609e63",
+        "alt": "A participant holds a questionnaire beside a projected question about how they feel."
+      },
+      {
+        "src": "/assets/echo-testing/faza2_2.jpg?v=a51fe03598",
+        "alt": "A participant wearing headphones faces an orange and purple circular projection during testing."
+      }
+    ],
+    "caption": "Testing at the Vrijhof gallery.",
+    "title": "Testing embodied interaction at the Vrijhof gallery"
+  },
+  "tags": [
+    "Interaction Design",
+    "Creative Technology",
+    "Embodied Interaction"
+  ],
+  "tint": "#B2FFFF",
+  "variant": "installation",
+  "cover": "",
+  "coverAlt": "Animated black diagram of Echo’s movement feedback loop, centered on a cyan background.",
+  "metadata": [
+    {
+      "label": "Project type",
+      "value": "Bachelor’s thesis · Research through making"
+    },
+    {
+      "label": "Team",
+      "value": "Solo design & development · Supervisor: Dario Bojanjac"
+    },
+    {
+      "label": "Tools",
+      "value": "Python, MediaPipe, React, TypeScript, WebGL/GLSL, Tone.js"
+    },
+    {
+      "label": "Timeline",
+      "value": "April – June 2026"
+    }
+  ],
+  "sections": [
+    {
+      "id": "results",
+      "label": "Results at a glance",
+      "navLabel": "Results",
+      "placement": "opening",
+      "blocks": [
+        {
+          "type": "text",
+          "title": "What the study revealed",
+          "body": "Ten participants explored Echo at the Vrijhof gallery. Participants reported greater body awareness, while their feedback pointed to ways to make the interaction clearer."
+        },
+        {
+          "type": "beforeAfter",
+          "title": "Participants reported greater body awareness",
+          "items": [
+            {
+              "label": "Body awareness",
+              "before": 2.4,
+              "after": 4.1
+            }
+          ],
+          "caption": "Mean self-ratings before and after · 1–5 scale · n = 10. An exploratory study of immediate experience, without a control group; these ratings do not establish a lasting or causal effect."
+        },
+        {
+          "type": "columns",
+          "items": [
+            {
+              "title": "7 of 10 saw a partner or guide",
+              "body": "Four described Echo as a partner and three as a guide. Two found it unpredictable; one described it as a mirror of their movement."
+            },
+            {
+              "title": "Make the connection clearer",
+              "body": "Some participants were unsure which movements shaped the response. That points to a next step: help people discover the connection while leaving room to explore."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "overview",
+      "label": "Overview",
+      "blocks": [
+        {
+          "type": "text",
+          "title": "Can an environment invite expressive movement?",
+          "body": "A participant moves, the sound and visuals respond, and that response shapes what they try next. I explored this feedback loop through a working installation, from movement tracking and audiovisual design to prototyping and a ten-person study."
+        },
+        {
+          "type": "graphic",
+          "id": "feedback-loop"
+        },
+        {
+          "type": "text",
+          "title": "Six atmospheres shaped by movement",
+          "body": "I mapped observable movement qualities to Fear, Determination, Sadness, Happiness, Anger, and Serenity. These are designed associations between movement, sound, and visuals; Echo does not measure someone’s internal emotional state."
+        },
+        {
+          "type": "videos",
+          "items": [
+            {
+              "src": "/assets/echo-testing/testing.mp4",
+              "poster": "/assets/echo-testing/testing.jpg",
+              "title": "Testing Echo at the Vrijhof gallery",
+              "caption": "Echo at the Vrijhof gallery."
+            }
+          ]
+        }
+      ],
+      "navLabel": "Overview"
+    },
+    {
+      "id": "questions",
+      "label": "Research questions",
+      "blocks": [
+        {
+          "type": "questions",
+          "items": [
+            "What happens when an environment responds to and tries to reinforce the emotion someone expresses through movement?",
+            "Can a system interpret emotional expression through movement?",
+            "Can an audiovisual environment amplify emotions?"
+          ]
+        }
+      ],
+      "navLabel": "Questions"
+    },
+    {
+      "id": "interaction",
+      "label": "Interaction design",
+      "blocks": [
+        {
+          "type": "text",
+          "title": "Designing the response around the body",
+          "body": "Prototypes helped me refine what the system noticed, how quickly it responded, and how much effort it asked of a person. These decisions shaped whether the interaction felt connected to their movement."
+        },
+        {
+          "type": "text",
+          "title": "Keep the effort sustainable",
+          "body": "In preliminary testing, the anger prototype called for large, high-energy movements. As the system adapted, that intensity could become the new normal, asking for even more effort to trigger the same response. I revised the calibration before the main study. The lesson was to assess what people could comfortably sustain alongside what the system could recognize."
+        },
+        {
+          "type": "visualPlaceholder",
+          "title": "Movement comparison",
+          "items": [
+            "Early prototype",
+            "Revised calibration"
+          ],
+          "caption": "Visual placeholder · A short movement sequence showing the physical demand before and after calibration."
+        },
+        {
+          "type": "text",
+          "title": "Let quick gestures register",
+          "body": "Smoothing the tracking data reduced jitter, but it could also hide a brief opening of the arms. I removed that smoothing from the body-openness measurement while retaining it for other movement features, so a quick expansion could still register."
+        },
+        {
+          "type": "text",
+          "title": "Respond without constant switching",
+          "body": "A change in movement should feel connected to a change in atmosphere. I let a clearly stronger match trigger a quick response; a less decisive match had to persist before the atmosphere changed. This balanced responsiveness with continuity."
+        },
+        {
+          "type": "text",
+          "title": "Capturing how someone moves",
+          "body": "Movement quantity and contraction alone offered too little distinction between emotions. I added Weight, Time, and Flow alongside Contraction Index to capture apparent strength, suddenness, continuity, and bodily openness."
+        },
+        {
+          "type": "pending",
+          "title": "Weight, Time, Flow, and body contraction",
+          "body": "Movement-quality sliders coming later."
+        },
+        {
+          "type": "text",
+          "title": "From camera input to audiovisual feedback",
+          "body": "A live pipeline connects body tracking, movement analysis, and audiovisual output."
+        },
+        {
+          "type": "graphic",
+          "id": "system-architecture"
+        },
+        {
+          "type": "text",
+          "title": "Physical installation",
+          "body": "Camera-tracked movement, projected visuals, and sound through headphones."
+        },
+        {
+          "type": "graphic",
+          "id": "installation-space"
+        }
+      ],
+      "navLabel": "Decisions"
+    },
+    {
+      "id": "research",
+      "label": "Research foundations",
+      "blocks": [
+        {
+          "type": "text",
+          "title": "Laban: describing how people move",
+          "body": "Laban’s Weight, Time, Flow, and Space offered a way to describe how someone moves. Together with Shafir et al.’s work on movement and emotion, this informed my choice to analyze strength, suddenness, continuity, and openness rather than rely on movement quantity alone.",
+          "sources": [
+            {
+              "label": "Laban & Lawrence · Effort, 1947",
+              "url": "https://ickl.org/resources/bibliography-of-labans-books/"
+            },
+            {
+              "label": "Shafir et al., 2016",
+              "url": "https://doi.org/10.3389/fpsyg.2015.02030"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "title": "EyesWeb: choosing measurable features",
+          "body": "EyesWeb provided measurable features such as Quantity of Motion, Contraction Index, and fluency. I selected and adapted these features, then designed the rules connecting them to the six emotion categories.",
+          "sources": [
+            {
+              "label": "Camurri et al., 2004",
+              "url": "https://doi.org/10.1007/978-3-540-24598-8_42"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "title": "Connecting movement and sound",
+          "body": "Sievers et al.’s work on shared dynamics in movement and music informed the connection between physical expression and sound. I used that connection to shape distinct audiovisual atmospheres for the six categories.",
+          "sources": [
+            {
+              "label": "Sievers et al., 2013",
+              "url": "https://doi.org/10.1073/pnas.1209023110"
+            }
+          ]
+        }
+      ],
+      "useSectionHeading": true,
+      "navLabel": "Research"
+    },
+    {
+      "id": "testing",
+      "label": "Testing",
+      "blocks": [
+        {
+          "type": "text",
+          "title": "Studying the interaction with ten participants",
+          "body": "I studied how ten participants understood the feedback, recognized the audiovisual atmospheres, and expressed emotions through movement. Most were students at the University of Twente. This was an exploratory study of experience, not a validation of emotion-detection accuracy."
+        },
+        {
+          "type": "studyFlow",
+          "title": "Explore, recognize, and express",
+          "items": [
+            {
+              "title": "Before interaction",
+              "body": "Record initial self-ratings."
+            },
+            {
+              "title": "Explore",
+              "body": "Move freely, with no prescribed emotion."
+            },
+            {
+              "title": "Recognize",
+              "body": "Identify emotions in sound and visuals."
+            },
+            {
+              "title": "Express",
+              "body": "Try expressing emotions through movement."
+            },
+            {
+              "title": "After interaction",
+              "body": "Repeat self-ratings and reflect on the experience."
+            }
+          ]
+        },
+        {
+          "type": "demographics",
+          "title": "Participants’ ages and movement experience",
+          "groups": [
+            {
+              "title": "Age",
+              "items": [
+                {
+                  "label": "18–24 years",
+                  "value": 8
+                },
+                {
+                  "label": "25–34 years",
+                  "value": 2
+                }
+              ]
+            },
+            {
+              "title": "Experience with similar installations",
+              "items": [
+                {
+                  "label": "Never",
+                  "value": 6
+                },
+                {
+                  "label": "Once",
+                  "value": 2
+                },
+                {
+                  "label": "Several times",
+                  "value": 2
+                }
+              ]
+            },
+            {
+              "title": "Dance & expressive movement",
+              "items": [
+                {
+                  "label": "1 · Never",
+                  "value": 3,
+                  "endpoint": "Never"
+                },
+                {
+                  "label": "Rating 2",
+                  "value": 4
+                },
+                {
+                  "label": "Rating 3",
+                  "value": 2
+                },
+                {
+                  "label": "Rating 4",
+                  "value": 1
+                },
+                {
+                  "label": "5 · Every day",
+                  "value": 0,
+                  "endpoint": "Every day"
+                }
+              ]
+            }
+          ],
+          "caption": "One dot per participant · n = 10."
+        },
+        {
+          "type": "videos",
+          "title": "Recognition phase",
+          "items": [
+            {
+              "src": "/assets/echo-testing/echo-cover.mp4",
+              "poster": "/assets/echo-testing/echo-cover-poster.jpg",
+              "title": "Participant exploring Echo’s projected visuals",
+              "caption": "Recognizing emotion in sound and visuals."
+            }
+          ]
+        },
+        {
+          "type": "recognition",
+          "title": "Recognizing emotion in the audiovisual output",
+          "items": [
+            {
+              "label": "Happiness",
+              "value": 9
+            },
+            {
+              "label": "Anger",
+              "value": 9
+            },
+            {
+              "label": "Fear",
+              "value": 9
+            },
+            {
+              "label": "Determination",
+              "value": 9
+            },
+            {
+              "label": "Serenity",
+              "value": 8
+            },
+            {
+              "label": "Sadness",
+              "value": 5
+            }
+          ],
+          "caption": "Participants identifying the intended emotion from sound and visuals, without performing movements · n = 10. This measures audiovisual recognition, not the system’s accuracy at reading movement."
+        },
+        {
+          "type": "text",
+          "title": "Recognizing an emotion did not make it easy to express",
+          "body": "Nine of ten participants recognized determination in the audiovisual output, yet their average self-rating for expressing it through movement was only 2.5/5, the lowest of the six emotions. This suggests that a recognizable atmosphere also needs an approachable way to reach it through movement."
+        },
+        {
+          "type": "text",
+          "title": "Sadness needed a more distinct character",
+          "body": "Only five of ten participants recognized sadness, and it was most often confused with serenity. Both used slower, softer audiovisual qualities. A next iteration would make their differences clearer and test the revised atmospheres again."
+        },
+        {
+          "type": "beforeAfter",
+          "title": "Changes in participants’ self-ratings",
+          "items": [
+            {
+              "label": "Body awareness",
+              "before": 2.4,
+              "after": 4.1
+            },
+            {
+              "label": "Happiness",
+              "before": 3.2,
+              "after": 4.4
+            },
+            {
+              "label": "Self-confidence",
+              "before": 3.5,
+              "after": 4.1
+            }
+          ],
+          "caption": "Mean self-ratings before and after · 1–5 scale · n = 10. Immediate self-reported experience; no control group or long-term follow-up."
+        },
+        {
+          "type": "participantCounts",
+          "title": "How participants described their relationship with Echo",
+          "items": [
+            {
+              "label": "A partner",
+              "value": 4
+            },
+            {
+              "label": "A guide",
+              "value": 3
+            },
+            {
+              "label": "Unpredictable",
+              "value": 2
+            },
+            {
+              "label": "A mirror",
+              "value": 1
+            }
+          ],
+          "caption": "Exit-survey descriptions · one dot per participant · n = 10."
+        }
+      ],
+      "navLabel": "Testing"
+    },
+    {
+      "id": "feedback",
+      "label": "Participant feedback",
+      "blocks": [
+        {
+          "type": "feedback",
+          "title": "Participant feedback",
+          "note": "Verbatim exit responses; participants numbered by response order.",
+          "items": [
+            {
+              "quote": "When the system actually responded to the emotion I was trying to portray i felt the emotion more. It felt less hard to portray the emotion. It felt less like acting and more natural.",
+              "attribution": "Participant 5",
+              "featured": true
+            },
+            {
+              "quote": "It was something i have never experienced before. Sometimes I wasn't completely sure how to feel or respond to the inputs.",
+              "attribution": "Participant 2"
+            },
+            {
+              "quote": "Really liked it, visually it was striking, felt the emotions conveyed through the music. Installation evoked my emotions",
+              "attribution": "Participant 9"
+            }
+          ]
+        }
+      ],
+      "navLabel": "Feedback"
+    },
+    {
+      "id": "reflection",
+      "label": "Reflection",
+      "blocks": [
+        {
+          "type": "text",
+          "title": "The interaction must be readable and physically achievable",
+          "body": "Building Echo taught me to treat calibration and timing as design decisions. A response can be technically coherent and still ask too much of a body or leave someone unsure how to influence it. I would assess sustained effort and clarity alongside responsiveness in the next iteration."
+        },
+        {
+          "type": "text",
+          "title": "What I would test next",
+          "body": "I would compare guided and unguided exploration, revisit the movement mapping for determination, and make sadness more distinct from serenity. Each change would need another round of testing; the current study identifies these opportunities rather than demonstrating that they are solved."
+        }
+      ],
+      "navLabel": "Reflection"
+    },
+    {
+      "id": "soundscapes",
+      "label": "Soundscape examples",
+      "blocks": [
+        {
+          "type": "text",
+          "title": "Sound layers for six emotional atmospheres",
+          "body": "Press play, then mute layers or adjust sliders to hear their contribution."
+        },
+        {
+          "type": "soundscapes"
+        }
+      ],
+      "navLabel": "Sounds"
+    },
+    {
+      "id": "gradients",
+      "label": "Gradient studies",
+      "navLabel": "Visuals",
+      "blocks": [
+        {
+          "type": "text",
+          "title": "Color and motion studies for six emotions",
+          "body": "Select a study to explore its color and motion."
+        },
+        {
+          "type": "gradients"
+        }
+      ]
+    }
+  ],
+  "coverBrief": "A single black animated feedback-loop diagram on #B2FFFF for both the project card and page banner. Center and scale it proportionally within the existing cover area, with cyan filling the remaining space. Movement loops within the diagram; there is no scene cycling.",
+  "editorialNotes": [
+    "Interactive gradient studies follow Soundscape examples. The gallery includes 30 saved Noise Lab recipes: 12 clear matches and 18 similar matches to the supplied reference, arranged as five studies per emotion. Movement-quality sliders remain reserved for a later update.",
+    "Participant demographics transcribed from the supplied thesis figure; frequency scale runs from 1 (Never) to 5 (Every day).",
+    "Recruiter-focused revision: results precede the photo teaser; decisions precede research foundations; interactive sound and visual studies follow the main story.",
+    "Evidence: Leonarda_Lovric_zavrsni_rad.pdf, printed p.16 (PDF p.19): removal of Kalman filtering for CI; printed p.22 (PDF p.25): switching rules; Fig.3.5 p.32 (PDF p.35): recognition; Fig.3.8 p.34 (PDF p.37): determination expression 2.5/5; Fig.3.10 p.35 (PDF p.38): self-ratings; Fig.3.12 p.37 (PDF p.40): relationship descriptions.",
+    "The physical-effort/calibration iteration is retained from the existing authored case study. The thesis does not specify the exact before/after calibration change or a measured reduction in effort. Do not invent that detail; the movement comparison is an explicit placeholder.",
+    "Participant quotations and response-order attributions are retained verbatim from the existing case study; the thesis discusses these qualitatively but does not reproduce the complete English responses."
+  ],
+  "accent": "#B2FFFF",
+  "coverGraphic": "echo"
+}

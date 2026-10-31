@@ -1,0 +1,158 @@
+{
+  "repository": "https://github.com/leonarda4/brainy-hq",
+  "sourceCheckout": "video-hack",
+  "sourceHead": "b90e8eb1381dc6f7d2b633a59c4fad37708e8588",
+  "note": "Original source assets used by native browser scenes; no active Brainy video player.",
+  "assets": [
+    {
+      "file": "code/Recia-Medium.ttf",
+      "source": "film-remotion/public/Recia-Medium.ttf",
+      "sha256": "66db0cfca3cf4a5f6b6021cc28cdc0b7e9033f4274ea7461548321627a1bb418"
+    },
+    {
+      "file": "code/wordmark-white.svg",
+      "source": "film-remotion/public/brainy-storm-wordmark-white.svg",
+      "sha256": "5bc722995a9e385f46438f4e55bd334ff33ddf0686a816befd0751d57e7b2678"
+    },
+    {
+      "file": "code/wordmark.svg",
+      "source": "film-remotion/public/brainy-storm-wordmark.svg",
+      "sha256": "27de0e515ef93357656ee56f03bfb38b520ee85199a628465dbc595c2ae0da68"
+    },
+    {
+      "file": "code/workspace/background.png",
+      "source": "film-remotion/public/ui/workspace-build/20261017201507271/background.png",
+      "sha256": "fc15ea13eecd04c96fa6a20d1318ca57e4fe61f3c64c3a293675afceb197c0d7"
+    },
+    {
+      "file": "code/workspace/card-0.png",
+      "source": "film-remotion/public/ui/workspace-build/20261017201507271/card-0.png",
+      "sha256": "27faa5a99a45f692971c810bf8b2a8f16f232599848ba9cefe4a6200d78993fb"
+    },
+    {
+      "file": "code/workspace/card-1.png",
+      "source": "film-remotion/public/ui/workspace-build/20261017201507271/card-1.png",
+      "sha256": "6f7984fd6522bacd74179ee2fb0f43d68b9ed9ce38e7bd043e3fb95b22168cf9"
+    },
+    {
+      "file": "code/workspace/card-2.png",
+      "source": "film-remotion/public/ui/workspace-build/20261017201507271/card-2.png",
+      "sha256": "1fd7ee70a63cb4faa97e614cbaf46a86658099e81cd0367de27d7118a99cda19"
+    },
+    {
+      "file": "code/workspace/card-3.png",
+      "source": "film-remotion/public/ui/workspace-build/20261017201507271/card-3.png",
+      "sha256": "c562c42bec0fc14bb1316db532be34f377d0d4f288c160e3d3577f8ed6df5738"
+    },
+    {
+      "file": "code/workspace/card-4.png",
+      "source": "film-remotion/public/ui/workspace-build/20261017201507271/card-4.png",
+      "sha256": "ae04012ceecee26351f31bf2dbc6effd188ae6807a3a2292dba30bb93e2f85af"
+    },
+    {
+      "file": "code/workspace/dock.png",
+      "source": "film-remotion/public/ui/workspace-build/20261017201507271/dock.png",
+      "sha256": "403723a8a6abeb063da584156d6074583f5e8930c173f23955d5446ccce9788a"
+    },
+    {
+      "file": "code/workspace/heading.png",
+      "source": "film-remotion/public/ui/workspace-build/20261017201507271/heading.png",
+      "sha256": "9a8fd8db85a6cfd95ccd61df27fa5388866331ee25ebdae3403eba46b3580676"
+    },
+    {
+      "file": "code/workspace/navigation.png",
+      "source": "film-remotion/public/ui/workspace-build/20261017201507271/navigation.png",
+      "sha256": "f0006b29bae0057e4a204cc83ac90c8841b4158816cbd9820ee834eb59db8f04"
+    },
+    {
+      "file": "code/workspace/transcript.png",
+      "source": "film-remotion/public/ui/workspace-build/20261017201507271/transcript.png",
+      "sha256": "220e1d35144b02f1cc038de77a66a66c77a2e13c802070b9b86dc120bbd07555"
+    },
+    {
+      "file": "code/workspace/transcript-header.png",
+      "source": "film-remotion/public/ui/research-transcript-header.png",
+      "sha256": "c84239333f6ef310f0606dd6226b0b5b059e8583cb0a99ef534e5d97a21c25b8"
+    }
+  ],
+  "nativeScene": {
+    "sourceFiles": [
+      "film-remotion/src/RevisedMotion.tsx (Ensemble)",
+      "film-remotion/src/AgentShowcase.tsx (WorkingAgent)",
+      "film-remotion/src/AgentNametag.tsx",
+      "film-remotion/src/agent-body-art.ts",
+      "film-remotion/src/agent-outlines.ts",
+      "agents/motions.js",
+      "film-remotion/src/logo-flight.ts (passPose)",
+      "film-remotion/src/Film.tsx (Wordmark)"
+    ],
+    "font": "film-remotion/public/Recia-Medium.ttf",
+    "implementation": "src/components/BrainyCover.jsx",
+    "note": "Native cover entrances/exits; separate inline Just talk ensemble. Theme-inverted backgrounds and wordmarks per user direction.",
+    "coverDensity": "Approximately three agents in view. Entry interval excludes offscreen travel; original flight speed retained."
+  },
+  "nativeWorkspace": {
+    "implementation": "src/components/BrainyWorkspace.jsx",
+    "sourceFiles": [
+      "film-remotion/src/IdeaFormation.tsx",
+      "film-remotion/src/LaptopFrame.tsx",
+      "film-remotion/src/workspace-layout.ts"
+    ],
+    "viewport": [
+      1440,
+      900
+    ],
+    "stage": [
+      1920,
+      1200
+    ],
+    "duration": 10,
+    "note": "Larger original laptop anchored by its physical base to the stage bottom. One smooth card scroll, animated listening waveform, and a downward exit. Original UI layers and 16:10 display preserved.",
+    "background": "#eaeae8",
+    "screenWidth": 1560,
+    "waveformSources": [
+      "brainstorm-ai/frontend/src/BrandShape.tsx (RecordingShape)",
+      "brainstorm-ai/frontend/src/brand.css (brand-listen)"
+    ],
+    "playbackRate": 1.4,
+    "easing": "quintic ease-in-out, zero endpoint velocity and acceleration"
+  },
+  "nativeTranscript": {
+    "implementation": "src/components/BrainyWorkspace.jsx: WorkspaceTranscript",
+    "copy": "Illustrative continuation of the original captured conversation, not a verbatim transcript. Six complete speaker turns.",
+    "geometry": "Original 314 x 900 panel, original header; 12px metadata and 14px body at native UI scale.",
+    "fonts": [
+      {
+        "file": "code/Supreme-400.woff2",
+        "source": "https://cdn.fontshare.com/wf/UDGUA26XVGIV6IQWMQNGGAL7FQZFY227/E6HQU6YVWTGYX3KW3DF66KAAJ224ZDU6/5ZZU4JM62PS7KOJ7BOKLPL3AEO2G76TS.woff2",
+        "sha256": "ca2227b5145226ca24bb601053e609e96ddaedb59ebc14fa920065bf934a5dd5"
+      },
+      {
+        "file": "code/Supreme-500.woff2",
+        "source": "https://cdn.fontshare.com/wf/OTYYUXNCZZI6EV6RSCAQFTGEGQ7JTD6B/45FLQUBI6DWIP6NYFVBTMKS6YPU3VYPT/GHZ524YD2KXKRX4PZ2S7DE3HKNPE2EKH.woff2",
+        "sha256": "ce86616b5f35f7e3a0cded1375b9811e34bf66bdeaa3ffabb5ce6ad7e01c66d2"
+      }
+    ]
+  },
+  "movementBuilder": {
+    "sources": [
+      "brainy-hq/agents/family-preview.html",
+      "brainy-hq/agents/characters.js",
+      "brainy-hq/agents/shapes.json",
+      "brainy-hq/agents/motions.js"
+    ],
+    "implementation": "src/components/BrainyMotionBuilder.jsx",
+    "notes": "Shared editor and reactive family preview; original geometry and motion engine, separate locally saved recipes per agent."
+  },
+  "graphicsBuilder": {
+    "sources": [
+      "brainy-hq/brand/graphics.js",
+      "brainy-hq/brand/topics.js",
+      "brainy-hq/brand/workbench-renderer.js",
+      "brainy-hq/generated/brand-studio.html (graphics catalog)",
+      "brainy-hq/agents/flight-paths.js"
+    ],
+    "implementation": "src/components/BrainyGraphicsBuilder.jsx",
+    "notes": "42 original and curated recipes, 18 palettes plus originals, scale/spacing sliders. Original internal entrance motion on an eight-second loop with a held composition and fade before reset. Independent in-memory edits. No individual color controls, action toolbar or locks."
+  }
+}

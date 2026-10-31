@@ -1,0 +1,72 @@
+/* Shared identity derived from the Before and After chart. */
+.study-chart,.before-after-chart {
+  --chart-ink:#383b39;
+  --chart-muted:#848983;
+  --chart-light:#c0c5bd;
+  --chart-grid:#e7eae4;
+  --chart-paper:#fff;
+  --chart-number-size:clamp(28px,3.5vw,40px);
+  color:var(--chart-ink);
+  margin:0;
+  padding:0;
+  background:transparent;
+  font-variant-numeric:tabular-nums;
+}
+.study-chart h4 { font-size:15px; font-weight:400; letter-spacing:-.02em; line-height:1.5; margin:0; }
+.chart-number,.before-after-chart .comparison-after { font-size:var(--chart-number-size); font-weight:400; letter-spacing:-.05em; line-height:1.15; color:var(--chart-ink); }
+.chart-number small { font-size:15px; font-weight:400; letter-spacing:-.02em; color:var(--chart-muted); margin-left:4px; }
+.study-chart .chart-note,.study-chart .chart-description { font-size:12px; line-height:1.6; color:var(--chart-muted); }
+.chart-ring { position:relative; width:144px; max-width:100%; aspect-ratio:1; height:auto; }
+.chart-ring svg { display:block; width:100%; height:100%; }
+.chart-ring-value { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; }
+.participant-breakdowns { display:grid; gap:56px; }
+.participant-counts { margin:24px 0 0; }
+.participant-counts > div { display:grid; grid-template-columns:minmax(130px,1fr) minmax(0,2fr); align-items:center; gap:24px; min-height:72px; }
+.participant-counts dt { font-size:15px; letter-spacing:-.02em; }
+.participant-counts dd { display:flex; align-items:center; justify-content:space-between; gap:24px; margin:0; }
+.participant-counts .chart-number { flex:none; min-width:80px; text-align:right; }
+.participant-dot-row { display:flex; flex:1; justify-content:space-between; min-width:120px; gap:0; }
+.participant-dot-row i { width:12px; height:12px; border:1.5px solid var(--chart-grid); border-radius:50%; flex:none; }
+.participant-dot-row .is-filled { background:var(--chart-ink); border-color:var(--chart-ink); }
+.activity-distribution { margin-top:72px; }
+.activity-distribution .chart-description { margin-top:8px; max-width:55ch; font-size:14px; }
+.activity-axis-labels { display:flex; justify-content:space-between; gap:16px; margin-top:28px; font-size:11px; color:var(--chart-muted); }
+.activity-columns { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); margin-top:16px; }
+.activity-column { display:flex; flex-direction:column; align-items:center; border-left:1px solid var(--chart-grid); }
+.activity-column:last-child { border-right:1px solid var(--chart-grid); }
+.activity-dots { display:flex; flex-direction:column-reverse; align-items:center; gap:8px; height:88px; margin:16px 0; }
+.activity-dots i { width:12px; height:12px; background:var(--chart-ink); border-radius:50%; }
+.activity-rating { font-size:12px; color:var(--chart-muted); }
+.activity-rating { text-align:center; }
+.activity-endpoint { display:block; margin-top:4px; }
+.recognition-rings { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:48px 32px; }
+.recognition-item { display:flex; flex-direction:column; align-items:center; gap:12px; }
+.study-content .study-chart figcaption,.study-content .before-after-chart figcaption { margin-top:32px; font-size:12px; line-height:1.6; color:var(--chart-muted); }
+@media(max-width:650px) {
+ .study-chart,.before-after-chart { --chart-number-size:28px; }
+ .participant-breakdowns { gap:40px; }
+ .participant-counts > div { grid-template-columns:1fr; gap:12px; padding:16px 0; }
+ .participant-counts dd { max-width:380px; }
+ .activity-distribution { margin-top:56px; }
+ .recognition-rings { grid-template-columns:1fr 1fr; }
+ .chart-ring { width:128px; }
+}
+@media(max-width:420px) {
+ .activity-axis-labels { flex-direction:column; gap:4px; }
+}
+
+/* Give every data figure breathing room without detaching its caption. */
+.study-section > :is(.study-chart,.before-after-chart) { margin-block:24px; }
+.study-chart > .comparison-header,.before-after-chart > .comparison-header { margin-bottom:40px; }
+@media(max-width:650px) {
+ .study-section > :is(.study-chart,.before-after-chart) { margin-block:16px; }
+ .study-chart > .comparison-header,.before-after-chart > .comparison-header { margin-bottom:32px; }
+}
+
+:root[data-theme='dark'] :is(.study-chart,.before-after-chart) {
+  --chart-ink:var(--text-primary);
+  --chart-muted:var(--text-secondary);
+  --chart-light:#737973;
+  --chart-grid:var(--border);
+  --chart-paper:var(--page-bg);
+}

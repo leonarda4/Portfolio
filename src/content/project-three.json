@@ -1,0 +1,472 @@
+{
+  "slug": "project-three",
+  "title": "[Project three: redesigning a platform around people’s needs]",
+  "summary": "[Describe the outcome and the evidence behind it in one sentence.]",
+  "tags": [
+    "[Industry]",
+    "[Product type]",
+    "Web"
+  ],
+  "tint": "#e8eee9",
+  "variant": "desktop",
+  "cover": "",
+  "coverAlt": "Project cover",
+  "metadata": [
+    {
+      "label": "Project type",
+      "value": "[Project context and industry]"
+    },
+    {
+      "label": "Team",
+      "value": "[Your role and collaborators]"
+    },
+    {
+      "label": "Tools",
+      "value": "[Design and development tools]"
+    },
+    {
+      "label": "Timeline",
+      "value": "[Duration · Month–Month Year]"
+    }
+  ],
+  "sections": [
+    {
+      "id": "overview",
+      "label": "Overview",
+      "blocks": [
+        {
+          "type": "columns",
+          "items": [
+            {
+              "title": "Overview",
+              "body": "[Introduce the product, its audience, and the opportunity. Explain the existing experience and why this project mattered in 3–4 sentences.]"
+            },
+            {
+              "title": "What I did",
+              "body": "[Describe your personal responsibilities, the work you led, and how you collaborated with the team. Separate your contribution from the wider team’s work.]"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "eyebrow": "My impact",
+          "title": "[Summarize the meaningful change your work helped create]",
+          "body": "[Briefly connect the design outcome to the user or business goal.]"
+        },
+        {
+          "type": "metrics",
+          "items": [
+            {
+              "value": "[XX%]",
+              "label": "Primary outcome",
+              "note": "Add the measurement method"
+            },
+            {
+              "value": "[XX%]",
+              "label": "Secondary outcome",
+              "note": "Add the comparison or baseline"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "eyebrow": "Final design highlights",
+          "title": "[Give a first look at the experience]",
+          "body": "[Introduce the key improvement before walking through the process.]"
+        },
+        {
+          "type": "media",
+          "label": "Final design preview — primary screen",
+          "layout": "wide",
+          "src": "",
+          "alt": "Final design preview — primary screen"
+        },
+        {
+          "type": "columns",
+          "items": [
+            {
+              "title": "[Highlight 02]",
+              "body": "[Describe the second key improvement and the decision it supports.]"
+            },
+            {
+              "title": "[Highlight 03]",
+              "body": "[Describe the third key improvement and why it matters.]"
+            }
+          ]
+        },
+        {
+          "type": "media",
+          "label": "Final design preview — supporting screens",
+          "layout": "pair",
+          "src": "",
+          "alt": "Final design preview — supporting screens"
+        }
+      ]
+    },
+    {
+      "id": "context",
+      "label": "Context & Problem",
+      "blocks": [
+        {
+          "type": "text",
+          "eyebrow": "The context",
+          "title": "[Explain the situation that made this problem worth solving]",
+          "body": "[Describe the product environment, audience, and trigger for the project. Include relevant scale, business context, and existing workflows in a short paragraph.]"
+        },
+        {
+          "type": "media",
+          "label": "Product ecosystem / existing journey",
+          "layout": "wide",
+          "src": "",
+          "alt": "Product ecosystem / existing journey"
+        },
+        {
+          "type": "text",
+          "eyebrow": "The problem",
+          "title": "[State the core problem in a clear, specific sentence]",
+          "body": "[Explain what people were trying to do, what prevented them from doing it, and the consequences. Keep the evidence separate from your initial assumptions.]"
+        },
+        {
+          "type": "columns",
+          "items": [
+            {
+              "title": "User",
+              "body": "[How does the problem affect the person using the product?]"
+            },
+            {
+              "title": "Team",
+              "body": "[How does it affect the people delivering the service?]"
+            },
+            {
+              "title": "Business",
+              "body": "[Why does solving it matter to the organization?]"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "research",
+      "label": "Research",
+      "blocks": [
+        {
+          "type": "text",
+          "eyebrow": "Research",
+          "title": "[Explain what you needed to learn before designing]",
+          "body": "[Introduce the questions that guided your research and why these methods were appropriate.]"
+        },
+        {
+          "type": "columns",
+          "items": [
+            {
+              "title": "01 — Secondary research",
+              "body": "[Summarize the sources reviewed, the scope, and the patterns you looked for.]"
+            },
+            {
+              "title": "02 — Field research",
+              "body": "[Describe the environments, tasks, and behaviors observed.]"
+            }
+          ]
+        },
+        {
+          "type": "media",
+          "label": "Research documentation — observations and source material",
+          "layout": "pair",
+          "src": "",
+          "alt": "Research documentation — observations and source material"
+        },
+        {
+          "type": "columns",
+          "items": [
+            {
+              "title": "03 — Interviews",
+              "body": "[Add participant count, recruitment criteria, and topics explored.]"
+            },
+            {
+              "title": "04 — Survey / validation",
+              "body": "[Describe the sample, questions, and how the results informed your understanding.]"
+            }
+          ]
+        },
+        {
+          "type": "media",
+          "label": "Research synthesis — themes, clusters, or journey map",
+          "layout": "wide",
+          "src": "",
+          "alt": "Research synthesis — themes, clusters, or journey map"
+        },
+        {
+          "type": "text",
+          "eyebrow": "Key research insights",
+          "title": "[Describe the most important pattern across your findings]",
+          "body": "[Connect the evidence across methods. Explain what surprised you, where the existing experience broke down, and which opportunity became the priority.]"
+        },
+        {
+          "type": "quote",
+          "quote": "[Add a real participant quote that makes the problem tangible.]",
+          "attribution": "[Participant identifier / role]"
+        },
+        {
+          "type": "text",
+          "eyebrow": "Reframing the challenge",
+          "title": "[How might we help a specific audience achieve a meaningful outcome?]",
+          "body": "[Explain how the findings changed your understanding of the original brief.]"
+        }
+      ]
+    },
+    {
+      "id": "goal",
+      "label": "Design Goal",
+      "blocks": [
+        {
+          "type": "text",
+          "eyebrow": "Design goal",
+          "title": "[State the focused outcome the design should support]",
+          "body": "[Define the scope and what success would look like. Explain what you prioritized and what remained outside this project.]"
+        },
+        {
+          "type": "columns",
+          "items": [
+            {
+              "title": "01 — [Principle]",
+              "body": "[Explain the first principle and the trade-off it guides.]"
+            },
+            {
+              "title": "02 — [Principle]",
+              "body": "[Explain the second principle and the behavior it supports.]"
+            },
+            {
+              "title": "03 — [Principle]",
+              "body": "[Explain the third principle and why it matters.]"
+            }
+          ]
+        },
+        {
+          "type": "media",
+          "label": "Success criteria / design principles",
+          "layout": "short",
+          "src": "",
+          "alt": "Success criteria / design principles"
+        }
+      ]
+    },
+    {
+      "id": "exploration",
+      "label": "Design Exploration",
+      "blocks": [
+        {
+          "type": "text",
+          "eyebrow": "Insight",
+          "title": "[Connect a research finding to the first design decision]",
+          "body": "[Describe the behavior you observed and the opportunity it created. Show why the next exploration follows from the evidence.]"
+        },
+        {
+          "type": "media",
+          "label": "Current experience — annotated pain points",
+          "layout": "wide",
+          "src": "",
+          "alt": "Current experience — annotated pain points"
+        },
+        {
+          "type": "text",
+          "eyebrow": "Interaction direction",
+          "title": "[Name the two approaches you explored]",
+          "body": "[Explain the alternatives, the hypotheses behind them, and the trade-offs you needed to test.]"
+        },
+        {
+          "type": "media",
+          "label": "Option A / Option B — early concepts",
+          "layout": "pair",
+          "src": "",
+          "alt": "Option A / Option B — early concepts"
+        },
+        {
+          "type": "columns",
+          "items": [
+            {
+              "title": "Option A — [Direction]",
+              "body": "[Explain the strengths, limitations, and expected behavior.]"
+            },
+            {
+              "title": "Option B — [Direction]",
+              "body": "[Explain the strengths, limitations, and expected behavior.]"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "eyebrow": "Design decision 01",
+          "title": "[Explain why you chose this direction]",
+          "body": "[Describe the evidence from testing and the constraints that informed the decision. Include what you changed after feedback.]"
+        },
+        {
+          "type": "media",
+          "label": "Chosen direction — annotated wireframes",
+          "layout": "wide",
+          "src": "",
+          "alt": "Chosen direction — annotated wireframes"
+        },
+        {
+          "type": "text",
+          "eyebrow": "Iteration",
+          "title": "[Describe the next question the design needed to answer]",
+          "body": "[Show how the chosen concept evolved. Discuss hierarchy, information, interaction, and any implementation considerations relevant to the decision.]"
+        },
+        {
+          "type": "media",
+          "label": "Before / after — iteration and rationale",
+          "layout": "pair",
+          "src": "",
+          "alt": "Before / after — iteration and rationale"
+        },
+        {
+          "type": "text",
+          "eyebrow": "Design decision 02",
+          "title": "[Explain the refinement that made the experience work]",
+          "body": "[Connect the refinement to a specific usability finding. Describe what improved and what you deliberately kept simple.]"
+        },
+        {
+          "type": "media",
+          "label": "Refined flow — key states and transitions",
+          "layout": "wide",
+          "src": "",
+          "alt": "Refined flow — key states and transitions"
+        }
+      ]
+    },
+    {
+      "id": "final",
+      "label": "Final Design",
+      "blocks": [
+        {
+          "type": "text",
+          "eyebrow": "Final design",
+          "title": "[Introduce the complete solution and its primary benefit]",
+          "body": "[Explain how the final experience brings the decisions together to help people complete their task.]"
+        },
+        {
+          "type": "text",
+          "eyebrow": "01 — [Moment in the journey]",
+          "title": "[Describe the benefit of feature 1]",
+          "body": "[Explain what the user can do, the guidance the interface provides, and how it addresses the original problem.]"
+        },
+        {
+          "type": "media",
+          "label": "Final feature 01 — high-fidelity screens",
+          "layout": "wide",
+          "src": "",
+          "alt": "Final feature 01 — high-fidelity screens"
+        },
+        {
+          "type": "text",
+          "eyebrow": "02 — [Moment in the journey]",
+          "title": "[Describe the benefit of feature 2]",
+          "body": "[Explain what the user can do, the guidance the interface provides, and how it addresses the original problem.]"
+        },
+        {
+          "type": "media",
+          "label": "Final feature 02 — high-fidelity screens",
+          "layout": "wide",
+          "src": "",
+          "alt": "Final feature 02 — high-fidelity screens"
+        },
+        {
+          "type": "text",
+          "eyebrow": "03 — [Moment in the journey]",
+          "title": "[Describe the benefit of feature 3]",
+          "body": "[Explain what the user can do, the guidance the interface provides, and how it addresses the original problem.]"
+        },
+        {
+          "type": "media",
+          "label": "Final feature 03 — high-fidelity screens",
+          "layout": "wide",
+          "src": "",
+          "alt": "Final feature 03 — high-fidelity screens"
+        }
+      ]
+    },
+    {
+      "id": "impact",
+      "label": "Impact",
+      "blocks": [
+        {
+          "type": "text",
+          "eyebrow": "Impact",
+          "title": "[Connect the final experience to measurable outcomes]",
+          "body": "[Explain whether these results came from usability testing, a live release, or a proposed measurement plan. Include the sample and baseline; avoid presenting projections as actual results.]"
+        },
+        {
+          "type": "metrics",
+          "items": [
+            {
+              "value": "[XX%]",
+              "label": "Primary outcome",
+              "note": "Add the measurement method"
+            },
+            {
+              "value": "[XX%]",
+              "label": "Secondary outcome",
+              "note": "Add the comparison or baseline"
+            }
+          ]
+        },
+        {
+          "type": "columns",
+          "items": [
+            {
+              "title": "Business outcomes",
+              "body": "[Describe the product, operational, or strategic changes supported by this work.]"
+            },
+            {
+              "title": "How I measured",
+              "body": "[Describe the study design, participants, tasks, and comparison used to evaluate the work.]"
+            }
+          ]
+        },
+        {
+          "type": "quote",
+          "quote": "[Optional: a real stakeholder or participant comment about the outcome.]",
+          "attribution": "[Name and role, with permission]"
+        }
+      ]
+    },
+    {
+      "id": "reflection",
+      "label": "Reflection",
+      "blocks": [
+        {
+          "type": "text",
+          "eyebrow": "Reflection",
+          "title": "[Name your most important learning]",
+          "body": "[Reflect on what this project taught you about research, collaboration, or design. Use a concrete example to explain how it will change your approach.]"
+        },
+        {
+          "type": "text",
+          "eyebrow": "",
+          "title": "[Describe what you would do next or differently]",
+          "body": "[Be specific about a remaining question, limitation, or next iteration. Explain what additional evidence you would seek and how you would evaluate success.]"
+        },
+        {
+          "type": "resources",
+          "items": [
+            {
+              "title": "Interactive prototype",
+              "description": "[Link to the end-to-end experience.]",
+              "url": ""
+            },
+            {
+              "title": "Process book",
+              "description": "[Link to your research and design documentation.]",
+              "url": ""
+            },
+            {
+              "title": "Walkthrough",
+              "description": "[Link to a short video of the final experience.]",
+              "url": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

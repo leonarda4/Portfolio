@@ -3,9 +3,27 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="color-scheme" content="light dark" />
+    <script>
+      (() => {
+        let preference = 'system';
+        try {
+          const stored = localStorage.getItem('portfolio-theme');
+          if (stored === 'light' || stored === 'dark') preference = stored;
+        } catch {}
+        let systemDark = false;
+        try { systemDark = window.matchMedia?.('(prefers-color-scheme: dark)').matches || false; } catch {}
+        const theme = preference === 'system' ? (systemDark ? 'dark' : 'light') : preference;
+        document.documentElement.dataset.theme = theme;
+        document.documentElement.style.colorScheme = theme;
+        document.querySelector('meta[name="theme-color"]').setAttribute('content', theme === 'dark' ? '#161616' : '#ffffff');
+      })();
+    </script>
     <link rel="icon" type="image/png" sizes="172x229" href="/assets/icon.png?v=2" />
     <link rel="shortcut icon" type="image/png" href="/assets/icon.png?v=2" />
-    <title>Leonarda's Portfolio, Interaction Designer</title>
+    <meta name="description" content="Leonarda Lovrić — product designer with a computer science background. Selected work and case studies." />
+    <title>Leonarda Lovrić — Product Designer</title>
   </head>
   <body>
     <div id="root"></div>

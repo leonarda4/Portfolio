@@ -1,0 +1,67 @@
+@font-face {
+  font-family:'Brainy Recia';
+  src:url('/assets/brainy-storm/code/Recia-Medium.ttf') format('truetype');
+  font-weight:500;
+  font-style:normal;
+  font-display:swap;
+}
+.brainy-cover {
+  width:100%; height:100%; min-width:0; min-height:0;
+  position:relative; background:#eaeae8; isolation:isolate; overflow:hidden;
+  user-select:none; -webkit-user-select:none;
+}
+.brainy-cover__frame { position:absolute; inset:12px; }
+.brainy-cover--hero .brainy-cover__frame { inset:76px 12px 24px; }
+.brainy-cover__fit { position:absolute; left:50%; top:50%; transform-origin:center; pointer-events:none; }
+.brainy-scene { position:relative; }
+.brainy-scene__statement {
+  position:absolute; left:24%; top:50%; width:52%; transform:translateY(-50%);
+  font-family:'Brainy Recia',Georgia,serif; font-size:84px; font-weight:500;
+  line-height:1.2; letter-spacing:0; text-align:center; color:#171717;
+  white-space:nowrap;
+}
+.brainy-scene__accent { color:#414dff; }
+.brainy-cover--inline { aspect-ratio:16 / 9; height:auto; }
+.brainy-cover--inline .brainy-cover__frame { inset:0; }
+.brainy-figure { width:100%; min-width:0; }
+.brainy-figure figcaption { margin-top:12px; }
+
+.brainy-cover--logo, .brainy-cover--inline { background:#171717; }
+.brainy-cover--inline .brainy-scene__statement { color:#fff; }
+.brainy-scene__logo--dark { display:none; }
+:root[data-theme='dark'] :is(.brainy-cover--logo,.brainy-cover--inline) { background:#eaeae8; }
+:root[data-theme='dark'] .brainy-cover--inline .brainy-scene__statement { color:#171717; }
+:root[data-theme='dark'] .brainy-scene__logo--light { display:none; }
+:root[data-theme='dark'] .brainy-scene__logo--dark { display:block; }
+:root { --brainy-brand-background:#171717; }
+:root[data-theme='dark'] { --brainy-brand-background:#eaeae8; }
+.brainy-scene__logo {
+  position:absolute; left:30%; top:43%; width:40%; height:14%;
+  object-fit:contain; max-width:none;
+}
+.brainy-cover--workspace { aspect-ratio:8 / 5; height:auto; background:#eaeae8; }
+.brainy-cover--workspace .brainy-cover__frame { inset:0; }
+.brainy-workspace img { display:block; max-width:none; }
+
+@font-face {
+  font-family:'Brainy Supreme'; src:url('/assets/brainy-storm/code/Supreme-400.woff2') format('woff2');
+  font-weight:400; font-style:normal; font-display:swap;
+}
+@font-face {
+  font-family:'Brainy Supreme'; src:url('/assets/brainy-storm/code/Supreme-500.woff2') format('woff2');
+  font-weight:500; font-style:normal; font-display:swap;
+}
+/* Native 314 × 900 panel scales with the rest of the captured laptop UI. */
+.brainy-transcript { width:314px; height:900px; box-sizing:border-box; transform-origin:top left; overflow:hidden; background:#fff; border-left:1px solid #e5e5e5; font-family:'Brainy Supreme',Arial,sans-serif; font-weight:400; text-align:left; letter-spacing:0; }
+.brainy-transcript__header { width:313px; height:62px; }
+.brainy-transcript__guidance { padding:12px 18px; border-bottom:1px solid #ededee; color:#71717a; font-size:12px; line-height:1.5; }
+.brainy-transcript__feed { padding:18px 15px; }
+.brainy-transcript__line { display:flex; gap:9px; margin-bottom:19px; }
+.brainy-transcript__avatar { display:grid; place-items:center; width:25px; height:25px; flex:0 0 25px; border-radius:50%; font-size:12px; font-weight:500; line-height:1; }
+.brainy-transcript__content { min-width:0; flex:1; }
+.brainy-transcript__content strong { display:block; margin:2px 0 5px; color:#404040; font-size:12px; font-weight:500; line-height:18px; }
+.brainy-transcript__content p { margin:0; padding:0; color:#666; font-family:inherit; font-size:14px; font-weight:400; line-height:1.6; }
+
+/* Flight reaches the actual slot edges; agents never pop out inside letterboxing. */
+.brainy-cover--logo .brainy-cover__frame { inset:0; }
+.brainy-cover--logo .brainy-scene { overflow:hidden; }

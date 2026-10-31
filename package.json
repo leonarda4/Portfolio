@@ -6,12 +6,15 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "start": "node server/index.js",
+    "test:stickers": "node --test server/stickers.test.js"
   },
   "dependencies": {
     "@vitejs/plugin-react": "latest",
     "react": "latest",
     "react-dom": "latest",
+    "tone": "^15.1.22",
     "vite": "latest"
   },
   "devDependencies": {

@@ -1,0 +1,28 @@
+.testing-photos { width: 100%; min-width: 0; }
+.testing-photos-board { position: relative; aspect-ratio: 1.85; margin: 0 0 28px; }
+.testing-photo { position: absolute; left: calc(5% + var(--column) * 29%); top: calc(7% + var(--row) * 36%); width: 28%; height: auto; min-height: 0; --photo-inset: 7px; padding: var(--photo-inset); border: 1px solid #eeeeec; border-radius: 0; background: #fff; box-shadow: 0 14px 30px -12px #0004; transform: rotate(var(--angle)); cursor: grab; touch-action: none; user-select: none; transition: box-shadow 180ms, transform 180ms; }
+/* Default arrangement follows the supplied collage. */
+.testing-photo:nth-child(1) { left: 26%; top: 18%; z-index: 3; }
+.testing-photo:nth-child(2) { left: 4%; top: 4%; z-index: 2; }
+.testing-photo:nth-child(3) { left: 69%; top: 17%; z-index: 4; }
+.testing-photo:nth-child(4) { left: 61%; top: 53%; z-index: 5; }
+.testing-photo:nth-child(5) { left: 51%; top: 3%; z-index: 3; }
+.testing-photo:nth-child(6) { left: 33%; top: 59%; z-index: 1; }
+.testing-photo:nth-child(7) { left: 2%; top: 51%; z-index: 2; }
+.testing-photo:hover, .testing-photo:focus-visible { box-shadow: 0 22px 40px -12px #0005; }
+.testing-photo.is-dragging { cursor: grabbing; transform: rotate(0deg) scale(1.025); box-shadow: 0 24px 44px -12px #0005; }
+.testing-photo img { display: block; width: 100%; height: auto; pointer-events: none; }
+.testing-photo-placeholder { aspect-ratio: 4 / 3; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 12px; background: #eeefec; color: #92948c; font-size: 12px; }
+.testing-photo-placeholder > span { font-size: 26px; font-weight: 400; }
+.testing-photo:nth-child(2n) .testing-photo-placeholder { background: #e8e9e6; }
+.testing-photos figcaption { color: #888; font-size: 12px; line-height: 1.6; }
+@media (max-width: 600px) {
+  .testing-photo { --photo-inset: 5px; width: 28%; }
+  .testing-photo-placeholder { font-size: 10px; }
+}
+@media (prefers-reduced-motion: reduce) { .testing-photo { transition: none; } }
+
+:root[data-theme='dark'] .testing-photo { border-color:var(--border); background:var(--surface-solid); }
+:root[data-theme='dark'] .testing-photo-placeholder { background:var(--surface); color:var(--text-secondary); }
+:root[data-theme='dark'] .testing-photo:nth-child(2n) .testing-photo-placeholder { background:var(--surface-raised); }
+:root[data-theme='dark'] .testing-photos figcaption { color:var(--text-secondary); }
