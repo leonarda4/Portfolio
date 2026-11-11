@@ -3,10 +3,12 @@
 .tomsoft-cover__panel--paperclip { background:#D592FF; }
 .tomsoft-cover__panel--harmony { background:#FFA038; }
 .tomsoft-cover__panel--interconnect { background:#42EDD5; }
-.tomsoft-cover__screen,.tomsoft-cover__hand { visibility:hidden; }
-.tomsoft-cover--ready .tomsoft-cover__screen,.tomsoft-cover--ready .tomsoft-cover__hand { visibility:visible; }
-.tomsoft-cover--ready .tomsoft-cover__screen { animation:tomsoft-screen-return 14s var(--entry-delay) both infinite; }
-.tomsoft-cover--ready .tomsoft-cover__hand { animation:tomsoft-hand-return 14s calc(var(--entry-delay) + 7s) both infinite; }
+.tomsoft-cover__hand,.tomsoft-cover__screen-detail { visibility:hidden; }
+.tomsoft-cover--detailed .tomsoft-cover__screen-detail { visibility:visible; }
+.tomsoft-cover--detailed .tomsoft-cover__screen-preview { visibility:hidden; }
+.tomsoft-cover--animated .tomsoft-cover__hand { visibility:visible; }
+.tomsoft-cover--animated .tomsoft-cover__screen { animation:tomsoft-screen-return 14s var(--entry-delay) both infinite; animation-play-state:var(--cover-play-state); }
+.tomsoft-cover--animated .tomsoft-cover__hand { animation:tomsoft-hand-return 14s var(--entry-delay) both infinite; animation-play-state:var(--cover-play-state); }
 .tomsoft-cover__screen {
   position:absolute;
   top:50%;
@@ -17,7 +19,7 @@
   max-width:none;
   transform:translateY(-50%);
 }
-/* Render the original PNG directly, avoiding WebKit's SVG pattern/filter rasterization. */
+/* Small embedded previews show immediately; detailed WebP images replace them in place. */
 .tomsoft-cover__screen > img {
   position:absolute;
   left:1.922892%;
@@ -38,16 +40,16 @@
   transform:translate(calc(-50% + 100cqw + 40px),-50%);
 }
 @keyframes tomsoft-screen-return {
-  0% { transform:translate(calc(100cqw + 40px),-50%); animation-timing-function:cubic-bezier(.16,1,.3,1); }
-  8%,36% { transform:translate(0,-50%); animation-timing-function:cubic-bezier(.7,0,.84,0); }
-  44%,100% { transform:translate(calc(100cqw + 40px),-50%); }
+  0%,24%,100% { transform:translate(0,-50%); animation-timing-function:cubic-bezier(.7,0,.84,0); }
+  32%,85% { transform:translate(calc(100cqw + 40px),-50%); animation-timing-function:cubic-bezier(.16,1,.3,1); }
+  93% { transform:translate(0,-50%); }
 }
 @keyframes tomsoft-hand-return {
-  0% { transform:translate(calc(-50% + 100cqw + 40px),-50%); animation-timing-function:cubic-bezier(.16,1,.3,1); }
-  8%,36% { transform:translate(-50%,-50%); animation-timing-function:cubic-bezier(.7,0,.84,0); }
-  44%,100% { transform:translate(calc(-50% + 100cqw + 40px),-50%); }
+  0%,32% { transform:translate(calc(-50% + 100cqw + 40px),-50%); animation-timing-function:cubic-bezier(.16,1,.3,1); }
+  40%,74% { transform:translate(-50%,-50%); animation-timing-function:cubic-bezier(.7,0,.84,0); }
+  82%,100% { transform:translate(calc(-50% + 100cqw + 40px),-50%); }
 }
 @media(prefers-reduced-motion:reduce) {
-  .tomsoft-cover--ready .tomsoft-cover__screen { animation:none; }
-  .tomsoft-cover__hand,.tomsoft-cover--ready .tomsoft-cover__hand { display:none; animation:none; }
+  .tomsoft-cover--animated .tomsoft-cover__screen { animation:none; }
+  .tomsoft-cover__hand,.tomsoft-cover--animated .tomsoft-cover__hand { display:none; animation:none; }
 }
