@@ -1,0 +1,5 @@
+.study-video-player { position:relative; }
+.study-video-recovery { position:absolute; inset:0; display:grid; place-items:center; background:var(--color-surface); }
+.study-video-recovery > img { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; }
+.study-video-recovery__actions { position:relative; display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:var(--space-4); padding:var(--space-4); margin:var(--space-4); background:var(--color-canvas); color:var(--color-text); font-size:var(--type-small-size); }
+.study-video-recovery__actions :is(button,a) { padding:var(--space-2); text-decoration:underline; text-underline-offset:3px; }

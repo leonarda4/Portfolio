@@ -2,7 +2,11 @@ import { experiments } from '../portfolioData'
 import { aboutDrawings, aboutNotes } from '../content/about-collage'
 import { SUPPORTING_PALETTE } from '../../design-system/playful-palette'
 import AboutNote from './AboutNote'
+import loopArrow from '../../public/assets/about/loop-arrow.svg?raw'
+import trail from '../../public/assets/about/trail.svg?raw'
 import './AboutCollage.css'
+
+const drawingArtwork = { 'loop-arrow': loopArrow, trail }
 
 export function PlaySection({ renderCard }) {
   const readyExperiments = experiments.filter(experiment => (experiment.cover || experiment.coverVideo) && experiment.title)
@@ -23,7 +27,7 @@ export function AboutSection() {
           <AboutNote>{note.text}</AboutNote>
         </li>)}
       </ol>
-      {aboutDrawings.map(item => <img key={item.key} className={`about-drawing about-drawing--${item.key}`} src={item.src} alt="" aria-hidden="true" width={item.width} height={item.height} style={{ '--drawing-x': `${item.x / 10.02}%`, '--drawing-y': `${item.y / 10.02}cqw`, '--drawing-width': `${item.width / 10.02}%` }} />)}
+      {aboutDrawings.map(item => <div key={item.key} className={`about-drawing about-drawing--${item.key}`} aria-hidden="true" style={{ '--drawing-x': `${item.x / 10.02}%`, '--drawing-y': `${item.y / 10.02}cqw`, '--drawing-width': `${item.width / 10.02}%` }} dangerouslySetInnerHTML={{ __html: drawingArtwork[item.key] }} />)}
     </div>
   </section>
 }

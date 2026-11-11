@@ -65,6 +65,7 @@
   height:auto;
   pointer-events:none;
 }
+.about-drawing > svg { display:block; width:100%; height:auto; }
 /* Reflow the whole collage together when its original arrangement no longer fits. */
 @container (max-width:880px) {
   .about-collage {

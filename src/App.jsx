@@ -14,6 +14,7 @@ import ThemeToggle from './components/ThemeToggle'
 import { SUPPORTING_PALETTE } from '../design-system/playful-palette'
 import SoundscapeCards from './components/SoundscapeCards'
 import StickerBoard from './components/StickerBoard'
+import StudyVideo from './components/StudyVideo'
 import { AboutSection, PlaySection } from './components/HomeSections'
 import useSectionNavigation from './hooks/useSectionNavigation'
 const BrainyCover = lazy(() => import('./components/BrainyCover'))
@@ -103,11 +104,7 @@ function Block({ block, onOpen }) {
   if (block.type === 'videos') return <div className="study-videos text-block">
     {block.title && <h3>{block.title}</h3>}
     <div className="study-video-grid">{block.items.map(item => <figure key={item.src}>
-      <video width={item.width} height={item.height} poster={item.poster} autoPlay={block.autoPlay !== false && !reducedMotion} muted={block.muted !== false} loop={block.loop !== false} controls={block.controls || false} disablePictureInPicture disableRemotePlayback playsInline preload={block.preload || 'metadata'} aria-label={item.title}>
-        <source src={item.src} type="video/mp4" />
-        {item.captions && <track kind="captions" src={item.captions} srcLang="en" label="English" />}
-        <a href={item.src}>Watch {item.title}</a>
-      </video>
+      <StudyVideo item={item} block={block} reducedMotion={reducedMotion} />
       {item.caption && <figcaption>{item.caption}</figcaption>}
     </figure>)}</div>
   </div>
