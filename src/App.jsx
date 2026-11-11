@@ -25,7 +25,8 @@ const EchoCover = lazy(() => import('./components/EchoCover'))
 const EchoParticipantPreview = lazy(() => import('./components/EchoParticipantPreview'))
 const GradientGallery = lazy(() => import('./components/GradientGallery'))
 
-const SHOW_STICKERS = true
+// Restore after shared notes and drawings have a deployed persistence backend.
+const SHOW_STICKERS = false
 
 const HOME_SECTIONS = [{ id: 'home', label: 'Home' }, { id: 'work', label: 'Work' }, { id: 'play', label: 'Playground' }, { id: 'about', label: 'About me' }, { id: 'contact', label: 'Contact' }]
 const HOME_ROUTES = new Set(['/', ...HOME_SECTIONS.map(section => `/${section.id}`)])
