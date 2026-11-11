@@ -8,16 +8,18 @@ import PlayfulDrawing from './PlayfulDrawing'
 import { nextDrawingColor } from './playful/brush'
 import './StickerBoard.css'
 
+const localNotes = new Map()
+
 function Paper({ color = 'Yellow', children }) {
   const palette = COLORS.find(item => item.name === color) || COLORS[0]
   return <div className="sticker-paper" style={{ '--paper': palette.value, '--paper-back': palette.back }}><div className="sticker-paper-face">{children}</div><span className="sticker-fold" aria-hidden="true" /></div>
 }
 
-export default function StickerBoard({ page }) {
-  const [notes, setNotes] = useState([])
+export default function StickerBoard({ page, localOnly = false }) {
+  const [notes, setNotes] = useState(() => localOnly ? localNotes.get(page) || [] : [])
   const [selected, setSelected] = useState(null)
   const [typing, setTyping] = useState(false)
-  const [showOthers, setShowOthers] = useState(getShowOthers)
+  const [showOthers, setShowOthers] = useState(() => localOnly ? false : getShowOthers())
   const [drag, setDrag] = useState(null)
   const [failure, setFailure] = useState(null)
   const [drawing, setDrawing] = useState(false)
@@ -42,6 +44,12 @@ export default function StickerBoard({ page }) {
   function select(note) { if (selection.current?.id !== note?.id) setTyping(false); selection.current = note; setSelected(note) }
 
   function persist(note) {
+    if (localOnly) {
+      const next = [...(localNotes.get(page) || []).filter(item => item.id !== note.id), note]
+      localNotes.set(page, next)
+      setNotes(next)
+      return
+    }
     revision.current += 1
     localChanges.current.set(note.id, note)
     setNotes(current => [...current.filter(item => item.id !== note.id), note])
@@ -56,6 +64,13 @@ export default function StickerBoard({ page }) {
   }
 
   function remove(note) {
+    if (localOnly) {
+      select(null)
+      const next = (localNotes.get(page) || []).filter(item => item.id !== note.id)
+      localNotes.set(page, next)
+      setNotes(next)
+      return
+    }
     revision.current += 1
     select(null)
     localChanges.current.set(note.id, null)
@@ -79,6 +94,12 @@ export default function StickerBoard({ page }) {
   }
 
   useEffect(() => {
+    if (localOnly) return () => {
+      const note = selection.current
+      if (!note) return
+      const remaining = (localNotes.get(page) || []).filter(item => item.id !== note.id)
+      localNotes.set(page, note.text.trim() ? [...remaining, { ...note, text: note.text.trim() }] : remaining)
+    }
     mounted.current = true
     const controller = new AbortController()
     let fetching = false
@@ -104,7 +125,7 @@ export default function StickerBoard({ page }) {
     const interval = setInterval(load, 15000)
     document.addEventListener('visibilitychange', load)
     return () => { mounted.current = false; controller.abort(); clearInterval(interval); document.removeEventListener('visibilitychange', load) }
-  }, [page])
+  }, [page, localOnly])
 
   useEffect(() => {
     let frame
@@ -122,7 +143,7 @@ export default function StickerBoard({ page }) {
     const note = { id: crypto.randomUUID(), page, text: '', color: nextColor.current, placement: placementAt(point.left, point.top) }
     nextColor.current = COLORS[Math.floor(Math.random() * COLORS.length)].name
     setNoteColor(nextColor.current)
-    createEditKey(note.id)
+    if (!localOnly) createEditKey(note.id)
     select(note)
     setTyping(true)
     requestAnimationFrame(() => textarea.current?.focus({ preventScroll: true }))
@@ -206,13 +227,13 @@ export default function StickerBoard({ page }) {
     event.currentTarget.setPointerCapture(event.pointerId)
   }
 
-  const keys = editKeys()
+  const keys = localOnly ? Object.fromEntries([...notes, ...(selected ? [selected] : [])].map(note => [note.id, true])) : editKeys()
   const visible = notes.filter(note => !aboutNoteIds.has(note.id) && (showOthers || keys[note.id]) && note.id !== selected?.id)
   if (selected && !aboutNoteIds.has(selected.id)) visible.push(selected)
 
   return <>
-    <PlayfulDrawing ref={crayon} active={drawing} page={page} color={inkColor} showOthers={showOthers} onStrokeComplete={() => setInkColor(nextDrawingColor)} onStrokeCountChange={setStrokeCount} />
-    <PlayfulToolbar trayRef={tray} drawing={drawing} inkColor={inkColor} onToggleDrawing={() => { finishEditing(); setDrawing(current => !current) }} noteColor={noteColor} peeling={!!drag && !drag.note} onNotePointerDown={event => startDrag(event)} onAddNote={event => {
+    <PlayfulDrawing ref={crayon} active={drawing} page={page} color={inkColor} showOthers={showOthers} localOnly={localOnly} onStrokeComplete={() => setInkColor(nextDrawingColor)} onStrokeCountChange={setStrokeCount} />
+    <PlayfulToolbar localOnly={localOnly} trayRef={tray} drawing={drawing} inkColor={inkColor} onToggleDrawing={() => { finishEditing(); setDrawing(current => !current) }} noteColor={noteColor} peeling={!!drag && !drag.note} onNotePointerDown={event => startDrag(event)} onAddNote={event => {
         if (event.detail && suppressClick.current) { suppressClick.current = false; return }
         const box = tray.current.getBoundingClientRect()
         create(clampDrop(box.left + 2, box.top - STICKER_SIZE - 24))

@@ -34,22 +34,6 @@
       "value": "Oct 2026 – Nov 2026"
     }
   ],
-  "teaser": {
-    "type": "videos",
-    "autoPlay": false,
-    "muted": false,
-    "loop": false,
-    "controls": true,
-    "items": [
-      {
-        "src": "/assets/calibrated/calibrated-film.mp4",
-        "poster": "/assets/calibrated/calibrated-film-poster.jpg",
-        "title": "Calibrated: full film",
-        "width": 1920,
-        "height": 1080
-      }
-    ]
-  },
   "sections": [
     {
       "id": "experiment",
@@ -59,6 +43,22 @@
           "type": "text",
           "title": "A familiar space made unreliable",
           "body": "We wanted to bend reality until participants could no longer trust their eyes. Could we do it without modelling the environment or writing the code ourselves? Gaussian splats gave us the captured space; Codex helped turn our directions into interactions."
+        },
+        {
+          "type": "videos",
+          "autoPlay": false,
+          "muted": false,
+          "loop": false,
+          "controls": true,
+          "items": [
+            {
+              "src": "/assets/calibrated/calibrated-film.mp4",
+              "poster": "/assets/calibrated/calibrated-film-poster.jpg",
+              "title": "Calibrated: full film",
+              "width": 1920,
+              "height": 1080
+            }
+          ]
         }
       ]
     },
@@ -114,17 +114,6 @@
               "label": "Prompt: Connect the hallway cutout to this opening. Match its floor, ceiling and walls to the marked edges, and keep it attached to the hole."
             }
           ]
-        }
-      ]
-    },
-    {
-      "id": "experience",
-      "label": "Experience",
-      "blocks": [
-        {
-          "type": "text",
-          "title": "A sequence of broken expectations",
-          "body": "The hallway rotates around the participant. A wall moves when they look away, then disappears to reveal an opening into another corridor. Light and sound build the atmosphere before the environment breaks apart and dissolves into white."
         }
       ]
     },

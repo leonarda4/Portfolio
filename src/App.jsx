@@ -25,9 +25,6 @@ const EchoCover = lazy(() => import('./components/EchoCover'))
 const EchoParticipantPreview = lazy(() => import('./components/EchoParticipantPreview'))
 const GradientGallery = lazy(() => import('./components/GradientGallery'))
 
-// Restore after shared notes and drawings have a deployed persistence backend.
-const SHOW_STICKERS = false
-
 const HOME_SECTIONS = [{ id: 'home', label: 'Home' }, { id: 'work', label: 'Work' }, { id: 'play', label: 'Playground' }, { id: 'about', label: 'About me' }, { id: 'contact', label: 'Contact' }]
 const HOME_ROUTES = new Set(['/', ...HOME_SECTIONS.map(section => `/${section.id}`)])
 
@@ -214,5 +211,5 @@ export default function App() {
     else if (isHome && route !== '/' && route !== '/home') document.getElementById(route.slice(1))?.scrollIntoView({ block: 'start', behavior: 'instant' })
     else window.scrollTo({ top: 0, behavior: 'instant' })
   }, [route, project, experiment, isHome])
-  return <><a className="skip-link" href="#main-content" onClick={e => { e.preventDefault(); document.getElementById('main-content')?.focus() }}>Skip to content</a>{SHOW_STICKERS && <StickerBoard key={isHome || experiment ? '/' : route} page={isHome || experiment ? '/' : route} />}<div id="main-content" tabIndex={-1}>{project ? <CaseStudy key={project.slug} project={project} /> : isHome || experiment ? <Home onPreview={setVideoPreview} /> : <main className="about-page page-grid"><SiteNavigation /><div className="layout-main about-content"><h1>Project not found</h1><a href="#/work">Back to selected work</a></div></main>}</div>{preview && <VideoPreview key={preview.slug} experiment={preview} onClose={closePreview} />}</>
+  return <><a className="skip-link" href="#main-content" onClick={e => { e.preventDefault(); document.getElementById('main-content')?.focus() }}>Skip to content</a><StickerBoard localOnly key={isHome || experiment ? '/' : route} page={isHome || experiment ? '/' : route} /><div id="main-content" tabIndex={-1}>{project ? <CaseStudy key={project.slug} project={project} /> : isHome || experiment ? <Home onPreview={setVideoPreview} /> : <main className="about-page page-grid"><SiteNavigation /><div className="layout-main about-content"><h1>Project not found</h1><a href="#/work">Back to selected work</a></div></main>}</div>{preview && <VideoPreview key={preview.slug} experiment={preview} onClose={closePreview} />}</>
 }

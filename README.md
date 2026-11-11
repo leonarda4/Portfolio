@@ -13,6 +13,10 @@ npm run dev
 
 ## Visitor drawings and sticky notes
 
+The published site currently enables browser-only drawings and sticky notes. Both live in memory for the current tab, remain available when navigating between pages, and clear on reload. Drawing undo/clear and note editing, moving, recoloring, and deleting work without any API or browser-storage writes. Shared visitor controls are hidden until a persistence backend is deployed. The permanent About me notes and artwork remain visible.
+
+The shared implementation described below is retained for future deployment, but is not mounted by the current app.
+
 The compact bottom-left toolbar provides a crayon and a stack of sticky notes. The crayon draws opaque, rounded, gently irregular strokes across the page background, with a random bright color for each stroke. Every completed stroke saves automatically to the server with its exact shape, color, page, creation time, and position. Drawings anchor to nearby content and scale proportionally across screen sizes. Existing tab-local drawings are imported on the next visit to their page. Click the crayon again or press Escape to stop; use Command/Ctrl+Z while drawing to undo. Undo and “Clear my drawings” remove only drawings owned by the current visitor.
 
 Click or drag the note stack to create a note in its displayed color, with a peel effect while dragging. The next note color is chosen randomly. Notes are flat at rest and render above page content. Write directly on a note and click away to save automatically. Select a note to move or recolor it; double-click to edit. Delete/Backspace removes the selected note when not typing. Arrow keys move selected notes (Shift for larger steps). Escape or Command/Ctrl+Enter finishes editing; empty notes disappear. There are no Post/Cancel buttons, note labels, counters, or empty-state messages.

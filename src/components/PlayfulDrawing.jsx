@@ -1,12 +1,13 @@
 import { forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useState, useSyncExternalStore } from 'react'
 import { melodramaPath } from './playful/brush'
 import { drawingBoard } from './playful/drawings'
+import { localDrawingBoard } from './playful/local-drawings'
 import { captureStroke, strokeTransform } from './playful/placement'
 import './PlayfulDrawing.css'
 
 const MAX_POINTS = 4000
-const PlayfulDrawing = forwardRef(function PlayfulDrawing({ active, page, color, showOthers, onStrokeComplete, onStrokeCountChange }, ref) {
-  const board = drawingBoard(page)
+const PlayfulDrawing = forwardRef(function PlayfulDrawing({ active, page, color, showOthers, localOnly = false, onStrokeComplete, onStrokeCountChange }, ref) {
+  const board = localOnly ? localDrawingBoard(page) : drawingBoard(page)
   const { strokes, error } = useSyncExternalStore(board.subscribe, board.getSnapshot)
   const [preview, setPreview] = useState(null)
   const [, refreshLayout] = useState(0)
@@ -27,6 +28,7 @@ const PlayfulDrawing = forwardRef(function PlayfulDrawing({ active, page, color,
 
   useEffect(() => {
     cancel()
+    if (localOnly) return
     board.importLegacy(window.innerWidth)
     board.retry()
     const load = () => { if (!document.hidden) board.load() }
@@ -35,7 +37,7 @@ const PlayfulDrawing = forwardRef(function PlayfulDrawing({ active, page, color,
     document.addEventListener('visibilitychange', load)
     window.addEventListener('online', retry)
     return () => { clearInterval(interval); document.removeEventListener('visibilitychange', load); window.removeEventListener('online', retry) }
-  }, [board, cancel])
+  }, [board, cancel, localOnly])
 
   useEffect(() => {
     countCallback.current?.(strokes.filter(stroke => board.isOwn(stroke.id)).length)

@@ -33,7 +33,7 @@ function NoteStack({ color, peeling }) {
   </svg>
 }
 
-export default function PlayfulToolbar({ trayRef, drawing, inkColor, onToggleDrawing, onNotePointerDown, onAddNote, noteColor, peeling, showOthers, onToggleOthers, strokeCount, onUndo, onClear }) {
+export default function PlayfulToolbar({ trayRef, drawing, inkColor, onToggleDrawing, onNotePointerDown, onAddNote, noteColor, peeling, showOthers, onToggleOthers, strokeCount, onUndo, onClear, localOnly = false }) {
   const [options, setOptions] = useState(false)
   const optionsRef = useRef(null)
   const settingsRef = useRef(null)
@@ -60,7 +60,7 @@ export default function PlayfulToolbar({ trayRef, drawing, inkColor, onToggleDra
       <button ref={settingsRef} type="button" className="playful-settings" aria-label="Tool options" aria-expanded={options} aria-controls={options ? id : undefined} onClick={() => setOptions(!options)} title="Tool options"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h3m6 0h7M4 17h7m6 0h3" /><circle cx="10" cy="7" r="3" /><circle cx="14" cy="17" r="3" /></svg></button>
     </div>
     {options && <div ref={optionsRef} className="playful-options" id={id}>
-      <label className="playful-others"><span>Show others’ notes &amp; drawings</span><button type="button" className="sticker-switch" role="switch" aria-label="Show others’ notes and drawings" aria-checked={showOthers} onClick={onToggleOthers}><span /></button></label>
+      {!localOnly && <label className="playful-others"><span>Show others’ notes &amp; drawings</span><button type="button" className="sticker-switch" role="switch" aria-label="Show others’ notes and drawings" aria-checked={showOthers} onClick={onToggleOthers}><span /></button></label>}
       <button type="button" className="playful-option" onClick={onUndo} disabled={!strokeCount}>Undo last drawing</button>
       <button type="button" className="playful-option" onClick={onClear} disabled={!strokeCount}>Clear my drawings</button>
     </div>}
