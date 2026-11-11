@@ -44,13 +44,7 @@
 .soundscape-sliders { display:grid; gap:12px; }
 .soundscape-slider__label { display:flex; justify-content:space-between; gap:16px; align-items:baseline; font-size:12px; line-height:1.5; color:var(--soundscape-muted); }
 .soundscape-slider__label output { font-variant-numeric:tabular-nums; color:var(--text-primary); }
-.soundscape-slider input[type='range'] { display:block; appearance:none; -webkit-appearance:none; width:100%; height:24px; margin:4px 0 0; padding:0; border:0; border-radius:0; background:transparent; cursor:pointer; color:var(--text-primary); }
-.soundscape-slider input[type='range']::-webkit-slider-runnable-track { height:2px; background:linear-gradient(to right,var(--text-primary) var(--range-progress),var(--border) var(--range-progress)); }
-.soundscape-slider input[type='range']::-moz-range-track { height:2px; background:var(--border); }
-.soundscape-slider input[type='range']::-moz-range-progress { height:2px; background:var(--text-primary); }
-.soundscape-slider input[type='range']::-webkit-slider-thumb { appearance:none; -webkit-appearance:none; width:12px; height:12px; margin-top:-5px; border:0; border-radius:50%; background:var(--text-primary); }
-.soundscape-slider input[type='range']::-moz-range-thumb { width:12px; height:12px; border:0; border-radius:50%; background:var(--text-primary); }
-.soundscape-slider input[type='range']:focus-visible { outline:2px solid var(--accent); outline-offset:4px; }
+.soundscape-slider input[type='range'] { margin:4px 0 0; }
 .soundscapes-volume input[type='range'] { margin:0; }
 .soundscapes .soundscapes-error { margin-bottom:20px; padding-left:12px; border-left:2px solid var(--text-primary); font-size:13px; color:var(--text-primary); }
 @keyframes soundscape-wave { from { transform:scaleY(.35); } to { transform:scaleY(1); } }

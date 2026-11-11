@@ -1,6 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
-import { clampDrop, COLORS, placementAt, positionOf, STICKER_SIZE } from './stickers/placement'
+import { createPortal } from 'react-dom'
+import { clampDrop, COLORS, placementAt, positionOf, safeDrop, STICKER_SIZE } from './stickers/placement'
 import { createEditKey, deleteSticker, editKeys, getShowOthers, readStickers, saveShowOthers, saveSticker } from './stickers/api'
+import { aboutNoteIds } from '../content/about-collage'
+import PlayfulToolbar from './PlayfulToolbar'
+import PlayfulDrawing from './PlayfulDrawing'
+import { nextDrawingColor } from './playful/brush'
 import './StickerBoard.css'
 
 function Paper({ color = 'Yellow', children }) {
@@ -15,8 +20,14 @@ export default function StickerBoard({ page }) {
   const [showOthers, setShowOthers] = useState(getShowOthers)
   const [drag, setDrag] = useState(null)
   const [failure, setFailure] = useState(null)
+  const [drawing, setDrawing] = useState(false)
+  const [inkColor, setInkColor] = useState(nextDrawingColor)
+  const [strokeCount, setStrokeCount] = useState(0)
+  const [noteColor, setNoteColor] = useState('Mint')
   const [, refreshLayout] = useState(0)
   const tray = useRef(null)
+  const crayon = useRef(null)
+  const nextColor = useRef('Mint')
   const editor = useRef(null)
   const textarea = useRef(null)
   const selection = useRef(null)
@@ -100,14 +111,17 @@ export default function StickerBoard({ page }) {
     const update = () => { cancelAnimationFrame(frame); frame = requestAnimationFrame(() => refreshLayout(value => value + 1)) }
     const observer = new ResizeObserver(update)
     observer.observe(document.getElementById('main-content'))
-    window.addEventListener('scroll', update, { passive: true })
     window.addEventListener('resize', update)
-    return () => { observer.disconnect(); cancelAnimationFrame(frame); window.removeEventListener('scroll', update); window.removeEventListener('resize', update) }
+    return () => { observer.disconnect(); cancelAnimationFrame(frame); window.removeEventListener('resize', update) }
   }, [])
 
   function create(position) {
     finishEditing()
-    const note = { id: crypto.randomUUID(), page, text: '', color: 'Yellow', placement: placementAt(position.left, position.top) }
+    setDrawing(false)
+    const point = safeDrop(position.left, position.top)
+    const note = { id: crypto.randomUUID(), page, text: '', color: nextColor.current, placement: placementAt(point.left, point.top) }
+    nextColor.current = COLORS[Math.floor(Math.random() * COLORS.length)].name
+    setNoteColor(nextColor.current)
     createEditKey(note.id)
     select(note)
     setTyping(true)
@@ -134,7 +148,8 @@ export default function StickerBoard({ page }) {
       setDrag(null)
       if (event.type === 'pointercancel' || !current.moved) return
       if (current.note) {
-        const note = { ...selection.current, placement: placementAt(current.position.left, current.position.top) }
+        const point = safeDrop(current.position.left, current.position.top)
+        const note = { ...selection.current, placement: placementAt(point.left, point.top) }
         select(note)
         requestAnimationFrame(() => editor.current?.focus({ preventScroll: true }))
         if (note.text.trim()) persist(note)
@@ -155,7 +170,7 @@ export default function StickerBoard({ page }) {
         event.preventDefault()
         const position = positionOf(note.placement)
         const step = event.shiftKey ? 30 : 10
-        const point = clampDrop(position.left + (event.key === 'ArrowRight' ? step : event.key === 'ArrowLeft' ? -step : 0), position.top + (event.key === 'ArrowDown' ? step : event.key === 'ArrowUp' ? -step : 0))
+        const point = safeDrop(position.left + (event.key === 'ArrowRight' ? step : event.key === 'ArrowLeft' ? -step : 0), position.top + (event.key === 'ArrowDown' ? step : event.key === 'ArrowUp' ? -step : 0))
         select({ ...note, placement: placementAt(point.left, point.top) })
       }
     }
@@ -169,8 +184,20 @@ export default function StickerBoard({ page }) {
     return () => { document.removeEventListener('pointerdown', outside, true); window.removeEventListener('pointermove', move); window.removeEventListener('pointerup', finish); window.removeEventListener('pointercancel', finish); window.removeEventListener('keydown', key); window.removeEventListener('pagehide', pagehide) }
   }, [])
 
+  useEffect(() => {
+    if (!drawing) return
+    function key(event) {
+      if (event.target.closest('textarea, input, [contenteditable="true"]')) return
+      if (event.key === 'Escape') { setDrawing(false); tray.current?.querySelector('.playful-crayon-tool')?.focus({ preventScroll: true }) }
+      if ((event.metaKey || event.ctrlKey) && !event.shiftKey && event.key.toLowerCase() === 'z') { event.preventDefault(); crayon.current?.undo() }
+    }
+    window.addEventListener('keydown', key)
+    return () => window.removeEventListener('keydown', key)
+  }, [drawing])
+
   function startDrag(event, note = null) {
     if (event.button !== 0 || (event.target.tagName === 'TEXTAREA' && document.activeElement === event.target)) return
+    setDrawing(false)
     suppressClick.current = false
     if (note && selection.current?.id !== note.id) select(note)
     if (note) event.preventDefault()
@@ -180,24 +207,22 @@ export default function StickerBoard({ page }) {
   }
 
   const keys = editKeys()
-  const visible = notes.filter(note => (showOthers || keys[note.id]) && note.id !== selected?.id)
-  if (selected) visible.push(selected)
+  const visible = notes.filter(note => !aboutNoteIds.has(note.id) && (showOthers || keys[note.id]) && note.id !== selected?.id)
+  if (selected && !aboutNoteIds.has(selected.id)) visible.push(selected)
 
   return <>
-    <aside className="sticker-tray" ref={tray} aria-label="Stickers">
-      <button type="button" className="sticker-dispenser" aria-label="Add a sticky note" onPointerDown={event => startDrag(event)} onClick={event => {
+    <PlayfulDrawing ref={crayon} active={drawing} page={page} color={inkColor} showOthers={showOthers} onStrokeComplete={() => setInkColor(nextDrawingColor)} onStrokeCountChange={setStrokeCount} />
+    <PlayfulToolbar trayRef={tray} drawing={drawing} inkColor={inkColor} onToggleDrawing={() => { finishEditing(); setDrawing(current => !current) }} noteColor={noteColor} peeling={!!drag && !drag.note} onNotePointerDown={event => startDrag(event)} onAddNote={event => {
         if (event.detail && suppressClick.current) { suppressClick.current = false; return }
         const box = tray.current.getBoundingClientRect()
-        create(clampDrop(box.left - 28, box.top - 84))
-      }}><span className={`sticker-stack${drag && !drag.note ? ' is-peeling' : ''}`} aria-hidden="true"><i /><i /><Paper /></span></button>
-      <div className="sticker-tray-bottom"><span id="sticker-others-label">Show others</span><button className="sticker-switch" role="switch" aria-checked={showOthers} aria-labelledby="sticker-others-label" onClick={() => { setShowOthers(!showOthers); saveShowOthers(!showOthers) }}><span /></button></div>
-    </aside>
+        create(clampDrop(box.left + 2, box.top - STICKER_SIZE - 24))
+      }} showOthers={showOthers} onToggleOthers={() => { setShowOthers(!showOthers); saveShowOthers(!showOthers) }} strokeCount={strokeCount} onUndo={() => crayon.current?.undo()} onClear={() => crayon.current?.clear()} />
     <div className="sticker-layer" aria-label="Visitor stickers">
       {visible.map(note => {
         const position = positionOf(note.placement)
+        const pagePosition = { left: position.left + window.scrollX, top: position.top + window.scrollY }
         const active = selected?.id === note.id
-        if (!active && (position.top < -STICKER_SIZE || position.top > window.innerHeight)) return null
-        return <div key={note.id} ref={active ? editor : undefined} className={`${active ? 'sticker-editor' : 'placed-sticker'}${keys[note.id] ? ' is-editable' : ''}${active && typing ? ' is-typing' : ''}${active && drag ? ' is-dragging' : ''}`} style={position} role={active ? 'group' : keys[note.id] ? 'button' : undefined} tabIndex={keys[note.id] ? 0 : undefined} aria-label={active ? 'Selected note' : keys[note.id] ? `Edit note: ${note.text}` : `Visitor note: ${note.text}`} onBlur={event => { if (active && event.relatedTarget && !event.currentTarget.contains(event.relatedTarget) && !gesture.current) finishEditing() }} onPointerDown={event => { if (keys[note.id] && !event.target.closest('.sticker-colors')) startDrag(event, note) }} onClick={event => {
+        return <div key={note.id} ref={active ? editor : undefined} className={`${active ? 'sticker-editor' : 'placed-sticker'}${keys[note.id] ? ' is-editable' : ''}${active && typing ? ' is-typing' : ''}${active && drag ? ' is-dragging' : ''}`} style={pagePosition} role={active ? 'group' : keys[note.id] ? 'button' : undefined} tabIndex={keys[note.id] ? 0 : undefined} aria-label={active ? 'Selected note' : keys[note.id] ? `Edit note: ${note.text}` : `Visitor note: ${note.text}`} onBlur={event => { if (active && event.relatedTarget && !event.currentTarget.contains(event.relatedTarget) && !gesture.current) finishEditing() }} onPointerDown={event => { if (keys[note.id] && !event.target.closest('.sticker-colors')) startDrag(event, note) }} onClick={event => {
           if (!keys[note.id] || suppressClick.current) return
           if (event.target.closest('.sticker-colors') || (typing && event.target.tagName === 'TEXTAREA')) return
           select(note); requestAnimationFrame(() => editor.current?.focus({ preventScroll: true }))
@@ -208,8 +233,8 @@ export default function StickerBoard({ page }) {
           <Paper color={note.color}>{active ? <textarea ref={textarea} aria-label="Note text" maxLength={280} value={note.text} spellCheck={false} onChange={event => select({ ...selection.current, text: event.target.value })} /> : <p className="sticker-message">{note.text}</p>}</Paper>
         </div>
       })}
-      {drag && <div className="sticker-in-flight" style={{ left: drag.left, top: drag.top, '--peel': `${16 + Math.sin(drag.progress * Math.PI) * 72}px`, '--lift': `${-8 + drag.progress * 5}deg`, '--lift-scale': drag.note ? 1.02 : .32 + drag.progress * .68 }} aria-hidden="true"><Paper color={drag.note?.color}><p className="sticker-message">{drag.note?.text}</p></Paper></div>}
     </div>
+    {drag && createPortal(<div className="sticker-in-flight" style={{ left: drag.left, top: drag.top, '--peel': `${16 + Math.sin(drag.progress * Math.PI) * 72}px`, '--lift': `${-8 + drag.progress * 5}deg`, '--lift-scale': drag.note ? 1.02 : .32 + drag.progress * .68 }} aria-hidden="true"><Paper color={drag.note?.color || noteColor}><p className="sticker-message">{drag.note?.text}</p></Paper></div>, document.body)}
     {failure && <div className="sticker-save-error" role="alert">Couldn’t {failure.action} your note. <button onClick={() => { setFailure(null); failure.action === 'save' ? persist(failure.note) : remove(failure.note) }}>Retry</button></div>}
   </>
 }

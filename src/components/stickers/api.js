@@ -1,3 +1,5 @@
+import { aboutNoteIds } from '../../content/about-collage.js'
+
 const EDIT_KEY = 'portfolio-sticker-edit-keys'
 const VISIBILITY_KEY = 'portfolio-show-other-stickers'
 const memoryKeys = {}
@@ -27,6 +29,10 @@ async function request(url, options = {}) {
   return data
 }
 
-export const readStickers = (page, signal) => request(`/api/stickers?page=${encodeURIComponent(page)}`, { signal })
+export async function readStickers(page, signal) {
+  const data = await request(`/api/stickers?page=${encodeURIComponent(page)}`, { signal })
+  // These originals now live in About me. Keep their saved records, but do not duplicate them.
+  return { ...data, stickers: data.stickers.filter(note => !aboutNoteIds.has(note.id)) }
+}
 export const saveSticker = (note, exists) => request(`/api/stickers${exists ? `/${note.id}` : ''}`, { method: exists ? 'PATCH' : 'POST', keepalive: true, headers: { 'X-Sticker-Key': editKeys()[note.id] }, body: JSON.stringify(note) })
 export const deleteSticker = id => request(`/api/stickers/${id}`, { method: 'DELETE', keepalive: true, headers: { 'X-Sticker-Key': editKeys()[id] } })

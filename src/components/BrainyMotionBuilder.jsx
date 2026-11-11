@@ -4,7 +4,6 @@ import { bodies, eyes, personalities } from './brainy/motions'
 import { getMotionStore } from './brainy/motion-store'
 import BuilderAgent from './brainy/BuilderAgent'
 import './BrainyMotionBuilder.css'
-import './BrainySlider.css'
 
 function useMotionPreview() {
   const ref = useRef(null)

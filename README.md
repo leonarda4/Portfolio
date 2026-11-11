@@ -1,6 +1,6 @@
 # Leonarda Portfolio
 
-React + Vite portfolio template, based on the layout and long-form case-study structure at https://jessicahsu.design. Playground is omitted.
+React + Vite portfolio with a continuous homepage: Home, Work, Play, About me, Resume, and Contact. The sidebar scrolls to each section and follows the current section, like the case-study navigation. Work begins at the project cards, ordered Tomsoft, Echo, then brainy storm. Play has two experiment slots in `src/portfolioData.js`, each with a cover, title, and metadata. Incomplete slots stay hidden. Existing `/work` and `/about` hash routes open their sections on the homepage; `/play`, `/resume`, and `/contact` work the same way.
 
 ## Run
 
@@ -11,26 +11,30 @@ npm run dev
 
 `npm run build` creates the production site in `dist/`.
 
-## Visitor stickers
+## Visitor drawings and sticky notes
 
-The bottom-right tray provides yellow sticky notes with a peel effect while dragging. Notes are flat at rest and render above the tray and page. Click or drag to create one, write directly on it, and click away to save automatically. Select a note to move or recolor it; double-click to edit. Delete/Backspace removes the selected note when not typing. Arrow keys move selected notes (Shift for larger steps). Escape or Command/Ctrl+Enter finishes editing; empty notes disappear. There are no Post/Cancel buttons, note labels, counters, or empty-state messages.
+The compact bottom-left toolbar provides a crayon and a stack of sticky notes. The crayon draws opaque, rounded, gently irregular strokes across the page background, with a random bright color for each stroke. Every completed stroke saves automatically to the server with its exact shape, color, page, creation time, and position. Drawings anchor to nearby content and scale proportionally across screen sizes. Existing tab-local drawings are imported on the next visit to their page. Click the crayon again or press Escape to stop; use Command/Ctrl+Z while drawing to undo. Undo and “Clear my drawings” remove only drawings owned by the current visitor.
 
-“Show others” only reveals or hides other visitors’ notes in their original page positions. Your current-visit notes remain visible. Notes anchor to page sections where possible, with positions adapting to the available width. Editing access lasts for the browser tab session, without accounts or long-term ownership.
+Click or drag the note stack to create a note in its displayed color, with a peel effect while dragging. The next note color is chosen randomly. Notes are flat at rest and render above page content. Write directly on a note and click away to save automatically. Select a note to move or recolor it; double-click to edit. Delete/Backspace removes the selected note when not typing. Arrow keys move selected notes (Shift for larger steps). Escape or Command/Ctrl+Enter finishes editing; empty notes disappear. There are no Post/Cancel buttons, note labels, counters, or empty-state messages.
+
+“Show others’ notes and drawings” reveals or hides other visitors’ contributions in their original page positions. Your current-visit notes and drawings remain visible. Notes anchor to page sections where possible, with positions adapting to the available width. Editing access lasts for the browser tab session, without accounts or long-term ownership.
 
 Stickers are stored as ordinary JSON in `.data/stickers.json`, separate from the authored case studies and ignored by Git. `GET/POST /api/stickers` lists and creates notes; `PATCH/DELETE /api/stickers/:id` updates and removes the visitor’s own notes. Visitors refresh the board every 15 seconds. Each note has a random editing key in tab session storage; only its hash is kept on the server, and neither is included in public reads. Writes are serialized and atomically replace the file. Note IDs make creation retries safe. Basic validation and a limit of 30 new notes per connection IP per hour are included. The IP is held only in memory for rate limiting and is not written with comments.
 
-`npm run dev` and `npm run preview` include the endpoint automatically. To serve the production build with shared stickers:
+Drawings use `.data/drawings.json` and `GET/POST /api/drawings`, with `DELETE /api/drawings/:id` for undo and clear. They use the same per-visit editing-key model, atomic writes, safe retries, and 15-second refresh interval. The drawing endpoint validates brush paths and positions, limits new strokes to 300 per connection IP per hour, and bounds stored data per page. Unsent strokes and pending deletions remain in a tab-session outbox, retry after reload or reconnection, and offer a visible retry action after a failed save. Drawing keys are never included in public reads.
+
+`npm run dev` and `npm run preview` include both endpoints automatically. To serve the production build with shared notes and drawings:
 
 ```sh
 npm run build
 npm start
 ```
 
-The production server defaults to `127.0.0.1:3000`. Set `HOST=0.0.0.0` and `PORT` as required by your hosting, and set `STICKER_DATA_FILE` to a persistent writable path (for example, a mounted data volume). Run one server process against this file, keep backups, and preserve the original Host header through a reverse proxy. The rate limit uses the direct connection IP; a reverse proxy would share a bucket unless trusted client-IP handling is added for that deployment.
+The production server defaults to `127.0.0.1:3000`. Set `HOST=0.0.0.0` and `PORT` as required by your hosting, and set `STICKER_DATA_FILE` and `DRAWING_DATA_FILE` to persistent writable paths (for example, a mounted data volume). Run one server process against these files, keep backups, and preserve the original Host header through a reverse proxy. The rate limit uses the direct connection IP; a reverse proxy would share a bucket unless trusted client-IP handling is added for that deployment.
 
 Uploading only `dist/` to a static host does **not** provide shared posting; it also needs this endpoint and persistent storage. No hosting or deployment has been configured. Failed saves keep the note in the current page and show a retry action. Published content is public; the site owner can maintain the JSON file while the server is stopped.
 
-Run `npm run test:stickers` for persistence, simultaneous posting, retries, validation, cross-visitor reads, and editing/deletion authorization checks.
+Run `npm run test:stickers` and `npm run test:drawings` for persistence, simultaneous posting, retries, validation, cross-visitor reads, ownership, responsive placement, and undo/clear during active saves.
 
 ## Fill in your portfolio
 

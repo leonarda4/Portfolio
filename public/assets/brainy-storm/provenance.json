@@ -2,7 +2,7 @@
   "repository": "https://github.com/leonarda4/brainy-hq",
   "sourceCheckout": "video-hack",
   "sourceHead": "b90e8eb1381dc6f7d2b633a59c4fad37708e8588",
-  "note": "Original source assets used by native browser scenes; no active Brainy video player.",
+  "note": "Original source assets used by native browser scenes, plus a separate case-study film cut.",
   "assets": [
     {
       "file": "code/Recia-Medium.ttf",
@@ -84,42 +84,49 @@
       "film-remotion/src/agent-outlines.ts",
       "agents/motions.js",
       "film-remotion/src/logo-flight.ts (passPose)",
-      "film-remotion/src/Film.tsx (Wordmark)"
+      "film-remotion/src/Film.tsx (Wordmark)",
+      "film-remotion/src/LaptopFrame.tsx",
+      "film-remotion/src/workspace-layout.ts",
+      "product-source/frontend/src/App.tsx (default horizontal ideas layout)"
     ],
     "font": "film-remotion/public/Recia-Medium.ttf",
     "implementation": "src/components/BrainyCover.jsx",
-    "note": "Native cover entrances/exits; separate inline Just talk ensemble. Theme-inverted backgrounds and wordmarks per user direction.",
-    "coverDensity": "Approximately three agents in view. Entry interval excludes offscreen travel; original flight speed retained."
+    "note": "Native cover entrances/exits around a centered laptop showing the assembled default ideas view. Original laptop geometry and 1440 x 900 UI proportions; separate inline Just talk ensemble. Theme-inverted backgrounds per user direction.",
+    "coverDensity": "Approximately three agents in view. Entry interval excludes offscreen travel; original flight speed retained.",
+    "coverDiscussion": "Default ideas layout with a repeating four-turn conversation alternating the focus stroke between the first two visible cards. Transcript reveals words and follows the current turn; original listening lobes animate on the shared visibility-aware clock. Device stays bottom-aligned; agent flight speed and density are unchanged."
   },
   "nativeWorkspace": {
     "implementation": "src/components/BrainyWorkspace.jsx",
     "sourceFiles": [
-      "film-remotion/src/IdeaFormation.tsx",
-      "film-remotion/src/LaptopFrame.tsx",
-      "film-remotion/src/workspace-layout.ts"
+      "film-remotion/src/workspace-layout.ts",
+      "product-source/frontend/src/App.tsx (discussion-focus)",
+      "product-source/frontend/src/App.css",
+      "product-source/frontend/src/TranscriptContent.tsx",
+      "product-source/frontend/src/BrandShape.tsx"
     ],
     "viewport": [
       1440,
       900
     ],
     "stage": [
-      1920,
-      1200
+      1440,
+      900
     ],
-    "duration": 10,
-    "note": "Larger original laptop anchored by its physical base to the stage bottom. One smooth card scroll, animated listening waveform, and a downward exit. Original UI layers and 16:10 display preserved.",
-    "background": "#eaeae8",
-    "screenWidth": 1560,
+    "duration": 16,
+    "note": "Full native viewport within the existing 8:5 article slot. Starts assembled, glides one card left, then slides in a fully opaque networking card from the right with a restrained settle and the original discussion focus state. Transcript follows a scripted topic change; waveform and speaker indicator remain active. An opaque wipe returns to the opening conversation. No fades.",
+    "background": "#ffffff",
+    "screenWidth": 1440,
     "waveformSources": [
       "brainstorm-ai/frontend/src/BrandShape.tsx (RecordingShape)",
       "brainstorm-ai/frontend/src/brand.css (brand-listen)"
     ],
-    "playbackRate": 1.4,
-    "easing": "quintic ease-in-out, zero endpoint velocity and acceleration"
+    "playbackRate": 1,
+    "easing": "quintic ease-in-out, zero endpoint velocity and acceleration",
+    "userOverride": "For this portfolio UI demo only: remove the build-up, stage background and laptop mockup. Keep the original full 1440 x 900 UI proportions."
   },
   "nativeTranscript": {
     "implementation": "src/components/BrainyWorkspace.jsx: WorkspaceTranscript",
-    "copy": "Illustrative continuation of the original captured conversation, not a verbatim transcript. Six complete speaker turns.",
+    "copy": "Illustrative demo conversation about room recommendations moving to hackathon networking. Five history turns and five timed speaking turns, with word reveal, active speaker status and automatic feed scrolling.",
     "geometry": "Original 314 x 900 panel, original header; 12px metadata and 14px body at native UI scale.",
     "fonts": [
       {
@@ -154,5 +161,28 @@
     ],
     "implementation": "src/components/BrainyGraphicsBuilder.jsx",
     "notes": "42 original and curated recipes, 18 palettes plus originals, scale/spacing sliders. Original internal entrance motion on an eight-second loop with a held composition and fade before reset. Independent in-memory edits. No individual color controls, action toolbar or locks."
+  },
+  "caseStudyFilm": {
+    "composition": "film-remotion/src/BrainyStormCaseStudy.tsx",
+    "exporter": "scripts/export_case_study.py",
+    "sourceRender": "film-remotion/out/brainy-storm-4k.mp4",
+    "sourceState": "Existing local film and narration edits on top of the recorded source head.",
+    "file": "brainy-storm-case-study-1080p.mp4",
+    "manifest": "brainy-storm-case-study-1080p.json",
+    "startFrame": 426,
+    "fps": 30,
+    "duration": 67.4,
+    "note": "Starts at Meet brainy storm. Retains the remaining scenes and synced audio. 1080p H.264, muted autoplay with native playback controls, English captions; original full film preserved."
+  },
+  "ideaPageAgents": {
+    "implementation": "src/components/BrainyIdeaAgents.jsx",
+    "sources": [
+      "film-remotion/src/ResearchScroll.tsx",
+      "film-remotion/public/ui/tradeoffs.png",
+      "film-remotion/public/ui/architecture.png",
+      "film-remotion/public/ui/competitors.png",
+      "film-remotion/src/AgentShowcase.tsx"
+    ],
+    "note": "Three portfolio sections after the workspace demo: Prism trade-offs, Archie system map, Scout competition research. Simplified excerpts of the existing film content, with original agent geometry and tags. No application shell or device mockup. Architecture labels retained in wide and compact compositions. Neutral artwork remains legible in both portfolio themes."
   }
 }

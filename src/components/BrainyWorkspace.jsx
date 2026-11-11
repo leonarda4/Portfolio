@@ -1,124 +1,169 @@
+import { useLayoutEffect, useRef, useState } from 'react'
 import MotionCanvas from './brainy/MotionCanvas'
-import { LaptopFrame } from './brainy/LaptopFrame'
 import { workspaceLayout as ui } from './brainy/workspace-layout'
 import './BrainyCover.css'
 
 const src = file => `/assets/brainy-storm/code/workspace/${file}`
-const mix = (a, b, p) => a + (b - a) * p
-// Easy ease: zero velocity and acceleration at both ends.
 const smooth = value => { const p = Math.max(0, Math.min(1, value)); return p * p * p * (p * (p * 6 - 15) + 10) }
 const progress = (time, start, end) => smooth((time - start) / (end - start))
-const origins = [[173, 720], [800, 587], [1373, 707], [1747, 573]]
-const stageHeight = 1200
-const playbackRate = 1.4
-const loopDuration = 14 / playbackRate
-
-// Illustrative continuation of the captured conversation, not a verbatim record.
-const transcript = [
-  ['Marko', 'M', '#ffe500', "We should probably have some sort of system that tracks all these variations, because we're treating the same ideas as new ideas every fifteen minutes."],
-  ['Giacomo', 'G', '#a346e0', 'Honestly, just having a proper transcript and a list of decisions would help.'],
-  ['Leonarda', 'L', '#ff7043', 'Yeah, but not just a transcript. I think each idea needs its own place, with the arguments and decisions attached to it.'],
-  ['Marko', 'M', '#ffe500', 'Right. The gaming agent and the furniture recommendation tool are separate ideas. We should be able to compare them without losing either thread.'],
-  ['Giacomo', 'G', '#a346e0', 'And if we come back to the networking idea, it should update the same card instead of creating another one.'],
-  ['Leonarda', 'L', '#ff7043', "Let's start there: capture the conversation, group it into ideas, and keep track of what we've agreed on. Then we can focus on talking."],
+// A fast spatial entrance with a restrained, four-pixel settle. No opacity tween.
+const cardEntrance = time => {
+  const p = Math.max(0, Math.min(1, (time - 4.65) / .6)) - 1
+  return 1 + 1.6 * p ** 3 + .6 * p ** 2
+}
+const duration = 16
+const people = {
+  Marko: ['M', '#ffe500'],
+  Giacomo: ['G', '#a346e0'],
+  Leonarda: ['L', '#ff7043'],
+}
+// Illustrative demo conversation, not a verbatim meeting record.
+const history = [
+  ['Marko', "We should keep each idea in its own card so we can come back to the reasoning later."],
+  ['Giacomo', 'The gaming agent is interesting, but we would need a working game environment to test it.'],
+  ['Leonarda', 'The furniture recommendation idea is easier to try. Someone describes their room and we suggest pieces that fit.'],
+  ['Marko', 'We would still need a catalog with dimensions, prices, and availability. That could take most of the weekend.'],
+  ['Giacomo', 'Maybe we should keep the first version small: one room, a few products, and a clear budget.'],
+]
+const turns = [
+  { at: 0, end: 2.7, name: 'Leonarda', text: 'Yes. Let’s keep the room planner focused on one room for now.' },
+  { at: 2.8, end: 5.4, name: 'Marko', text: 'What about a different idea: helping people find teammates at this hackathon?' },
+  { at: 5.5, end: 8.4, name: 'Giacomo', text: 'We could match people by their skills and what they want to build.' },
+  { at: 8.5, end: 11.5, name: 'Leonarda', text: 'And give each pair a conversation starter, so they know how to begin.' },
+  { at: 11.6, end: 15.2, name: 'Marko', text: 'Let’s try it with the participants here. A short profile and three useful introductions.' },
 ]
 
-function WorkspaceTranscript({ scale }) {
-  return <div className="brainy-transcript" style={{ transform: `scale(${scale})` }}>
+function Avatar({ name }) {
+  const [initial, color] = people[name]
+  return <span className="brainy-transcript__avatar" style={{ background: color, color: name === 'Giacomo' ? '#fff' : '#171717' }}>{initial}</span>
+}
+
+function WorkspaceTranscript({ time, conversation = turns, leadIn = history, continuous = false }) {
+  const viewport = useRef(null)
+  const feed = useRef(null)
+  const [offset, setOffset] = useState(0)
+  const current = conversation.findLast(turn => time >= turn.at) || conversation[0]
+  const lines = [...leadIn, ...conversation.filter(turn => time >= turn.at).map(turn => {
+    const words = turn.text.split(' ')
+    const spoken = Math.min(words.length, Math.max(1, Math.floor((time - turn.at) / (turn.end - turn.at) * words.length)))
+    return [turn.name, words.slice(0, spoken).join(' ')]
+  })]
+  const contentKey = lines.map(line => line[1]).join('|')
+  useLayoutEffect(() => {
+    const measure = () => setOffset(Math.max(0, feed.current.offsetHeight - viewport.current.clientHeight))
+    measure()
+    const observer = new ResizeObserver(measure)
+    observer.observe(feed.current)
+    return () => observer.disconnect()
+  }, [contentKey])
+  return <div className="brainy-transcript">
     <img src={src('transcript-header.png')} alt="" className="brainy-transcript__header" />
     <div className="brainy-transcript__guidance">Introduce yourself naturally, for example “Hi, it’s Maya.” We’ll use your voice to recognize you as the conversation continues.</div>
-    <div className="brainy-transcript__feed">
-      {transcript.map(([name, initial, color, text], index) => <div className="brainy-transcript__line" key={index}>
-        <span className="brainy-transcript__avatar" style={{ background: color, color: name === 'Giacomo' ? '#fff' : '#171717' }}>{initial}</span>
-        <div className="brainy-transcript__content"><strong>{name}</strong><p>{text}</p></div>
-      </div>)}
+    <div ref={viewport} className="brainy-transcript__viewport">
+      <div ref={feed} className="brainy-transcript__feed" style={{ transform: `translateY(${-offset}px)`, transition: continuous ? 'none' : undefined }}>
+        {lines.map(([name, text], index) => <div className="brainy-transcript__line" key={index}>
+          <Avatar name={name} />
+          <div className="brainy-transcript__content"><strong>{name}</strong><p>{text}</p></div>
+        </div>)}
+      </div>
     </div>
+    <div className="brainy-transcript__speaking"><Avatar name={current.name} /><span><strong>{current.name}</strong> is speaking</span><i style={{ transform: `scale(${1 + .25 * Math.sin(time * Math.PI * 2 / 1.6)})` }} /></div>
   </div>
 }
 
-// RecordingShape / brand-listen from the app: 32px lobes, staggered by
-// .13 seconds, breathing between .4 and 1 over a 950ms alternating cycle.
-function ListeningWave({ time, scale }) {
+// Original RecordingShape lobes, animated on the shared scene clock.
+function ListeningWave({ time }) {
   const count = Math.ceil(390 / 32)
-  return <svg viewBox="0 0 390 56" preserveAspectRatio="none" style={{ position: 'absolute', left: 120 * scale, top: 14 * scale, width: 390 * scale, height: 48 * scale }}>
+  return <svg viewBox="0 0 390 56" className="brainy-workspace__wave">
     <rect width="390" height="56" fill="#171717" />
     {Array.from({ length: count }, (_, i) => {
       const height = 10 + 17 * (1 - Math.abs(i / (count - 1) * 2 - 1))
-      const breath = .7 - .3 * Math.cos(Math.PI * 2 * (time + i * .13) / 1.9)
+      const breath = .7 - .3 * Math.cos(Math.PI * 2 * (time + i * .13) / 1.6)
       return <ellipse key={i} cx={16 + i * 358 / (count - 1)} cy="28" rx="16" ry={height * breath} fill="#3FFAE9" />
     })}
   </svg>
 }
 
-// Scene 10's actual UI parts and 16:10 viewport, animated as DOM layers.
-// The cards remain the same elements from their first reveal through the scroll.
-export function BrainyWorkspaceScene({ time: elapsed = 0 }) {
-  const time = elapsed * playbackRate
-  const morph = progress(time, 2.7, 4.2)
-  const zoom = progress(time, 4.8, 5.9)
-  const exit = stageHeight * progress(time, 12.3, 13.4)
-  const screenWidth = mix(1720, 1560, zoom)
-  const screenHeight = screenWidth * 900 / 1440
-  // The sourced base ends 563 units below the display top. Rest that exact
-  // physical edge on the canvas bottom, keeping the screen and bezel together.
-  const screenY = mix((stageHeight - screenHeight) / 2, stageHeight - 563 * screenWidth / 840, zoom)
-  const screen = { x: (1920 - screenWidth) / 2, y: screenY, width: screenWidth }
-  const scale = screenWidth / 1440
-  const radius = 8 * screenWidth / 840
-  // One uninterrupted glide, with a gentle acceleration and final settle.
-  const scroll = ui.scrollMax * progress(time, 6.5, 11.5)
-  const parts = {
-    navigation: { p: progress(time, 3.05, 4.2), x: -440, y: 0 },
-    transcript: { p: progress(time, 3.2, 4.35), x: 440, y: 0 },
-    heading: { p: progress(time, 3.3, 4.2), x: 0, y: 32 },
-    dock: { p: progress(time, 3.5, 4.45), x: 0, y: 210 },
-  }
-  const railLeft = screen.x + ui.rail.x * scale
-  const railTop = screen.y + ui.rail.y * scale
-  const railBottom = stageHeight - screen.y - (ui.rail.y + ui.rail.height) * scale
-  const railRight = 1920 - screen.x - (ui.rail.x + ui.rail.width) * scale
-  return <div className="brainy-workspace" style={{ position: 'relative', width: 1920, height: stageHeight, overflow: 'hidden', background: '#eaeae8' }} aria-hidden="true">
-    <div style={{ position: 'absolute', inset: 0, transform: `translateY(${exit}px)` }}>
-      <div style={{ position: 'absolute', left: screen.x, top: screen.y, width: screenWidth, height: screenHeight, borderRadius: `${radius}px ${radius}px ${radius / 4}px ${radius / 4}px`, overflow: 'hidden', opacity: progress(time, 2.85, 3.85) }}>
-        <img src={src('background.png')} alt="" style={{ width: '100%', height: '100%' }} />
-      </div>
-      <div style={{ position: 'absolute', inset: 0, clipPath: `inset(${railTop * morph}px ${railRight * morph}px ${railBottom * morph}px ${railLeft * morph}px)` }}>
-        {ui.cards.map((card, i) => {
-          const settle = progress(time, i * .07, .95 + i * .07)
-          const reveal = progress(time, 1.3 + i * .08, 2.1 + i * .08)
-          const initialScale = 304 / card.width
-          const artScale = mix(210 / card.art.width, initialScale, settle)
-          const currentScale = mix(artScale, scale, morph)
-          const initialX = 236 + i * 380, initialY = 288
-          const origin = origins[i] || [initialX, initialY]
-          const x = mix(mix(origin[0], initialX, settle), screen.x + (card.x - scroll) * scale, morph)
-          const y = mix(mix(origin[1], initialY, settle), screen.y + card.y * scale, morph)
-          const visibleHeight = mix(card.art.y + card.art.height, card.height, reveal)
-          return <div key={card.file} data-idea-card={i} style={{ position: 'absolute', left: x, top: y, width: card.width * currentScale, height: card.height * currentScale,
-            opacity: i < 4 ? progress(time, i * .07, .25 + i * .07) : progress(time, 3.55, 4.2),
-            clipPath: `inset(0 0 ${100 * (1 - visibleHeight / card.height)}% 0)` }}>
-            <img src={src(card.file)} alt="" style={{ width: '100%', height: '100%' }} />
-          </div>
-        })}
-      </div>
-      <div style={{ position: 'absolute', left: screen.x, top: screen.y, width: screenWidth, height: screenHeight, borderRadius: `${radius}px ${radius}px ${radius / 4}px ${radius / 4}px`, overflow: 'hidden' }}>
-        {Object.entries(ui.parts).map(([name, part]) => {
-          const motion = parts[name]
-          return <div key={name} style={{ position: 'absolute', left: part.x * scale, top: part.y * scale, width: part.width * scale, height: part.height * scale,
-            transform: `translate(${motion.x * (1 - motion.p)}px, ${motion.y * (1 - motion.p)}px)`, opacity: motion.p }}>
-            {name === 'transcript' ? <WorkspaceTranscript scale={scale} /> : <img src={src(part.file)} alt="" style={{ width: '100%', height: '100%' }} />}
-            {name === 'dock' && <ListeningWave time={elapsed} scale={scale} />}
-          </div>
-        })}
-      </div>
-      <LaptopFrame {...screen} opacity={progress(time, 5, 5.9)} />
+function NewIdea({ time }) {
+  return <div className="brainy-workspace__new-idea">
+    <div className="brainy-workspace__new-art"><img src={src('card-4.png')} alt="" /></div>
+    <div className="brainy-workspace__new-body">
+      <div className="brainy-workspace__new-meta">↑ 0 <span>↓ 0</span><b>···</b></div>
+      <h3>Hackathon Networking Matchmaker</h3>
+      <p>Help hackathon participants find teammates through shared interests, complementary skills, and what they want to build.</p>
+      {time >= 7.8 && <div><h4>Conclusion so far</h4><p>Match participants by their skills, shared interests, and what they want to build.</p></div>}
+      {time >= 10.8 && <div><h4>Next to explore</h4><p>Give each match a conversation starter, then see which introductions lead to a team.</p></div>}
     </div>
   </div>
 }
 
+function WorkspaceView({ time, waveTime, defaultView = false, focusCard = -1, transcriptProps }) {
+  // One card-width glide to the left. The new card arrives in the space revealed.
+  const scroll = defaultView ? 0 : 444 + 316 * progress(time, 2.9, 4.5)
+  const arrival = cardEntrance(time)
+  const focused = defaultView ? focusCard : time < 4.65 ? 3 : 4
+  return <div className="brainy-workspace__view">
+    <img src={src('background.png')} alt="" className="brainy-workspace__background" />
+    <div className="brainy-workspace__rail" style={{ left: ui.rail.x, top: ui.rail.y, width: ui.rail.width, height: ui.rail.height }}>
+      {ui.cards.map((card, i) => <div key={card.file} data-idea-card={i} data-discussing={focused === i} className="brainy-workspace__card" style={{
+        left: card.x - ui.rail.x - scroll, top: card.y - ui.rail.y, width: card.width, height: card.height,
+        visibility: !defaultView && i === 4 && time < 4.65 ? 'hidden' : 'visible',
+        transform: !defaultView && i === 4 ? `translateX(${354 * (1 - arrival)}px)` : undefined,
+      }}>
+        {i === 4 && !defaultView ? <NewIdea time={time} /> : <img src={src(card.file)} alt="" />}
+        {focused === i && <div className="brainy-workspace__focus"><span>Brainy · Discussing now</span></div>}
+      </div>)}
+    </div>
+    {Object.entries(ui.parts).map(([name, part]) => <div key={name} className={`brainy-workspace__part brainy-workspace__part--${name}`} style={{ left: part.x, top: part.y, width: part.width, height: part.height }}>
+      {name === 'transcript' ? <WorkspaceTranscript time={time} {...transcriptProps} /> : <img src={src(part.file)} alt="" />}
+      {name === 'navigation' && (defaultView || time >= 4.85) && <div className="brainy-workspace__new-nav">Hackathon Networking Match...</div>}
+      {name === 'dock' && <><ListeningWave time={waveTime} /><span className="brainy-workspace__timer">01:{String(23 + Math.floor(time)).padStart(2, '0')}</span></>}
+    </div>)}
+  </div>
+}
+
+// A repeating discussion of the first two visible ideas. Prior turns remain
+// above the active sentence, including across the cover clock's loop boundary.
+const coverTurns = [
+  { name: 'Marko', card: 0, text: 'For the decision tracker, each idea needs its own history. We should see what changed and why the team made that choice.' },
+  { name: 'Giacomo', card: 1, text: 'The QR conversation starters could make introductions easier. Scan a profile and get a question based on something you both care about.' },
+  { name: 'Leonarda', card: 0, text: 'Back to the decision tracker: keep the alternatives beside the conclusion, so we can revisit an idea without losing the earlier discussion.' },
+  { name: 'Marko', card: 1, text: 'For the QR idea, let’s test a few conversation prompts with the people here. We can see which ones help a conversation get started.' },
+]
+export function BrainyWorkspacePreview({ time = 0, cycleDuration = 24 }) {
+  const turnLength = cycleDuration / coverTurns.length
+  const phase = ((time % cycleDuration) + cycleDuration) % cycleDuration
+  const index = Math.floor(phase / turnLength)
+  const current = coverTurns[index]
+  const leadIn = Array.from({ length: 8 }, (_, i) => {
+    const turn = coverTurns[(index + i) % coverTurns.length]
+    return [turn.name, turn.text]
+  })
+  const transcriptProps = {
+    time: phase % turnLength,
+    conversation: [{ ...current, at: 0, end: turnLength * .86 }],
+    leadIn,
+    continuous: true,
+  }
+  return <div className="brainy-workspace" aria-hidden="true"><WorkspaceView
+    time={phase} waveTime={phase / cycleDuration * 16 * 1.6} defaultView
+    focusCard={current.card} transcriptProps={transcriptProps} /></div>
+}
+
+// Full 1440 × 900 native viewport. An opaque wipe returns the conversation
+// to its opening state without reversing the scroll or rebuilding the interface.
+export function BrainyWorkspaceScene({ time = 0 }) {
+  const phase = ((time % duration) + duration) % duration
+  const reset = progress(phase, 15.2, duration)
+  return <div className="brainy-workspace" aria-hidden="true">
+    <WorkspaceView time={Math.min(phase, 15.2)} waveTime={phase} />
+    {reset > 0 && <div className="brainy-workspace__reset" style={{ clipPath: `inset(0 ${(1 - reset) * 100}% 0 0)` }}><WorkspaceView time={0} waveTime={phase} /></div>}
+  </div>
+}
+
 export default function BrainyWorkspace() {
-  return <MotionCanvas className="brainy-cover--workspace" width={1920} height={stageHeight} duration={loopDuration} stillTime={6.4 / playbackRate}
-    label="The brainy storm workspace assembles from idea cards into a laptop, then scrolls horizontally through all five ideas.">
+  return <MotionCanvas className="brainy-cover--workspace" width={1440} height={900} duration={duration} stillTime={11.5}
+    label="A live brainy storm conversation: cards scroll left, a new idea appears, and the transcript and listening waveform stay active.">
     {({ time }) => <BrainyWorkspaceScene time={time} />}
   </MotionCanvas>
 }

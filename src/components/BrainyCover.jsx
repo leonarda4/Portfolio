@@ -1,4 +1,6 @@
 import MotionCanvas from './brainy/MotionCanvas'
+import { LaptopFrame } from './brainy/LaptopFrame'
+import { BrainyWorkspacePreview } from './BrainyWorkspace'
 import { WorkingAgent } from './brainy/WorkingAgent'
 import { roster } from './brainy/assets'
 import './BrainyCover.css'
@@ -20,7 +22,8 @@ export function BrainyScene({ time = 0, width = 1920, height = 1080 }) {
     {roster.map((agent, index) => {
       const angle = index * TAU / 8 + phase
       return <WorkingAgent key={agent.name} index={index}
-        x={width * .5 + Math.cos(angle) * width * .32}
+        // Offset the orbit to include the right-hand name tags in its visual center.
+        x={width * .5 - 45 + Math.cos(angle) * width * .32}
         y={height * .5 + Math.sin(angle) * height * .34}
         size={130} time={characterTime + index * .3} energy={.8}
         lookAt={{ x: width / 2, y: height / 2 }} />
@@ -35,6 +38,7 @@ const flightDuration = 1.95
 // offscreen lead-in/out. Three agent centers stay in view at any canvas width.
 const entryInterval = flightDuration * (1440 / 1900) / 3
 export const LOGO_LOOP = roster.length * entryInterval
+const COVER_LOOP = LOGO_LOOP * 6
 export function logoPass(time, index, width, height) {
   const elapsed = ((time - index * entryInterval + 1.2) % LOGO_LOOP + LOGO_LOOP) % LOGO_LOOP
   const u = elapsed / flightDuration
@@ -45,10 +49,24 @@ export function logoPass(time, index, width, height) {
     elapsed,
   }
 }
+function CoverLaptop({ width, height, time }) {
+  // Fit the actual 980 × 579 device bounds, keeping its 1440 × 900 display.
+  const screenWidth = Math.min(width * .90 * 840 / 980, height * .72 * 840 / 579)
+  const deviceScale = screenWidth / 840
+  const x = (width - screenWidth) / 2
+  // The physical base ends 563 units below the display's top edge.
+  const y = height - 563 * deviceScale
+  return <>
+    <div className="brainy-cover__laptop-display" style={{ left: x, top: y, width: screenWidth, height: screenWidth * 900 / 1440, borderRadius: 8 * deviceScale }}>
+      <div style={{ width: 1440, height: 900, transform: `scale(${screenWidth / 1440})`, transformOrigin: 'top left' }}><BrainyWorkspacePreview time={time} cycleDuration={COVER_LOOP} /></div>
+    </div>
+    <LaptopFrame x={x} y={y} width={screenWidth} opacity={1} />
+  </>
+}
+
 export function BrainyLogoScene({ time = 0, width = 1920, height = 1080 }) {
   return <div className="brainy-scene" style={{ width, height }} aria-hidden="true">
-    <img className="brainy-scene__logo brainy-scene__logo--light" src="/assets/brainy-storm/code/wordmark-white.svg" alt="" draggable="false" />
-    <img className="brainy-scene__logo brainy-scene__logo--dark" src="/assets/brainy-storm/code/wordmark.svg" alt="" draggable="false" />
+    <CoverLaptop width={width} height={height} time={time} />
     {roster.map((agent, index) => {
       const pose = logoPass(time, index, width, height)
       return pose.visible && <WorkingAgent key={agent.name} index={index}
@@ -60,9 +78,9 @@ export function BrainyLogoScene({ time = 0, width = 1920, height = 1080 }) {
 
 export default function BrainyCover({ hero = false, inline = false }) {
   const Scene = inline ? BrainyScene : BrainyLogoScene
-  return <MotionCanvas responsive={!inline} fill={!inline} duration={inline ? 8 : LOGO_LOOP}
+  return <MotionCanvas responsive={!inline} fill={!inline} duration={inline ? 8 : COVER_LOOP}
     className={`${inline ? 'brainy-cover--inline' : 'brainy-cover--logo'}${hero ? ' brainy-cover--hero' : ''}`}
-    label={inline ? 'Just talk, let ideas take shape. Eight named brainy storm characters move around the message.' : 'brainy storm. Named agents rush in and out of view around the centered logo.'}>
+    label={inline ? 'Just talk, let ideas take shape. Eight named brainy storm characters move around the message.' : 'A live brainy storm discussion in a laptop: the transcript and listening waveform animate as the focus moves between ideas, with named agents rushing around it.'}>
     {props => <Scene {...props} />}
   </MotionCanvas>
 }

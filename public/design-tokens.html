@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Portfolio foundations</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Lacquer&display=swap');
+/* Shared portfolio foundations. Live styles and /design-tokens.html use this source.
+   Project artwork and embedded product interfaces own their own styles. */
+:root {
+  color-scheme: light;
+  /* Six roles, six unique colors in each appearance. */
+  --color-canvas: #ffffff;
+  --color-surface: #f5f5f5;
+  --color-border: #dddddd;
+  --color-text: #292929;
+  --color-muted: #696969;
+  --color-accent: #6487ff;
+
+  --font-family: Inter, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-accent: 'Lacquer', cursive;
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --tracking-heading: -.03em;
+  /* Explicit size and line-height pairs. No fluid interpolation. */
+  --type-title-size: 48px;
+  --type-title-line: 56px;
+  --type-section-size: 32px;
+  --type-section-line: 40px;
+  --type-card-size: 24px;
+  --type-card-line: 32px;
+  --type-body-size: 16px;
+  --type-body-line: 24px;
+  --type-small-size: 14px;
+  --type-small-line: 20px;
+  --type-label-size: 12px;
+  --type-label-line: 16px;
+
+  /* Component spacing. Page geometry remains an independent layout constraint. */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  --radius-control: 8px;
+  --radius-pill: 999px;
+  --shadow-floating: 0 4px 24px #0000000d;
+  --duration-ui: 200ms;
+}
+/* Lacquer's lowercase glyphs look like capitals without the dripping strokes.
+   Apply this class whenever using the accent font; keep source copy unchanged. */
+.accent-type {
+  font-family:var(--font-accent);
+  text-transform:lowercase;
+  font-variant-alternates:normal;
+  font-feature-settings:normal;
+}
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --color-canvas: #161616;
+  --color-surface: #222222;
+  --color-border: #404040;
+  --color-text: #e5e5e5;
+  --color-muted: #aaaaaa;
+  --color-accent: #6487ff;
+  --shadow-floating: 0 4px 24px #00000030;
+}
+@media (max-width: 760px) {
+  :root {
+    --type-title-size: 32px;
+    --type-title-line: 40px;
+    --type-section-size: 28px;
+    --type-section-line: 36px;
+    --type-card-size: 22px;
+    --type-card-line: 28px;
+  }
+}
+
+/* Shared range control: 2px track, 12px solid thumb, 24px interaction area. */
+input[type='range'] {
+  display: block;
+  appearance: none;
+  -webkit-appearance: none;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  height: 24px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  cursor: pointer;
+}
+input[type='range']::-webkit-slider-runnable-track {
+  height: 2px;
+  border: 0;
+  border-radius: 0;
+  background: linear-gradient(to right,
+    var(--color-text) var(--range-progress, 0%),
+    var(--color-border) var(--range-progress, 0%));
+}
+input[type='range']::-moz-range-track {
+  height: 2px;
+  border: 0;
+  border-radius: 0;
+  background: var(--color-border);
+}
+input[type='range']::-moz-range-progress {
+  height: 2px;
+  border-radius: 0;
+  background: var(--color-text);
+}
+input[type='range']::-webkit-slider-thumb {
+  appearance: none;
+  -webkit-appearance: none;
+  box-sizing: border-box;
+  width: 12px;
+  height: 12px;
+  margin-top: -5px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--color-text);
+  box-shadow: none;
+}
+input[type='range']::-moz-range-thumb {
+  box-sizing: border-box;
+  width: 12px;
+  height: 12px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--color-text);
+  box-shadow: none;
+}
+input[type='range']:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 4px;
+}
+input[type='range']:disabled { opacity: .45; cursor: default; }
+@media (forced-colors: active) {
+  input[type='range'] { --color-text: CanvasText; --color-border: GrayText; --color-accent: Highlight; }
+}
+
+:root[data-preview-size='mobile']{--type-title-size:32px;--type-title-line:40px;--type-section-size:28px;--type-section-line:36px;--type-card-size:22px;--type-card-line:28px;}
+:root[data-preview-size='desktop']{--type-title-size:48px;--type-title-line:56px;--type-section-size:32px;--type-section-line:40px;--type-card-size:24px;--type-card-line:32px;}
+*{box-sizing:border-box}body{margin:0;background:var(--color-canvas);color:var(--color-text);font-family:var(--font-family);font-size:var(--type-body-size);line-height:var(--type-body-line)}main{max-width:1168px;margin:auto;padding:48px 24px 80px}h1,h2,h3,p{margin:0}h1{font-size:32px;line-height:40px;font-weight:500;letter-spacing:var(--tracking-heading)}header{display:flex;justify-content:space-between;align-items:start;gap:24px}header p{margin-top:8px}.eyebrow{font-size:12px;line-height:16px;letter-spacing:.06em;text-transform:uppercase;color:var(--color-muted);margin-bottom:12px}.subtle{color:var(--color-muted);font-size:14px;line-height:20px}.controls{display:flex;align-items:center;gap:12px;flex-wrap:wrap}button{font:inherit;font-size:14px;line-height:20px;cursor:pointer;border:1px solid var(--color-muted);border-radius:var(--radius-control);padding:8px 12px;color:var(--color-text);background:var(--color-canvas)}button:hover{background:var(--color-surface)}button:focus-visible,a:focus-visible,summary:focus-visible{outline:2px solid var(--color-accent);outline-offset:4px}.segment{display:flex;border:1px solid var(--color-muted);border-radius:var(--radius-control);padding:4px;gap:4px}.segment button{border:0;padding:4px 12px}.segment button[aria-pressed=true]{background:var(--color-text);color:var(--color-canvas)}section{margin-top:64px}.section-head{display:flex;justify-content:space-between;gap:24px;align-items:baseline;margin-bottom:24px}.section-head h2{font-size:20px;line-height:28px;font-weight:500}.section-head p{font-size:14px;line-height:20px;color:var(--color-muted)}.type-row{display:grid;grid-template-columns:240px minmax(0,1fr);gap:32px;padding:24px 0;border-top:1px solid var(--color-border);align-items:start}.role{font-size:14px;line-height:20px;font-weight:500}.usage{font-size:12px;line-height:16px;color:var(--color-muted);margin-top:4px}.metrics{font-size:14px;line-height:20px;color:var(--color-muted);margin-top:12px}.sample{overflow-wrap:normal;font-weight:500;letter-spacing:var(--tracking-heading)}.sample[data-role=body],.sample[data-role=small],.sample[data-role=label]{font-weight:400;letter-spacing:normal}.color-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px 24px}.swatch{height:100px;outline:1px solid var(--color-border);outline-offset:-1px;margin-bottom:16px}.swatch-values{font:12px/20px ui-monospace,monospace;color:var(--color-muted);margin-top:8px}.composition{background:var(--color-surface);padding:48px;display:grid;grid-template-columns:1.4fr 1fr;gap:48px}.example-title{font-size:var(--type-title-size);line-height:var(--type-title-line);font-weight:500;letter-spacing:var(--tracking-heading)}.example-section{font-size:var(--type-section-size);line-height:var(--type-section-line);font-weight:500;letter-spacing:var(--tracking-heading);margin-top:32px}.example-body{margin-top:16px;max-width:42ch}.example-card{background:var(--color-canvas);padding:24px;align-self:start}.example-art{height:120px;border:1px solid var(--color-border);background:var(--color-surface);display:grid;place-items:center;margin-bottom:24px;color:var(--color-muted);font-size:12px}.example-card h3{font-size:var(--type-card-size);line-height:var(--type-card-line);font-weight:500;letter-spacing:var(--tracking-heading)}.example-card p{margin-top:12px;color:var(--color-muted);font-size:14px;line-height:20px}.example-card a{display:inline-block;margin-top:24px;color:var(--color-accent);font-size:14px;text-underline-offset:4px}.spaces{display:flex;flex-wrap:wrap;gap:24px;align-items:end}.space-bar{width:32px;background:var(--color-text);margin-bottom:12px}.spacing-item{font-size:12px;color:var(--color-muted)}.rules{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}.rule{padding:24px;background:var(--color-surface)}.shape{height:72px;border:1px solid var(--color-muted);margin-bottom:16px}.rule p{font-size:14px;line-height:20px}.rule small{font-size:12px;line-height:16px;color:var(--color-muted)}.layout{display:flex;gap:24px;flex-wrap:wrap}.layout div{flex:1;min-width:140px;border-top:1px solid var(--color-border);padding-top:16px}.layout strong{font-size:24px;line-height:32px;font-weight:500;display:block;margin-top:8px}details{margin-top:48px;border-top:1px solid var(--color-border);padding-top:24px}summary{cursor:pointer;font-size:14px}table{border-collapse:collapse;width:100%;font-size:12px;line-height:20px;margin-top:24px}td,th{text-align:left;padding:12px 8px;border-bottom:1px solid var(--color-border);overflow-wrap:anywhere}th{font-weight:500;color:var(--color-muted)}footer{border-top:1px solid var(--color-border);margin-top:64px;padding-top:24px;font-size:14px;line-height:20px;color:var(--color-muted)}@media(max-width:760px){main{padding:32px 20px 48px}header{flex-direction:column;gap:24px}section{margin-top:48px}.section-head{display:block}.section-head p{margin-top:8px}.type-row{grid-template-columns:1fr;gap:16px}.type-meta{display:grid;grid-template-columns:1fr auto;gap:4px 16px}.usage{grid-row:2}.metrics{margin:0;grid-column:2;grid-row:1/3;text-align:right}.color-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:24px 16px}.composition{grid-template-columns:1fr;padding:24px;gap:32px}.rules{grid-template-columns:1fr}.shape{height:56px}.swatch{height:80px}.sample{overflow-wrap:break-word}.controls{width:100%}.segment{flex:1}.segment button{flex:1}}
+.palette-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px 24px}.palette-family{border-top:1px solid var(--color-border);padding-top:16px}.palette-family h3{font-size:16px;font-weight:500;margin-bottom:16px}.palette-row{display:flex;align-items:center;gap:12px;margin-top:12px;font-size:14px}.palette-chip{width:32px;height:32px;flex:none}.palette-row code{margin-left:auto;font-size:12px;color:var(--color-muted)}.palette-chip.stroke{height:12px;border-radius:100% 60% 80% 70%}.accent-pair{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:16px}.accent-demo{padding:24px;background:var(--preview-canvas);color:var(--preview-accent)}.accent-demo p{font-family:var(--font-accent);font-size:28px;line-height:36px;margin-bottom:16px}.accent-demo code{font-size:12px}.palette-note{margin-top:16px}.project-palette{display:flex;gap:24px;flex-wrap:wrap;margin-top:16px}.project-palette .palette-row{gap:12px}.project-palette code{margin-left:0}@media(max-width:760px){.palette-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:24px 16px}.accent-pair{grid-template-columns:1fr;gap:16px}}@media(max-width:440px){.palette-grid{grid-template-columns:1fr}}
+</style></head><body><main>
+<header><div><p class="eyebrow">Live portfolio system</p><h1>Portfolio foundations</h1><p class="subtle">A distinct type scale and six shared color roles.</p></div><div class="controls"><div class="segment" role="group" aria-label="Typography preview"><button id="desktop" aria-pressed="true">Desktop</button><button id="mobile" aria-pressed="false">Mobile</button></div><button id="theme" aria-pressed="false">Dark mode</button></div></header>
+<section id="palette" aria-labelledby="accent-title"><div class="section-head"><h2 id="accent-title">One portfolio accent</h2><p><code>--color-accent</code> · two appearances</p></div><div id="accent-pair" class="accent-pair"></div><p class="subtle">Shared by “plays with tech”, Echo’s editorial highlights, links and focus outlines.</p></section>
+<section aria-labelledby="supporting-title"><div class="section-head"><h2 id="supporting-title">Supporting palette</h2><p>6 families · 6 note colors · 6 crayons</p></div><div id="supporting" class="palette-grid"></div><p class="subtle palette-note">Current selection for review. Fold shades add depth to notes; they are not extra choices. These colors stay the same in light and dark mode.</p></section>
+<details><summary>Separate project colors</summary><div id="project-palette" class="project-palette"></div><p class="subtle palette-note">Project artwork and embedded interfaces keep their own palettes. These are not portfolio accent choices.</p><p class="subtle palette-note">Embedded builder focus: #6890B5 (light), #8FB2D2 (dark). brainy storm cover accent: #3FFAE9. Legacy soft-accent values #EDF2F6 / #25303B have no active consumers.</p></details>
+<section aria-labelledby="type-title"><div class="section-head"><h2 id="type-title">Typography hierarchy</h2><p>Font size / line height, in pixels · Inter 400 &amp; 500</p></div><div id="type"></div></section>
+<section><div class="section-head"><h2>Accent typography</h2><p>Lacquer · 400</p></div><p class="accent-type" style="font-family:var(--font-accent);font-size:var(--type-title-size);line-height:var(--type-title-line);color:var(--color-accent)">&amp; plays with tech.</p><p class="subtle">Lacquer is used for homepage section headings and short expressive phrases. Always apply the accent-type class to use its clean, non-dripping glyphs. Inter remains the font for case-study headings, navigation and body copy.</p></section><section aria-labelledby="color-title"><div class="section-head"><h2 id="color-title">Six color roles</h2><p>No duplicate swatches. One accent.</p></div><div id="colors" class="color-grid"></div></section>
+<section aria-labelledby="example-title"><div class="section-head"><h2 id="example-title">Hierarchy in context</h2><p>Title → section → card → supporting text</p></div><div class="composition"><div><p class="eyebrow">Portfolio</p><h3 class="example-title">Selected design work</h3><p class="example-body">Design research and digital experiences, from early exploration to detailed interfaces.</p><h3 class="example-section">Research and direction</h3><p class="example-body">Insights, concepts and the decisions behind the work.</p></div><article class="example-card"><div class="example-art" aria-hidden="true">Artwork area</div><h3>Movement feedback</h3><p>A study of movement and audiovisual response.</p><a href="#type-title">Project link example ↗</a></article></div></section>
+<section><div class="section-head"><h2>Component spacing</h2><p>Eight steps on a 4px base</p></div><div id="spacing" class="spaces"></div></section>
+<section><div class="section-head"><h2>Shape and interaction</h2><p>200ms UI transitions · reduced-motion support</p></div><div class="rules"><div class="rule"><div class="shape"></div><p>Content · 0px</p><small>Cards, covers and media</small></div><div class="rule"><div class="shape" style="border-radius:var(--radius-control)"></div><p>Controls · 8px</p><small>Buttons, fields and menus</small></div><div class="rule"><div class="shape" style="border-radius:var(--radius-pill)"></div><p>Icon controls · circle</p><small>Appearance control</small></div></div></section>
+<section><div class="section-head"><h2>Range controls</h2><p>2px track · 12px solid thumb</p></div><div style="display:flex;align-items:center;gap:24px;max-width:500px"><label for="volume-sample" class="subtle">Volume</label><input id="volume-sample" type="range" min="0" max="100" value="58" style="--range-progress:58%" aria-valuetext="58%"><output id="volume-output" for="volume-sample" class="subtle" style="min-width:40px;font-variant-numeric:tabular-nums">58%</output></div></section><section><div class="section-head"><h2>Shared page grid</h2><p>Homepage, case studies and future pages</p></div><div style="display:grid;grid-template-columns:repeat(12,1fr);gap:8px;margin-bottom:24px" aria-label="12 columns, first three for navigation"><div style="grid-column:span 3;background:var(--color-surface);padding:24px 8px">Navigation</div><div style="grid-column:span 9;background:var(--color-surface);padding:24px 8px">Content</div></div><div class="layout"><div><span class="subtle">Page maximum</span><strong>1440px</strong></div><div><span class="subtle">Outer margins</span><strong>48 / 32 / 24px</strong></div><div><span class="subtle">Column gaps</span><strong>24 / 16px</strong></div><div><span class="subtle">Article maximum</span><strong>680px</strong></div></div><p class="subtle" style="margin-top:24px">12 columns on desktop. Navigation spans 3, content spans 9. Below 760px: 4 columns, full-width content and horizontal navigation. Side navigation sticks 32px from the top on desktop and 0px on mobile. Case-study covers use ⅔ viewport height on desktop. At 760px and below, they share the card cover ratio of 1.4:1 and scale with their width.</p></section>
+<details><summary>Desktop and mobile type specifications</summary><table><thead><tr><th>Role</th><th>Desktop</th><th>Mobile ≤760px</th><th>Weight</th></tr></thead><tbody id="specs"></tbody></table></details>
+<footer>These foundations are applied to the portfolio. Project assets and embedded interfaces, including brainy storm, retain their own styles.</footer>
+</main><script>
+const data = {"base":{"--color-canvas":"#ffffff","--color-surface":"#f5f5f5","--color-border":"#dddddd","--color-text":"#292929","--color-muted":"#696969","--color-accent":"#6487ff","--font-family":"Inter, -apple-system, BlinkMacSystemFont, sans-serif","--font-accent":"'Lacquer', cursive","--weight-regular":"400","--weight-medium":"500","--tracking-heading":"-.03em","--type-title-size":"48px","--type-title-line":"56px","--type-section-size":"32px","--type-section-line":"40px","--type-card-size":"24px","--type-card-line":"32px","--type-body-size":"16px","--type-body-line":"24px","--type-small-size":"14px","--type-small-line":"20px","--type-label-size":"12px","--type-label-line":"16px","--space-1":"4px","--space-2":"8px","--space-3":"12px","--space-4":"16px","--space-6":"24px","--space-8":"32px","--space-12":"48px","--space-16":"64px","--radius-control":"8px","--radius-pill":"999px","--shadow-floating":"0 4px 24px #0000000d","--duration-ui":"200ms"},"dark":{"--color-canvas":"#161616","--color-surface":"#222222","--color-border":"#404040","--color-text":"#e5e5e5","--color-muted":"#aaaaaa","--color-accent":"#6487ff","--shadow-floating":"0 4px 24px #00000030"},"compact":{"--type-title-size":"32px","--type-title-line":"40px","--type-section-size":"28px","--type-section-line":"36px","--type-card-size":"22px","--type-card-line":"28px"},"colors":[["canvas","Canvas","Page, menus and floating navigation"],["surface","Surface","Grouped content and footer"],["border","Divider","Quiet separators, not interactive boundaries"],["text","Primary text","Headings, body and active controls"],["muted","Secondary text","Captions and supporting information"],["accent","Accent","Crayon blue for homepage accent text, links and keyboard focus"]],"type":[["title","Page title","Homepage and case-study title","Selected design work"],["section","Section heading","Major sections within a page","Research and direction"],["card","Card / subsection","Project cards and nested sections","Movement feedback"],["body","Body text","Descriptions and case-study paragraphs","A shared visual language for clear, consistent experiences."],["small","Supporting text","Navigation, metadata and captions","Interaction design · Research · Prototyping"],["label","Label","Short tags and field labels","PROJECT TYPE"]],"supporting":[{"name":"Yellow","note":"#fff08a","fold":"#e9cf57","crayon":"#ffe815"},{"name":"Peach","note":"#ffcbb4","fold":"#e3a087","crayon":"#ff975b"},{"name":"Pink","note":"#f6c6df","fold":"#d89ebc","crayon":"#ff6b85"},{"name":"Lilac","note":"#d9ccfa","fold":"#b6a0e0","crayon":"#ab78ed"},{"name":"Blue","note":"#c5e5fa","fold":"#96c2e0","crayon":"#6487ff"},{"name":"Mint","note":"#d1eab9","fold":"#a7c986","crayon":"#49bf98"}],"projectColors":[["Echo accent","#fff08a"],["Echo artwork tint","#B2FFFF"],["brainy storm project accent","#5148ff"]]};
+const $=id=>document.getElementById(id);
+const make=(tag,cls,text)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(text!==undefined)e.textContent=text;return e};
+for(const [theme,label] of [['base','Light'],['dark','Dark']]){const values=data[theme],demo=make('div','accent-demo');demo.style.setProperty('--preview-canvas',values['--color-canvas']);demo.style.setProperty('--preview-accent',values['--color-accent']);demo.append(make('p','accent-type','& plays with tech.'),make('code',null,`${label} · ${values['--color-accent'].toUpperCase()}`));$('accent-pair').append(demo)}
+function paletteRow(label,value,stroke=false){const row=make('div','palette-row'),chip=make('span',`palette-chip${stroke?' stroke':''}`);chip.style.background=value;chip.setAttribute('aria-hidden','true');row.append(chip,make('span',null,label),make('code',null,value.toUpperCase()));return row}
+for(const color of data.supporting){const card=make('article','palette-family');card.append(make('h3',null,color.name),paletteRow('Note',color.note),paletteRow('Fold',color.fold),paletteRow('Crayon',color.crayon,true));$('supporting').append(card)}
+for(const [label,value] of data.projectColors)$('project-palette').append(paletteRow(label,value));
+const compact=matchMedia('(max-width:760px)');let selectedSize=compact.matches?'mobile':'desktop';
+function pair(values,role){return `${parseInt(values[`--type-${role}-size`])} / ${parseInt(values[`--type-${role}-line`])}`}
+function draw(){
+ document.documentElement.dataset.previewSize=selectedSize;
+ for(const mode of ['desktop','mobile'])$(mode).setAttribute('aria-pressed',String(selectedSize===mode));
+ const values={...data.base,...(selectedSize==='mobile'?data.compact:{})};
+ $('type').replaceChildren();
+ for(const [role,title,usage,sample] of data.type){const row=make('div','type-row'),meta=make('div','type-meta');meta.append(make('div','role',title),make('div','usage',usage),make('div','metrics',pair(values,role)));const text=make('p','sample',sample);text.dataset.role=role;text.style.fontSize=`var(--type-${role}-size)`;text.style.lineHeight=`var(--type-${role}-line)`;row.append(meta,text);$('type').append(row)}
+ $('colors').replaceChildren();const dark=document.documentElement.dataset.theme==='dark';
+ for(const [name,label,usage] of data.colors){const card=make('div'),swatch=make('div','swatch');swatch.style.background=`var(--color-${name})`;card.append(swatch,make('div','role',label),make('div','usage',usage),make('div','swatch-values',(dark?data.dark:data.base)[`--color-${name}`].toUpperCase()));$('colors').append(card)}
+}
+for(const [key,value] of Object.entries(data.base)){if(!key.startsWith('--space-'))continue;const item=make('div','spacing-item'),bar=make('div','space-bar');bar.style.height=value;item.append(bar,make('div',null,value));$('spacing').append(item)}
+for(const [role,title] of data.type){const row=make('tr');for(const value of [title,pair(data.base,role),pair({...data.base,...data.compact},role),['title','section','card'].includes(role)?'500':'400'])row.append(make('td',null,value));$('specs').append(row)}
+for(const mode of ['desktop','mobile'])$(mode).onclick=()=>{selectedSize=mode;draw()};
+$('theme').onclick=()=>{const dark=document.documentElement.dataset.theme!=='dark';document.documentElement.dataset.theme=dark?'dark':'light';$('theme').textContent=dark?'Light mode':'Dark mode';$('theme').setAttribute('aria-pressed',String(dark));draw()};
+$('volume-sample').oninput=event=>{const value=event.target.value;event.target.style.setProperty('--range-progress',value+'%');event.target.setAttribute('aria-valuetext',value+'%');$('volume-output').textContent=value+'%'};
+compact.addEventListener('change',event=>{selectedSize=event.matches?'mobile':'desktop';draw()});draw();
+</script></body></html>

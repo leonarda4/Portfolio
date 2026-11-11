@@ -1,16 +1,18 @@
 {
   "slug": "brainy-storm",
-  "title": "brainy storm: Making room for the conversation",
+  "title": "Supporting team brainstorming with a shared AI workspace",
+  "cardTitle": "Agentic brainstorming platform",
+  "cardStatus": "Ongoing 2026",
   "summary": "A shared workspace that turns spoken brainstorming into evolving ideas. I worked on the 0→1 product design and a digital-first identity, bringing the interface, characters, and motion into one system. Work is ongoing.",
   "tags": [
     "0→1 Product Design",
     "Digital-first Branding",
     "In progress"
   ],
-  "tint": "#eaeae8",
+  "tint": "#f5f5f3",
   "accent": "#5148ff",
   "variant": "desktop",
-  "coverAlt": "brainy storm logo with named agents rushing in and out of view.",
+  "coverAlt": "A live brainy storm discussion in a laptop: the transcript and listening waveform animate as the focus moves between ideas, with named agents rushing around it.",
   "metadata": [
     {
       "label": "Context",
@@ -38,6 +40,24 @@
           "type": "text",
           "title": "The brainstorm became the problem",
           "body": "During a hackathon, we kept moving between ideas, raising objections, checking what already existed, and returning to earlier suggestions. Keeping track took attention away from the discussion. We built brainy storm to help a team stay in the conversation and return to the reasoning behind each idea."
+        },
+        {
+          "type": "videos",
+          "controls": true,
+          "autoPlay": true,
+          "muted": true,
+          "loop": false,
+          "preload": "metadata",
+          "items": [
+            {
+              "src": "/assets/brainy-storm/brainy-storm-case-study-1080p.mp4",
+              "poster": "/assets/brainy-storm/brainy-storm-case-study-1080p.jpg",
+              "captions": "/assets/brainy-storm/brainy-storm-case-study-1080p.vtt",
+              "title": "Meet brainy storm",
+              "width": 1920,
+              "height": 1080
+            }
+          ]
         }
       ]
     },
@@ -47,12 +67,75 @@
       "blocks": [
         {
           "type": "text",
-          "title": "Give ideas somewhere to grow",
-          "body": "The starting point is a conversation. brainy storm captures it and organizes ideas into a shared workspace, where summaries, trade-offs, and open questions develop as people keep talking. My design focus was to make that growing context easy to follow and revisit."
+          "title": "Voice-first support that stays in the background",
+          "body": "The goal is a fully voice-based experience where the team can keep talking while brainy storm follows the conversation in the background. Agents use that shared context to organize ideas, weigh trade-offs, and bring in research. My design focus was to make that support unobtrusive, with its contributions easy to follow and revisit."
         },
         {
-          "type": "brainyWorkspace",
-          "caption": "Ideas take shape in the shared workspace."
+          "type": "brainyWorkspace"
+        }
+      ],
+      "subsections": [
+        {
+          "id": "prism",
+          "label": "Prism",
+          "blocks": [
+            {
+              "type": "text",
+              "title": "Weighing the trade-offs",
+              "body": "Inside each idea page, Prism brings the pros and cons together, helping the team weigh potential value against risks and open questions."
+            },
+            {
+              "type": "brainyIdeaAgent",
+              "agent": "prism"
+            }
+          ]
+        },
+        {
+          "id": "archie",
+          "label": "Archie",
+          "blocks": [
+            {
+              "type": "text",
+              "title": "A possible architecture for the idea",
+              "body": "Archie sketches how an idea could work as a system, connecting its components in a map the team can discuss and refine."
+            },
+            {
+              "type": "brainyIdeaAgent",
+              "agent": "archie"
+            }
+          ]
+        },
+        {
+          "id": "scout",
+          "label": "Scout",
+          "blocks": [
+            {
+              "type": "text",
+              "title": "A wider view of the idea",
+              "body": "Scout explores related products and approaches, bringing outside context back to the idea page and surfacing opportunities to investigate."
+            },
+            {
+              "type": "brainyIdeaAgent",
+              "agent": "scout"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "collaboration",
+      "label": "Collaboration",
+      "blocks": [
+        {
+          "type": "text",
+          "title": "Designing alongside developers",
+          "body": "I worked directly with developers to shape the experience around how the agents work, from capturing a conversation to organizing ideas and adding research within each idea page."
+        },
+        {
+          "type": "media",
+          "layout": "full",
+          "src": "/assets/brainy-storm/arhitecture.png",
+          "alt": "brainy storm system architecture: live audio becomes a transcript, ideas are classified, and specialist agents generate summaries, pros and cons, architecture, workflows, and competitor research."
         }
       ]
     },
@@ -66,8 +149,7 @@
           "body": "I approached the brand through its life on screen: how it behaves in the interface, moves, and introduces the product. Distinct characters, shapes, and colors give the agents a recognizable presence. The same graphic language carries through the workspace and motion content."
         },
         {
-          "type": "brainyScene",
-          "caption": "“Just talk, let ideas take shape.” Characters from the visual system."
+          "type": "brainyScene"
         }
       ]
     },

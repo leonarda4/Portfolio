@@ -8,7 +8,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "start": "node server/index.js",
-    "test:stickers": "node --test server/stickers.test.js"
+    "test:stickers": "node --test server/stickers.test.js src/components/stickers/placement.test.js",
+    "test:drawings": "node --test server/drawings.test.js src/components/playful/drawings.test.js src/components/playful/placement.test.js"
   },
   "dependencies": {
     "@vitejs/plugin-react": "latest",

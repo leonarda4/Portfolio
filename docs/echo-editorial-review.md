@@ -4,7 +4,7 @@
 
 Rendered source: `src/content/project-one.json`. The Markdown editorial companion has been aligned with the revision.
 
-- Opening: ownership and challenge, followed immediately by the project metadata, then a brief results section before the photographs. The single-row body-awareness preview uses the existing `BeforeAfterChart`; the full chart remains in Testing.
+- Opening: ownership and challenge, followed immediately by the project metadata, then a brief results section before the photographs. The complete three-row self-ratings chart uses the existing `BeforeAfterChart` and appears once in the opening results section.
 - Decisions: physical sustainability, preserving brief arm-opening gestures, and stabilizing atmosphere transitions. No formulas or invented measured improvements.
 - Testing: recognition and self-rating data preserved. Added the determination recognition/expression contrast and the relationship descriptions. The latter uses the same dot-row component and CSS as demographics.
 - Feedback: three existing verbatim responses, prioritizing natural expression, uncertainty, and the audiovisual experience.
@@ -38,3 +38,9 @@ The physical-effort/calibration iteration comes from the pre-existing authored c
 Restored the original Echo title. The shared case-study renderer now places metadata immediately after the title and summary, before results and media. This order and the prohibition on em dashes are recorded in AGENTS.md and PROJECT_STRUCTURE.md.
 
 The corrected title, summary, and metadata were visually inspected in Safari using actual page components at 1440px and 390px widths in light and dark appearances. The temporary review isolated the opening by hiding surrounding content. No clipping or overlapping metadata was observed. This verifies the opening-order correction; the earlier full-page chart review remains a separate outstanding check. Production build passed after the correction.
+
+## Results consolidation: 2 November 2026
+
+Moved the full self-ratings chart into the opening results section after metadata. Removed the single-row preview, later duplicate, and the two-column partner/guide and interaction-clarity summary. The chart values, component, and styling are unchanged. The Markdown companion matches the rendered content.
+
+Production build and content checks passed. The actual results components were inspected at 1440px and 390px in an isolated local preview. Light appearance showed all three rows without clipping or overlap. Dark typography and spacing were visible, but the embedded preview remained in its initial animation state; the completed dark chart animation could not be verified. No animation code was changed.

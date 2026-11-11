@@ -1,0 +1,102 @@
+.home .home-about {
+  container-type:inline-size;
+}
+.about-collage {
+  --collage-overhang:8.8cqw;
+  position:relative;
+  min-height:calc(82cqw - var(--collage-overhang));
+  /* The title defines the section and scroll target; artwork may extend above it. */
+  overflow:visible;
+}
+.about-collage .home-section-heading {
+  position:relative;
+  margin:0 0 var(--space-8);
+  z-index:1;
+}
+.about-portrait {
+  position:relative;
+  z-index:0;
+  display:block;
+  width:min(360px,calc((100% - var(--grid-gap)) / 2));
+  height:auto;
+  aspect-ratio:3 / 4;
+  object-fit:contain;
+  background:var(--color-surface);
+}
+.about-notes {
+  list-style:none;
+  margin:0;
+  padding:0;
+}
+.about-note {
+  position:absolute;
+  left:var(--note-x);
+  top:calc(var(--note-y) - var(--collage-overhang));
+  width:var(--sticky-size);
+  z-index:2;
+}
+.about-note:focus-within { z-index:3; }
+.about-note-paper {
+  display:flex;
+  align-items:flex-start;
+  width:100%;
+  margin:0;
+  padding:var(--sticky-padding);
+  height:var(--sticky-size);
+  background:var(--note-color);
+  color:#403b2d;
+  font:400 16px/1.4 var(--font-family);
+  white-space:pre-wrap;
+  text-align:left;
+  box-shadow:0 3px 12px #00000012;
+  cursor:grab;
+  touch-action:none;
+  user-select:none;
+  -webkit-user-select:none;
+}
+.about-note-paper > span { width:100%; max-height:100%; overflow:auto; overflow-wrap:anywhere; scrollbar-width:thin; touch-action:pan-y; }
+.about-note-paper.is-dragging { cursor:grabbing; box-shadow:0 8px 18px #00000026; }
+.about-note-move-help { position:absolute; width:1px; height:1px; padding:0; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
+.about-drawing {
+  position:absolute;
+  left:var(--drawing-x);
+  top:calc(var(--drawing-y) - var(--collage-overhang));
+  width:var(--drawing-width);
+  height:auto;
+  pointer-events:none;
+}
+/* Reflow the whole collage together when its original arrangement no longer fits. */
+@container (max-width:880px) {
+  .about-collage {
+    --collage-overhang:0px;
+    --compact-portrait-width:min(360px,calc(100cqw - 2 * var(--sticky-size) - 24px - var(--grid-gap)));
+    display:grid;
+    grid-template-columns:minmax(0,1fr) calc(2 * var(--sticky-size) + 24px);
+    align-items:start;
+    gap:var(--space-8) var(--grid-gap);
+    min-height:0;
+  }
+  .about-collage .home-section-heading { grid-column:1 / -1; margin:0; }
+  .about-portrait { width:100%; max-width:360px; height:auto; margin-bottom:calc(var(--sticky-size) * .3); }
+  .about-notes { display:grid; grid-template-columns:repeat(2,var(--sticky-size)); align-items:start; gap:24px; margin:0; }
+  .about-note { position:relative; inset:auto; }
+  .about-note--masters {
+    position:absolute;
+    left:var(--space-6);
+    top:calc(var(--type-title-line) + var(--space-8) + var(--compact-portrait-width) * 4 / 3 - var(--sticky-size) * .7);
+  }
+  .about-drawing { display:none; }
+}
+@container (max-width:600px) {
+  .about-collage {
+    --compact-portrait-width:min(360px,calc(100cqw - var(--sticky-size) - var(--grid-gap)));
+    grid-template-columns:minmax(0,1fr) var(--sticky-size);
+  }
+  .about-notes { grid-template-columns:var(--sticky-size); }
+}
+@container (max-width:480px) {
+  .about-collage { grid-template-columns:minmax(0,1fr); }
+  .about-portrait { width:80%; margin-bottom:0; }
+  .about-notes { grid-template-columns:repeat(auto-fit,var(--sticky-size)); }
+  .about-note--masters { position:relative; inset:auto; }
+}

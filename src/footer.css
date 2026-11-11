@@ -1,0 +1,58 @@
+/* A compact contact invitation in the shared playful type and palette. */
+.home-contact {
+  container-type:inline-size;
+  color:var(--color-text);
+  padding-block:0 calc(var(--space-12) * 2);
+}
+:root[data-theme='dark'] .home-contact { color:#ffffff; }
+.home-contact h2 {
+  font-size:var(--type-title-size);
+  font-weight:var(--weight-regular);
+  line-height:var(--type-title-line);
+  letter-spacing:0;
+}
+.contact-email-wrap {
+  position:relative;
+  width:fit-content;
+  max-width:100%;
+  margin-top:var(--space-4);
+}
+.contact-email {
+  display:block;
+  max-width:100%;
+  padding:0;
+  color:inherit;
+  font-size:min(var(--type-title-size),8.3cqw);
+  font-weight:var(--weight-regular);
+  line-height:1.2;
+  letter-spacing:0;
+  text-align:left;
+  white-space:nowrap;
+  transition:color var(--duration-ui);
+}
+.contact-email:is(:hover,:focus-visible) { color:var(--contact-hover); }
+.contact-email:focus-visible { outline-color:var(--contact-hover); }
+.contact-tooltip {
+  position:absolute;
+  top:calc(100% + var(--space-2));
+  left:50%;
+  transform:translateX(-50%);
+  padding:var(--space-2) var(--space-3);
+  border:1px solid var(--color-border);
+  border-radius:var(--radius-control);
+  background:var(--color-surface);
+  color:var(--color-text);
+  font:var(--type-small-size)/var(--type-small-line) var(--font-family);
+  text-align:center;
+  white-space:nowrap;
+  pointer-events:none;
+  visibility:hidden;
+}
+.contact-tooltip[data-visible='true'] { visibility:visible; }
+@media(max-width:760px) {
+  .contact-email-wrap { margin-top:var(--space-12); }
+  .contact-tooltip { top:auto; bottom:calc(100% + var(--space-2)); }
+}
+@media(prefers-reduced-motion:reduce) {
+  .contact-email { transition:none; }
+}

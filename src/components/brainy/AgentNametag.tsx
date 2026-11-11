@@ -27,5 +27,5 @@ export function AgentNametag({index,size,rotation=0,fontSize=17}:{index:number;s
    if((p.y<top)!==(q.y<top))right=Math.max(right,p.x+(q.x-p.x)*(top-p.y)/(q.y-p.y));
   });
  }
- return <span data-agent-nametag style={{position:'absolute',left:right/180*size+4,top:top/180*size,background:roster[index].color,color:tagColors[index],borderRadius:4,padding:'5px 9px',fontFamily:'Arial',fontWeight:600,fontSize,lineHeight:1,whiteSpace:'nowrap'}}>{roster[index].name}</span>;
+ return <span data-agent-nametag style={{position:'absolute',left:right/180*size+4,top:top/180*size,background:roster[index].color,color:tagColors[index],borderRadius:4,padding:`${fontSize*5/24}px ${fontSize*9/24}px`,fontFamily:'Arial',fontWeight:600,fontSize,lineHeight:1,whiteSpace:'nowrap'}}>{roster[index].name}</span>;
 }

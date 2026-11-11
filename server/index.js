@@ -3,14 +3,16 @@ import { createReadStream } from 'node:fs'
 import { stat } from 'node:fs/promises'
 import { extname, resolve, sep } from 'node:path'
 import { createStickerHandler } from './stickers.js'
+import { createDrawingHandler } from './drawings.js'
 
 const root = resolve('dist')
 const api = createStickerHandler()
+const drawings = createDrawingHandler()
 const types = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.json': 'application/json', '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.gif': 'image/gif', '.webp': 'image/webp', '.mp4': 'video/mp4', '.mov': 'video/quicktime', '.pdf': 'application/pdf', '.woff': 'font/woff', '.woff2': 'font/woff2' }
 
 const server = createServer(async (request, response) => {
   const url = new URL(request.url, 'http://localhost')
-  if (url.pathname.startsWith('/api/')) return api(request, response)
+  if (url.pathname.startsWith('/api/')) return api(request, response, () => drawings(request, response))
   if (!['GET', 'HEAD'].includes(request.method)) { response.writeHead(405, { Allow: 'GET, HEAD' }).end(); return }
   try {
     const path = resolve(root, `.${decodeURIComponent(url.pathname === '/' ? '/index.html' : url.pathname)}`)

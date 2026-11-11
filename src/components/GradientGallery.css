@@ -22,8 +22,8 @@
 .gradient-fallback { grid-column:1 / -1; margin:12px 0 0; font-size:12px; color:var(--study-muted,var(--text-secondary)); }
 .gradient-caption { margin-top:20px; }
 .gradient-caption a { text-decoration:underline; text-underline-offset:3px; }
-.gradient-dialog { width:min(1100px,calc(100vw - 48px)); max-width:none; max-height:calc(100svh - 48px); padding:0; border:0; color:var(--text-primary,#292929); background:var(--page-bg,#fff); }
-.gradient-dialog::backdrop { background:#000b; backdrop-filter:blur(6px); }
+.gradient-overlay { position:fixed; inset:0; z-index:100; display:grid; place-items:center; padding:88px 24px 24px; background:#000b; backdrop-filter:blur(6px); }
+.gradient-dialog { position:relative; width:min(1100px,100%); max-width:none; max-height:calc(100svh - 112px); margin:0; padding:0; border:0; overflow:auto; color:var(--text-primary,#292929); background:var(--page-bg,#fff); }
 .gradient-detail { padding:20px; }
 .gradient-detail header,.gradient-detail footer { display:flex; align-items:center; justify-content:space-between; gap:20px; }
 .gradient-detail header { margin-bottom:16px; }
@@ -36,6 +36,7 @@
   .gradient-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:28px 12px; }
   .gradient-toolbar { margin-bottom:16px; }
   .gradient-group h3 { font-size:14px; }
-  .gradient-dialog { width:calc(100vw - 24px); max-height:calc(100svh - 24px); }
+  .gradient-overlay { padding:88px 12px 12px; }
+  .gradient-dialog { max-height:calc(100svh - 100px); }
   .gradient-detail { padding:12px; }
 }

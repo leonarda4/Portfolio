@@ -1,472 +1,339 @@
 {
-  "slug": "project-three",
-  "title": "[Project three: redesigning a platform around people’s needs]",
-  "summary": "[Describe the outcome and the evidence behind it in one sentence.]",
+  "slug": "tomsoft",
+  "title": "Unifying enterprise apps through a shared design system",
+  "cardTitle": "Design foundation for an enterprise ecosystem",
+  "cardStatus": "Shipped 2026",
+  "summary": "Tomsoft’s ERP served 200+ enterprise customers. I worked with a team building a new web-app ecosystem for existing ERP modules and new functionality. I established a shared design system on Mantine, bringing consistent patterns, branding, and a common design reference to the team.",
   "tags": [
-    "[Industry]",
-    "[Product type]",
-    "Web"
+    "Design systems",
+    "Enterprise software",
+    "Branding"
   ],
   "tint": "#e8eee9",
   "variant": "desktop",
-  "cover": "",
-  "coverAlt": "Project cover",
+  "cover": "/assets/tomsoft/tomsoft-cover.svg",
+  "coverAlt": "Paperclip, Harmony, and Interconnect interfaces with their distinct app colors and shared design patterns.",
   "metadata": [
     {
-      "label": "Project type",
-      "value": "[Project context and industry]"
+      "label": "Role",
+      "value": "Design direction · Product design · Design systems · Branding"
     },
     {
       "label": "Team",
-      "value": "[Your role and collaborators]"
+      "value": "Management, developers, QA; helped hire and onboard a second designer"
     },
     {
       "label": "Tools",
-      "value": "[Design and development tools]"
+      "value": "Figma · Jira"
     },
     {
       "label": "Timeline",
-      "value": "[Duration · Month–Month Year]"
+      "value": "Jul 2024–Feb 2026"
     }
   ],
   "sections": [
-    {
-      "id": "overview",
-      "label": "Overview",
-      "blocks": [
-        {
-          "type": "columns",
-          "items": [
-            {
-              "title": "Overview",
-              "body": "[Introduce the product, its audience, and the opportunity. Explain the existing experience and why this project mattered in 3–4 sentences.]"
-            },
-            {
-              "title": "What I did",
-              "body": "[Describe your personal responsibilities, the work you led, and how you collaborated with the team. Separate your contribution from the wider team’s work.]"
-            }
-          ]
-        },
-        {
-          "type": "text",
-          "eyebrow": "My impact",
-          "title": "[Summarize the meaningful change your work helped create]",
-          "body": "[Briefly connect the design outcome to the user or business goal.]"
-        },
-        {
-          "type": "metrics",
-          "items": [
-            {
-              "value": "[XX%]",
-              "label": "Primary outcome",
-              "note": "Add the measurement method"
-            },
-            {
-              "value": "[XX%]",
-              "label": "Secondary outcome",
-              "note": "Add the comparison or baseline"
-            }
-          ]
-        },
-        {
-          "type": "text",
-          "eyebrow": "Final design highlights",
-          "title": "[Give a first look at the experience]",
-          "body": "[Introduce the key improvement before walking through the process.]"
-        },
-        {
-          "type": "media",
-          "label": "Final design preview — primary screen",
-          "layout": "wide",
-          "src": "",
-          "alt": "Final design preview — primary screen"
-        },
-        {
-          "type": "columns",
-          "items": [
-            {
-              "title": "[Highlight 02]",
-              "body": "[Describe the second key improvement and the decision it supports.]"
-            },
-            {
-              "title": "[Highlight 03]",
-              "body": "[Describe the third key improvement and why it matters.]"
-            }
-          ]
-        },
-        {
-          "type": "media",
-          "label": "Final design preview — supporting screens",
-          "layout": "pair",
-          "src": "",
-          "alt": "Final design preview — supporting screens"
-        }
-      ]
-    },
-    {
-      "id": "context",
-      "label": "Context & Problem",
-      "blocks": [
-        {
-          "type": "text",
-          "eyebrow": "The context",
-          "title": "[Explain the situation that made this problem worth solving]",
-          "body": "[Describe the product environment, audience, and trigger for the project. Include relevant scale, business context, and existing workflows in a short paragraph.]"
-        },
-        {
-          "type": "media",
-          "label": "Product ecosystem / existing journey",
-          "layout": "wide",
-          "src": "",
-          "alt": "Product ecosystem / existing journey"
-        },
-        {
-          "type": "text",
-          "eyebrow": "The problem",
-          "title": "[State the core problem in a clear, specific sentence]",
-          "body": "[Explain what people were trying to do, what prevented them from doing it, and the consequences. Keep the evidence separate from your initial assumptions.]"
-        },
-        {
-          "type": "columns",
-          "items": [
-            {
-              "title": "User",
-              "body": "[How does the problem affect the person using the product?]"
-            },
-            {
-              "title": "Team",
-              "body": "[How does it affect the people delivering the service?]"
-            },
-            {
-              "title": "Business",
-              "body": "[Why does solving it matter to the organization?]"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": "research",
-      "label": "Research",
-      "blocks": [
-        {
-          "type": "text",
-          "eyebrow": "Research",
-          "title": "[Explain what you needed to learn before designing]",
-          "body": "[Introduce the questions that guided your research and why these methods were appropriate.]"
-        },
-        {
-          "type": "columns",
-          "items": [
-            {
-              "title": "01 — Secondary research",
-              "body": "[Summarize the sources reviewed, the scope, and the patterns you looked for.]"
-            },
-            {
-              "title": "02 — Field research",
-              "body": "[Describe the environments, tasks, and behaviors observed.]"
-            }
-          ]
-        },
-        {
-          "type": "media",
-          "label": "Research documentation — observations and source material",
-          "layout": "pair",
-          "src": "",
-          "alt": "Research documentation — observations and source material"
-        },
-        {
-          "type": "columns",
-          "items": [
-            {
-              "title": "03 — Interviews",
-              "body": "[Add participant count, recruitment criteria, and topics explored.]"
-            },
-            {
-              "title": "04 — Survey / validation",
-              "body": "[Describe the sample, questions, and how the results informed your understanding.]"
-            }
-          ]
-        },
-        {
-          "type": "media",
-          "label": "Research synthesis — themes, clusters, or journey map",
-          "layout": "wide",
-          "src": "",
-          "alt": "Research synthesis — themes, clusters, or journey map"
-        },
-        {
-          "type": "text",
-          "eyebrow": "Key research insights",
-          "title": "[Describe the most important pattern across your findings]",
-          "body": "[Connect the evidence across methods. Explain what surprised you, where the existing experience broke down, and which opportunity became the priority.]"
-        },
-        {
-          "type": "quote",
-          "quote": "[Add a real participant quote that makes the problem tangible.]",
-          "attribution": "[Participant identifier / role]"
-        },
-        {
-          "type": "text",
-          "eyebrow": "Reframing the challenge",
-          "title": "[How might we help a specific audience achieve a meaningful outcome?]",
-          "body": "[Explain how the findings changed your understanding of the original brief.]"
-        }
-      ]
-    },
-    {
-      "id": "goal",
-      "label": "Design Goal",
-      "blocks": [
-        {
-          "type": "text",
-          "eyebrow": "Design goal",
-          "title": "[State the focused outcome the design should support]",
-          "body": "[Define the scope and what success would look like. Explain what you prioritized and what remained outside this project.]"
-        },
-        {
-          "type": "columns",
-          "items": [
-            {
-              "title": "01 — [Principle]",
-              "body": "[Explain the first principle and the trade-off it guides.]"
-            },
-            {
-              "title": "02 — [Principle]",
-              "body": "[Explain the second principle and the behavior it supports.]"
-            },
-            {
-              "title": "03 — [Principle]",
-              "body": "[Explain the third principle and why it matters.]"
-            }
-          ]
-        },
-        {
-          "type": "media",
-          "label": "Success criteria / design principles",
-          "layout": "short",
-          "src": "",
-          "alt": "Success criteria / design principles"
-        }
-      ]
-    },
-    {
-      "id": "exploration",
-      "label": "Design Exploration",
-      "blocks": [
-        {
-          "type": "text",
-          "eyebrow": "Insight",
-          "title": "[Connect a research finding to the first design decision]",
-          "body": "[Describe the behavior you observed and the opportunity it created. Show why the next exploration follows from the evidence.]"
-        },
-        {
-          "type": "media",
-          "label": "Current experience — annotated pain points",
-          "layout": "wide",
-          "src": "",
-          "alt": "Current experience — annotated pain points"
-        },
-        {
-          "type": "text",
-          "eyebrow": "Interaction direction",
-          "title": "[Name the two approaches you explored]",
-          "body": "[Explain the alternatives, the hypotheses behind them, and the trade-offs you needed to test.]"
-        },
-        {
-          "type": "media",
-          "label": "Option A / Option B — early concepts",
-          "layout": "pair",
-          "src": "",
-          "alt": "Option A / Option B — early concepts"
-        },
-        {
-          "type": "columns",
-          "items": [
-            {
-              "title": "Option A — [Direction]",
-              "body": "[Explain the strengths, limitations, and expected behavior.]"
-            },
-            {
-              "title": "Option B — [Direction]",
-              "body": "[Explain the strengths, limitations, and expected behavior.]"
-            }
-          ]
-        },
-        {
-          "type": "text",
-          "eyebrow": "Design decision 01",
-          "title": "[Explain why you chose this direction]",
-          "body": "[Describe the evidence from testing and the constraints that informed the decision. Include what you changed after feedback.]"
-        },
-        {
-          "type": "media",
-          "label": "Chosen direction — annotated wireframes",
-          "layout": "wide",
-          "src": "",
-          "alt": "Chosen direction — annotated wireframes"
-        },
-        {
-          "type": "text",
-          "eyebrow": "Iteration",
-          "title": "[Describe the next question the design needed to answer]",
-          "body": "[Show how the chosen concept evolved. Discuss hierarchy, information, interaction, and any implementation considerations relevant to the decision.]"
-        },
-        {
-          "type": "media",
-          "label": "Before / after — iteration and rationale",
-          "layout": "pair",
-          "src": "",
-          "alt": "Before / after — iteration and rationale"
-        },
-        {
-          "type": "text",
-          "eyebrow": "Design decision 02",
-          "title": "[Explain the refinement that made the experience work]",
-          "body": "[Connect the refinement to a specific usability finding. Describe what improved and what you deliberately kept simple.]"
-        },
-        {
-          "type": "media",
-          "label": "Refined flow — key states and transitions",
-          "layout": "wide",
-          "src": "",
-          "alt": "Refined flow — key states and transitions"
-        }
-      ]
-    },
-    {
-      "id": "final",
-      "label": "Final Design",
-      "blocks": [
-        {
-          "type": "text",
-          "eyebrow": "Final design",
-          "title": "[Introduce the complete solution and its primary benefit]",
-          "body": "[Explain how the final experience brings the decisions together to help people complete their task.]"
-        },
-        {
-          "type": "text",
-          "eyebrow": "01 — [Moment in the journey]",
-          "title": "[Describe the benefit of feature 1]",
-          "body": "[Explain what the user can do, the guidance the interface provides, and how it addresses the original problem.]"
-        },
-        {
-          "type": "media",
-          "label": "Final feature 01 — high-fidelity screens",
-          "layout": "wide",
-          "src": "",
-          "alt": "Final feature 01 — high-fidelity screens"
-        },
-        {
-          "type": "text",
-          "eyebrow": "02 — [Moment in the journey]",
-          "title": "[Describe the benefit of feature 2]",
-          "body": "[Explain what the user can do, the guidance the interface provides, and how it addresses the original problem.]"
-        },
-        {
-          "type": "media",
-          "label": "Final feature 02 — high-fidelity screens",
-          "layout": "wide",
-          "src": "",
-          "alt": "Final feature 02 — high-fidelity screens"
-        },
-        {
-          "type": "text",
-          "eyebrow": "03 — [Moment in the journey]",
-          "title": "[Describe the benefit of feature 3]",
-          "body": "[Explain what the user can do, the guidance the interface provides, and how it addresses the original problem.]"
-        },
-        {
-          "type": "media",
-          "label": "Final feature 03 — high-fidelity screens",
-          "layout": "wide",
-          "src": "",
-          "alt": "Final feature 03 — high-fidelity screens"
-        }
-      ]
-    },
     {
       "id": "impact",
       "label": "Impact",
       "blocks": [
         {
           "type": "text",
-          "eyebrow": "Impact",
-          "title": "[Connect the final experience to measurable outcomes]",
-          "body": "[Explain whether these results came from usability testing, a live release, or a proposed measurement plan. Include the sample and baseline; avoid presenting projections as actual results.]"
+          "title": "Faster delivery, fewer support requests",
+          "body": ""
         },
         {
           "type": "metrics",
           "items": [
             {
-              "value": "[XX%]",
-              "label": "Primary outcome",
-              "note": "Add the measurement method"
+              "value": ">50%",
+              "label": "Faster feature delivery",
+              "note": "Team estimate"
             },
             {
-              "value": "[XX%]",
-              "label": "Secondary outcome",
-              "note": "Add the comparison or baseline"
+              "value": "~90%",
+              "label": "Fewer support requests",
+              "note": "Team estimate · Onboarding and functionality, versus the desktop app"
             }
           ]
-        },
-        {
-          "type": "columns",
-          "items": [
-            {
-              "title": "Business outcomes",
-              "body": "[Describe the product, operational, or strategic changes supported by this work.]"
-            },
-            {
-              "title": "How I measured",
-              "body": "[Describe the study design, participants, tasks, and comparison used to evaluate the work.]"
-            }
-          ]
-        },
-        {
-          "type": "quote",
-          "quote": "[Optional: a real stakeholder or participant comment about the outcome.]",
-          "attribution": "[Name and role, with permission]"
         }
       ]
     },
     {
-      "id": "reflection",
-      "label": "Reflection",
+      "id": "foundation",
+      "label": "System foundations",
       "blocks": [
         {
           "type": "text",
-          "eyebrow": "Reflection",
-          "title": "[Name your most important learning]",
-          "body": "[Reflect on what this project taught you about research, collaboration, or design. Use a concrete example to explain how it will change your approach.]"
+          "title": "From intern to leading design across apps",
+          "body": "Tomsoft’s legacy desktop ERP, Luceed, sat alongside web apps with different interfaces and interaction patterns. A planned move to React and the new Paperclip DMS created an opportunity to bring the ecosystem together around shared patterns, components, and branding, using Mantine as a foundation.\n\nI joined as an intern and grew into owning design decisions across apps, aligning product needs with the broader design direction. I also helped hire and onboard a second designer, who focused more on the design system’s component details."
+        },
+        {
+          "type": "storyTimeline",
+          "label": "Timeline of my work at Tomsoft",
+          "items": [
+            {
+              "date": "Jul 2024",
+              "dateTime": "2024-07",
+              "title": "Store Explorer and the first Figma workflow",
+              "body": "Joined Tomsoft; designed branding and UI for Store Explorer, a B2C mobile app."
+            },
+            {
+              "date": "Sep 2024",
+              "dateTime": "2024-09",
+              "title": "Cross-app review and prototyping",
+              "body": "Reviewed existing web apps and prototyped new features in Figma."
+            },
+            {
+              "date": "Jan 2025",
+              "dateTime": "2025-01",
+              "title": "Paperclip DMS and the design system",
+              "body": "Paperclip DMS concept and a shared design system built on Mantine."
+            },
+            {
+              "date": "May 2025",
+              "dateTime": "2025-05",
+              "title": "Shared foundations, branding, and Harmony",
+              "body": "Neutral components, app-specific colors, and ecosystem branding, alongside work on Harmony, the HR platform."
+            },
+            {
+              "date": "Sep 2025",
+              "dateTime": "2025-09",
+              "title": "Remote work and Interconnect redesign",
+              "body": "A ground-up redesign of the existing app around the new design system."
+            },
+            {
+              "date": "Jan 2026",
+              "dateTime": "2026-01",
+              "title": "Redesigned Interconnect launch",
+              "body": ""
+            },
+            {
+              "date": "Feb 2026",
+              "dateTime": "2026-02",
+              "title": "End of my time at Tomsoft",
+              "body": ""
+            }
+          ]
+        },
+        {
+          "type": "mediaGallery",
+          "items": [
+            {
+              "src": "/assets/tomsoft/DMS det.png",
+              "alt": "Paperclip document details with approval tasks and invoice information.",
+              "label": "Paperclip · Document management"
+            },
+            {
+              "src": "/assets/tomsoft/HR det.png",
+              "alt": "Harmony organization chart with teams and employees.",
+              "label": "Harmony · HR platform"
+            },
+            {
+              "src": "/assets/tomsoft/IC det.png",
+              "alt": "Interconnect document details with delivery status and exchange history.",
+              "label": "Interconnect · B2B document exchange"
+            },
+            {
+              "src": "/assets/tomsoft/mobile.png",
+              "alt": "Mobile interfaces for Paperclip, Harmony, and Interconnect shown on phones held in hand.",
+              "label": "All apps adapted to every breakpoint with the new design system."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "delivery",
+      "label": "Shared reference",
+      "blocks": [
+        {
+          "type": "text",
+          "title": "A shared reference for delivery",
+          "body": "There was no established design step: management’s requests went straight to developers, who had to interpret how features should work and look.\n\nI introduced Figma as the shared reference for every feature and fix before development. Each Jira ticket linked to one Figma section, with a link back to the ticket.\n\nThrough in-person walkthroughs, I helped managers, developers, and QA use the designs, Dev Mode, variables, and component variants. Management could review the intended experience, developers had defined screens and states to build, and QA could check the result against the design, beyond whether the functionality existed."
+        },
+        {
+          "type": "storyFlow",
+          "label": "Jira and Figma link to each other",
+          "items": [
+            {
+              "title": "Jira ticket",
+              "body": "Feature or fix",
+              "logo": "/assets/tomsoft/jira.svg"
+            },
+            {
+              "title": "Figma section",
+              "body": "Design and states",
+              "logo": "/assets/tomsoft/figma.svg"
+            }
+          ],
+          "connector": "↔"
+        },
+        {
+          "type": "mediaPair",
+          "items": [
+            {
+              "src": "/assets/tomsoft/Jira example.png",
+              "alt": "Jira ticket with an embedded Figma reference showing the document list designs and states.",
+              "label": ""
+            },
+            {
+              "src": "/assets/tomsoft/Figma example.png",
+              "alt": "Matching Figma section with document list layouts, filters, empty states, and implementation notes.",
+              "label": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "patterns",
+      "label": "Shared patterns",
+      "blocks": [
+        {
+          "type": "text",
+          "title": "Common patterns across different products",
+          "body": "The products served different tasks, but repeatedly needed navigation, login, invitations, permissions, and editing. Defining these patterns once gave teams a starting point for each app and users a more familiar way to work."
         },
         {
           "type": "text",
-          "eyebrow": "",
-          "title": "[Describe what you would do next or differently]",
-          "body": "[Be specific about a remaining question, limitation, or next iteration. Explain what additional evidence you would seek and how you would evaluate success.]"
+          "title": "Discoverable actions and direct access",
+          "body": "In an early test, four participants changed a document status’s color using two table-editing patterns: a three-dot action menu, or a clickable row opening an editor with all actions inside."
         },
         {
-          "type": "resources",
+          "type": "media",
+          "layout": "full",
+          "src": "/assets/tomsoft/test.png",
+          "alt": "Two table-editing prototypes: a three-dot menu with a focused editor, and a clickable row opening an editor with additional actions.",
+          "label": ""
+        },
+        {
+          "type": "text",
+          "title": "One editing pattern across tables and apps",
+          "body": "Three participants preferred the menu’s clear actions; one valued row-click editing once discovered. We combined both: the three-dot menu kept all actions, with Edit first, while clicking the row opened the same editor. Duplicate, Delete, and Deactivate remained menu-only, keeping the editor focused. This became a consistent pattern across tables and apps, pairing discoverable actions with direct access."
+        },
+        {
+          "type": "text",
+          "title": "A familiar way to save",
+          "body": "Explicit saving matched Luceed and customers’ existing software habits, supporting continuity during adoption."
+        },
+        {
+          "type": "storyCards",
           "items": [
             {
-              "title": "Interactive prototype",
-              "description": "[Link to the end-to-end experience.]",
-              "url": ""
+              "label": "Considered",
+              "title": "Autosave",
+              "body": "Fewer explicit actions."
             },
             {
-              "title": "Process book",
-              "description": "[Link to your research and design documentation.]",
-              "url": ""
+              "label": "Chosen",
+              "title": "Explicit Save",
+              "body": "A familiar commitment point."
+            }
+          ]
+        },
+        {
+          "type": "storyFlow",
+          "label": "Unsaved changes warning",
+          "items": [
+            {
+              "title": "Edit",
+              "body": "Unsaved changes"
             },
             {
-              "title": "Walkthrough",
-              "description": "[Link to a short video of the final experience.]",
-              "url": ""
+              "title": "Attempt to leave",
+              "body": "Without saving"
+            },
+            {
+              "title": "Warning",
+              "body": "Chance to reconsider"
+            }
+          ],
+          "connector": "→"
+        },
+        {
+          "type": "text",
+          "title": "Extensive admin controls, a simple experience for most users",
+          "body": "Admins had a second navigation with all the setup options: departments, categories, statuses, workflows, and permissions. Most users never saw this side of the app. We kept the employee interface as simple as possible, showing only the data and functionality their admin made available."
+        },
+        {
+          "type": "storyFlow",
+          "label": "Paperclip configuration informs everyday work",
+          "items": [
+            {
+              "title": "Administrator",
+              "body": "Configure data, workflows, and access"
+            },
+            {
+              "title": "Employee",
+              "body": "Use only what admins make available"
+            }
+          ],
+          "connector": "→"
+        },
+        {
+          "type": "media",
+          "layout": "full",
+          "src": "/assets/tomsoft/DMS admin.png",
+          "alt": "Paperclip admin interface with a separate setup navigation and a permissions matrix controlling which pages each user role can view or edit.",
+          "label": ""
+        },
+        {
+          "type": "text",
+          "title": "Nested setup across tabs",
+          "body": "New opens a form with dropdowns for related data. Users can select an existing option or, if none is suitable, choose Add new to create that item in a new tab. The original form stays open while they set up the missing workflow, status, or city."
+        },
+        {
+          "type": "adminSetupFlow"
+        }
+      ]
+    },
+    {
+      "id": "versioning",
+      "label": "Keeping aligned",
+      "blocks": [
+        {
+          "type": "text",
+          "title": "The versioning gap",
+          "body": ""
+        },
+        {
+          "type": "storyFlow",
+          "label": "How version drift affected review",
+          "items": [
+            {
+              "title": "Library update",
+              "body": "Component changes"
+            },
+            {
+              "title": "Older screens",
+              "body": "Inherit changes"
+            },
+            {
+              "title": "QA mismatch",
+              "body": "New design, older build"
+            }
+          ],
+          "connector": "→"
+        },
+        {
+          "type": "storyCards",
+          "items": [
+            {
+              "label": "Our workaround",
+              "title": "Preserved component variants",
+              "body": "We kept important earlier versions as additional variants and used Jira and Figma notes to clarify implementation scope."
+            },
+            {
+              "label": "Tradeoff",
+              "title": "Growing maintenance cost",
+              "body": "Extra variants made the file harder to navigate and needed later cleanup. This reduced immediate confusion but did not resolve versioning."
             }
           ]
         }
       ]
     }
-  ]
+  ],
+  "coverBrief": "Animated Paperclip, Harmony, and Interconnect screens, scaled proportionally within the existing cover.",
+  "coverFit": "contain",
+  "coverGraphic": "tomsoft"
 }

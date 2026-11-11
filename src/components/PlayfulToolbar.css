@@ -1,0 +1,52 @@
+.playful-tools {
+  position: fixed;
+  left: max(var(--page-gutter), calc((100vw - var(--width-page)) / 2), env(safe-area-inset-left));
+  bottom: max(32px, env(safe-area-inset-bottom));
+  /* Keep tools and their menus above navigation, notes, and page overlays. */
+  z-index: 3000;
+  width: 248px;
+  color: var(--color-text);
+}
+.playful-dock {
+  display: flex;
+  gap: 16px;
+  height: 68px;
+  padding-inline: 16px;
+  border-radius: 20px;
+  background: var(--color-canvas);
+  box-shadow: 0 4px 30px #0000000d, 0 1px 5px #00000004;
+}
+.playful-tool { position: relative; flex: 0 0 70px; height: 68px; padding: 0; display: flex; align-items: flex-start; justify-content: center; clip-path: inset(-40px -16px 0); }
+.playful-tool:focus-visible { outline-offset: -4px; border-radius: 12px; }
+.playful-tool > svg { flex: none; transition: transform 220ms cubic-bezier(.2,.8,.2,1); filter: drop-shadow(0 1px 4px #0002); pointer-events: none; }
+.playful-crayon { width: 48px; height: 144px; transform: translateY(10px); }
+.playful-notes { width: 72px; height: 72px; transform: translateY(13px); }
+.playful-notes-middle, .playful-notes-front { filter: drop-shadow(-1px 1px 2px #00000024); }
+.playful-crayon-tool[aria-pressed='true'] .playful-crayon { transform: translateY(-18px); }
+.playful-crayon-tool[aria-pressed='true']::before { content: ''; position: absolute; inset: -22px 0 0; }
+.playful-note-tool { cursor: grab; touch-action: none; }
+.playful-note-tool:active { cursor: grabbing; }
+.playful-notes.is-peeling .playful-notes-front { opacity: 0; }
+.playful-settings { flex: 0 0 44px; align-self: center; height: 44px; display: grid; place-items: center; padding: 10px; border-radius: 12px; color: var(--color-muted); }
+.playful-settings svg { width: 22px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.playful-settings:hover, .playful-settings[aria-expanded='true'] { background: var(--color-surface); color: var(--color-text); }
+.playful-drawing-actions { display: flex; align-items: center; justify-content: space-between; gap: 2px; margin-bottom: 28px; min-height: 34px; padding: 3px 5px 3px 10px; border-radius: 12px; background: var(--color-canvas); box-shadow: 0 2px 14px #0000000c; }
+.playful-drawing-actions > span { font-size: 11px; color: var(--color-muted); }
+.playful-drawing-actions button { width: 30px; height: 30px; display: grid; place-items: center; padding: 5px; border-radius: 7px; }
+.playful-drawing-actions svg { width: 18px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.playful-drawing-actions button:hover, .playful-option:hover { background: var(--color-surface); }
+.playful-tools button:disabled { cursor: default; opacity: .3; }
+.playful-options { position: absolute; bottom: calc(100% + 28px); left: 0; width: 248px; padding: 8px; border-radius: 14px; border: 1px solid var(--color-border); background: var(--color-canvas); box-shadow: 0 4px 24px #00000012; font-size: 12px; }
+.playful-others { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 6px 14px; margin-bottom: 4px; border-bottom: 1px solid var(--color-border); }
+.playful-option { display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 10px 6px; border-radius: 6px; text-align: left; }
+.playful-option > span { font-size: 18px; line-height: 1; }
+:root[data-theme='dark'] .playful-dock { background: #272727; box-shadow: 0 4px 28px #0005, inset 0 0 0 1px #ffffff0a; }
+@media (hover: hover) {
+  .playful-crayon-tool:not([aria-pressed='true']):hover .playful-crayon { transform: translateY(5px); }
+  .playful-note-tool:hover .playful-notes { transform: translateY(7px) rotate(3deg); }
+}
+@media (max-width: 760px) {
+  .playful-tools { bottom: max(16px, env(safe-area-inset-bottom)); }
+}
+@media (prefers-reduced-motion: reduce) { .playful-tool > svg, .playful-settings { transition: none; } }
+@media print { .playful-tools { display: none; } }

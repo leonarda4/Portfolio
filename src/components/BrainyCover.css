@@ -7,7 +7,7 @@
 }
 .brainy-cover {
   width:100%; height:100%; min-width:0; min-height:0;
-  position:relative; background:#eaeae8; isolation:isolate; overflow:hidden;
+  position:relative; background:#f5f5f3; isolation:isolate; overflow:hidden;
   user-select:none; -webkit-user-select:none;
 }
 .brainy-cover__frame { position:absolute; inset:12px; }
@@ -20,26 +20,22 @@
   line-height:1.2; letter-spacing:0; text-align:center; color:#171717;
   white-space:nowrap;
 }
-.brainy-scene__accent { color:#414dff; }
+.brainy-scene__accent { color:#3ffae9; }
 .brainy-cover--inline { aspect-ratio:16 / 9; height:auto; }
 .brainy-cover--inline .brainy-cover__frame { inset:0; }
 .brainy-figure { width:100%; min-width:0; }
 .brainy-figure figcaption { margin-top:12px; }
 
-.brainy-cover--logo, .brainy-cover--inline { background:#171717; }
+/* The brand scenes keep their dark canvas in both portfolio appearances. */
+.brainy-cover--logo, .brainy-cover--inline { background:var(--brainy-brand-background); }
 .brainy-cover--inline .brainy-scene__statement { color:#fff; }
 .brainy-scene__logo--dark { display:none; }
-:root[data-theme='dark'] :is(.brainy-cover--logo,.brainy-cover--inline) { background:#eaeae8; }
-:root[data-theme='dark'] .brainy-cover--inline .brainy-scene__statement { color:#171717; }
-:root[data-theme='dark'] .brainy-scene__logo--light { display:none; }
-:root[data-theme='dark'] .brainy-scene__logo--dark { display:block; }
-:root { --brainy-brand-background:#171717; }
-:root[data-theme='dark'] { --brainy-brand-background:#eaeae8; }
+:root { --brainy-brand-background:#000000; }
 .brainy-scene__logo {
   position:absolute; left:30%; top:43%; width:40%; height:14%;
   object-fit:contain; max-width:none;
 }
-.brainy-cover--workspace { aspect-ratio:8 / 5; height:auto; background:#eaeae8; }
+.brainy-cover--workspace { aspect-ratio:8 / 5; height:auto; background:#f5f5f3; }
 .brainy-cover--workspace .brainy-cover__frame { inset:0; }
 .brainy-workspace img { display:block; max-width:none; }
 
@@ -51,7 +47,7 @@
   font-family:'Brainy Supreme'; src:url('/assets/brainy-storm/code/Supreme-500.woff2') format('woff2');
   font-weight:500; font-style:normal; font-display:swap;
 }
-/* Native 314 × 900 panel scales with the rest of the captured laptop UI. */
+/* Native 314 × 900 panel scales with the rest of the workspace UI. */
 .brainy-transcript { width:314px; height:900px; box-sizing:border-box; transform-origin:top left; overflow:hidden; background:#fff; border-left:1px solid #e5e5e5; font-family:'Brainy Supreme',Arial,sans-serif; font-weight:400; text-align:left; letter-spacing:0; }
 .brainy-transcript__header { width:313px; height:62px; }
 .brainy-transcript__guidance { padding:12px 18px; border-bottom:1px solid #ededee; color:#71717a; font-size:12px; line-height:1.5; }
@@ -65,3 +61,38 @@
 /* Flight reaches the actual slot edges; agents never pop out inside letterboxing. */
 .brainy-cover--logo .brainy-cover__frame { inset:0; }
 .brainy-cover--logo .brainy-scene { overflow:hidden; }
+.brainy-cover__laptop-display { position:absolute; overflow:hidden; background:#fff; }
+
+/* Full-frame native UI demo. Dimensions and type scale together in the article. */
+.brainy-cover--workspace { background:#fff; }
+.brainy-workspace { position:relative; width:1440px; height:900px; overflow:hidden; background:#fff; font-family:'Brainy Supreme',Arial,sans-serif; color:#171717; }
+.brainy-workspace__view, .brainy-workspace__reset { position:absolute; inset:0; }
+.brainy-workspace__background { width:1440px; height:900px; }
+.brainy-workspace__rail { position:absolute; overflow:hidden; }
+.brainy-workspace__card { position:absolute; }
+.brainy-workspace__card > img, .brainy-workspace__part > img { width:100%; height:100%; }
+.brainy-workspace__focus { position:absolute; inset:0; border:4px solid #414dff; box-sizing:border-box; }
+.brainy-workspace__focus > span { position:absolute; left:0; top:0; padding:3px 6px; color:#fff; background:#414dff; font-size:10px; font-weight:500; line-height:14px; }
+.brainy-workspace__part { position:absolute; }
+.brainy-workspace__part--navigation::after { content:''; position:absolute; top:365px; left:46px; right:8px; height:29px; background:#f5f5f5; }
+.brainy-workspace__new-nav { position:absolute; z-index:1; top:370px; left:57px; right:12px; white-space:nowrap; font-size:11px; line-height:16px; color:#71717a; }
+.brainy-workspace__wave { position:absolute; left:120px; top:14px; width:390px; height:48px; }
+.brainy-workspace__timer { position:absolute; left:556px; top:26px; width:39px; height:23px; background:#171717; color:#e4e4e7; font-size:12px; line-height:23px; font-variant-numeric:tabular-nums; }
+.brainy-workspace__new-idea { height:100%; overflow:hidden; border:1px solid #e5e5e5; box-sizing:border-box; background:white; text-align:left; }
+.brainy-workspace__new-art { position:relative; height:160px; overflow:hidden; }
+.brainy-workspace__new-art img { position:absolute; top:-1px; left:-1px; width:300px; height:704px; }
+.brainy-workspace__new-body { padding:16px; }
+.brainy-workspace__new-meta { display:flex; gap:16px; align-items:center; height:29px; color:#737373; font-size:12px; }
+.brainy-workspace__new-meta b { margin-left:auto; color:#171717; font-size:18px; }
+.brainy-workspace__new-body h3, .brainy-workspace__new-body h4 { margin:14px 0 8px; color:#171717; font-family:'Brainy Recia',Georgia,serif; font-weight:500; font-size:20px; line-height:1.3; letter-spacing:0; }
+.brainy-workspace__new-body h3 { margin-top:10px; }
+.brainy-workspace__new-body h4 { margin-top:28px; }
+.brainy-workspace__new-body p { margin:0; color:#666; font-family:'Brainy Supreme',Arial,sans-serif; font-size:14px; font-weight:400; line-height:1.6; letter-spacing:0; }
+.brainy-transcript { display:flex; flex-direction:column; }
+.brainy-transcript__header, .brainy-transcript__guidance { flex:none; }
+.brainy-transcript__viewport { position:relative; flex:1; min-height:0; overflow:hidden; }
+.brainy-transcript__feed { transition:transform .35s cubic-bezier(.22,1,.36,1); }
+.brainy-transcript__speaking { display:flex; align-items:center; gap:9px; flex:none; min-height:56px; padding:0 15px; background:#fff; border-top:1px solid #ededee; color:#737373; font-size:12px; }
+.brainy-transcript__speaking strong { color:#404040; font-weight:500; }
+.brainy-transcript__speaking i { width:5px; height:5px; border-radius:50%; background:#71717a; }
+@media (prefers-reduced-motion:reduce) { .brainy-transcript__feed { transition:none; } }

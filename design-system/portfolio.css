@@ -1,0 +1,74 @@
+/* Shared portfolio foundations. Live styles and /design-tokens.html use this source.
+   Project artwork and embedded product interfaces own their own styles. */
+:root {
+  color-scheme: light;
+  /* Six roles, six unique colors in each appearance. */
+  --color-canvas: #ffffff;
+  --color-surface: #f5f5f5;
+  --color-border: #dddddd;
+  --color-text: #292929;
+  --color-muted: #696969;
+  --color-accent: #6487ff;
+
+  --font-family: Inter, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-accent: 'Lacquer', cursive;
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --tracking-heading: -.03em;
+  /* Explicit size and line-height pairs. No fluid interpolation. */
+  --type-title-size: 48px;
+  --type-title-line: 56px;
+  --type-section-size: 32px;
+  --type-section-line: 40px;
+  --type-card-size: 24px;
+  --type-card-line: 32px;
+  --type-body-size: 16px;
+  --type-body-line: 24px;
+  --type-small-size: 14px;
+  --type-small-line: 20px;
+  --type-label-size: 12px;
+  --type-label-line: 16px;
+
+  /* Component spacing. Page geometry remains an independent layout constraint. */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  --radius-control: 8px;
+  --radius-pill: 999px;
+  --shadow-floating: 0 4px 24px #0000000d;
+  --duration-ui: 200ms;
+}
+/* Lacquer's lowercase glyphs look like capitals without the dripping strokes.
+   Apply this class whenever using the accent font; keep source copy unchanged. */
+.accent-type {
+  font-family:var(--font-accent);
+  text-transform:lowercase;
+  font-variant-alternates:normal;
+  font-feature-settings:normal;
+}
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --color-canvas: #161616;
+  --color-surface: #222222;
+  --color-border: #404040;
+  --color-text: #e5e5e5;
+  --color-muted: #aaaaaa;
+  --color-accent: #6487ff;
+  --shadow-floating: 0 4px 24px #00000030;
+}
+@media (max-width: 760px) {
+  :root {
+    --type-title-size: 32px;
+    --type-title-line: 40px;
+    --type-section-size: 28px;
+    --type-section-line: 36px;
+    --type-card-size: 22px;
+    --type-card-line: 28px;
+  }
+}

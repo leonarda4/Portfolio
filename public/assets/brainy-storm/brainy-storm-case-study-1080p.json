@@ -1,0 +1,13 @@
+{
+  "composition": "BrainyStormCaseStudy",
+  "source": "brainy-storm-4k.mp4",
+  "sourceSha256": "6f1a6132b308093772141d0d02cbe627874b01b69dc4610ad7fef8364f81a093",
+  "startFrame": 426,
+  "fps": 30,
+  "frames": 2022,
+  "duration": 67.4,
+  "width": 1920,
+  "height": 1080,
+  "sha256": "13173c0e97eed773b68fb0aec7bb286bc53de8ebbde55a174d03db5e2e60277a",
+  "note": "Frame-accurate cut at Meet brainy storm, encoded from the retained 4K master."
+}

@@ -2,7 +2,6 @@ import { useEffect, useId, useMemo, useRef, useState } from 'react'
 import { recipes, palettes, drawRecipe } from './brainy/graphics-engine'
 import { initialGraphic, updateGraphic } from './brainy/graphics-state'
 import './BrainyGraphicsBuilder.css'
-import './BrainySlider.css'
 
 const collection = recipes()
 const svgSource = svg => `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`
@@ -73,7 +72,7 @@ export default function BrainyGraphicsBuilder() {
         <span><img src={thumbnails[index]} alt="" loading="lazy" /><span>{item.label}</span></span>
       </label>)}
     </div></fieldset>
-    <figure className="graphics-builder__figure"><GraphicPreview recipe={recipe} current={current} /><figcaption>{recipe.concept}</figcaption></figure>
+    <figure className="graphics-builder__figure"><GraphicPreview recipe={recipe} current={current} /></figure>
     <fieldset className="graphics-builder__palettes"><legend>Color combinations</legend><div className="graphics-builder__swatches">
       {combinations.map((palette, index) => <label className="graphics-builder__palette" key={`${selected}-${index}`} title={palette.name}>
         <input type="radio" name={`${id}-palette`} checked={chosenPalette === index} onChange={() => update({ colors: palette })} aria-label={palette.name} />

@@ -1,0 +1,14 @@
+/* Shared page grid. Portfolio shell only; project artwork keeps its own geometry. */
+:root {
+  --width-page: 1440px;
+  --width-home: var(--width-page);
+  --width-case: var(--width-page);
+  --width-article: 680px;
+  --page-gutter: 48px;
+  --grid-gap: 24px;
+  --nav-sticky-top: 32px;
+  --height-cover: 66.666667svh;
+  --aspect-cover: 1.48;
+}
+@media(max-width:1000px) { :root { --page-gutter:32px; } }
+@media(max-width:760px) { :root { --page-gutter:24px; --grid-gap:16px; --nav-sticky-top:0px; --aspect-cover:1.4; } }

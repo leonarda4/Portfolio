@@ -1,0 +1,48 @@
+{
+  "repository": "https://github.com/leonarda4/calibrated",
+  "commit": "9b42a9c155efd0758958f18794a9e67017465f62",
+  "archivePath": "private/process-history",
+  "images": [
+    {
+      "file": "box-alignment.png",
+      "source": "images/9cbb68d748941a3d5ba15021644e2d21a6245e8feca30ff8139513c5b0feabf8.png",
+      "imageNumber": 9
+    },
+    {
+      "file": "hallway-cut-sketch.png",
+      "source": "images/53174cd9a63b0572562d06d99556c22038b65850c1aa10983a6094b719f4a93f.png",
+      "imageNumber": 19
+    },
+    {
+      "file": "hallway-connection-sketch.png",
+      "source": "images/1244beef252f309127c03f1448d82f5fdafdcdacbec7fd166bc6488330def173.png",
+      "imageNumber": 23
+    },
+    {
+      "file": "collapse-feedback.png",
+      "source": "images/138d2d6e1b5f49bcc274a41fbda81848627c76f0711c4bdb10d224810510437b.png",
+      "imageNumber": 24
+    }
+  ],
+  "video": {
+    "source": "private/process-history/videos/ria.mp4",
+    "output": "participant-recording.mp4",
+    "processing": "Full duration, proportional 720px width, H.264/AAC web encode.",
+    "cover": "Three frames at 50, 90 and 130 seconds, arranged left to right with no cropping."
+  },
+  "film": {
+    "source": "CALIBRATED_TEASER_FINAL_DIRECTORS_CUT.mp4",
+    "output": "calibrated-film.mp4",
+    "processing": "Full duration, proportional 1920px width, H.264/AAC web encode with fast start.",
+    "cover": {
+      "output": "calibrated-cover-loop.mp4",
+      "startSeconds": 26,
+      "endSeconds": 39,
+      "processing": "Exact 13-second cut, proportional 1920px width, silent H.264 web encode with fast start."
+    },
+    "poster": {
+      "output": "calibrated-film-poster.jpg",
+      "sourceSeconds": 26
+    }
+  }
+}

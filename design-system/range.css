@@ -1,0 +1,64 @@
+/* Shared range control: 2px track, 12px solid thumb, 24px interaction area. */
+input[type='range'] {
+  display: block;
+  appearance: none;
+  -webkit-appearance: none;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  height: 24px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  cursor: pointer;
+}
+input[type='range']::-webkit-slider-runnable-track {
+  height: 2px;
+  border: 0;
+  border-radius: 0;
+  background: linear-gradient(to right,
+    var(--color-text) var(--range-progress, 0%),
+    var(--color-border) var(--range-progress, 0%));
+}
+input[type='range']::-moz-range-track {
+  height: 2px;
+  border: 0;
+  border-radius: 0;
+  background: var(--color-border);
+}
+input[type='range']::-moz-range-progress {
+  height: 2px;
+  border-radius: 0;
+  background: var(--color-text);
+}
+input[type='range']::-webkit-slider-thumb {
+  appearance: none;
+  -webkit-appearance: none;
+  box-sizing: border-box;
+  width: 12px;
+  height: 12px;
+  margin-top: -5px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--color-text);
+  box-shadow: none;
+}
+input[type='range']::-moz-range-thumb {
+  box-sizing: border-box;
+  width: 12px;
+  height: 12px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--color-text);
+  box-shadow: none;
+}
+input[type='range']:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 4px;
+}
+input[type='range']:disabled { opacity: .45; cursor: default; }
+@media (forced-colors: active) {
+  input[type='range'] { --color-text: CanvasText; --color-border: GrayText; --color-accent: Highlight; }
+}

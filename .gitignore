@@ -4,3 +4,5 @@ dist
 jabuka
 jabuka.pub
 .data/
+# Local source master; the site uses calibrated-film.mp4.
+public/assets/calibrated/CALIBRATED_TEASER_FINAL_DIRECTORS_CUT.mp4

@@ -1,13 +1,13 @@
-/* Echo's identity stays consistent across the portfolio's light and dark themes. */
+/* Echo uses sticky-note yellow with dark ink in both appearances. */
 .case-study[data-project="echo"] .echo-questions li:first-child,
 .case-study[data-project="echo"] .feedback-card--featured {
-  background:var(--project-accent,#B2FFFF);
-  border-color:var(--project-accent,#B2FFFF);
-  color:#111;
+  background:var(--project-accent);
+  border-color:var(--project-accent);
+  color:#292929;
 }
 .case-study[data-project="echo"] .echo-questions li:first-child :is(h3,span),
 .case-study[data-project="echo"] .feedback-card--featured :is(p,cite) {
-  color:#111;
+  color:#292929;
 }
 
 /* Results use the existing editorial and chart components in the article column. */

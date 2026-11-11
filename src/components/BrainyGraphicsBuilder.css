@@ -21,8 +21,6 @@
 .graphics-builder__sliders label { display:grid; gap:10px; min-width:0; font-size:13px; line-height:1.4; }
 .graphics-builder__sliders label>span { display:flex; justify-content:space-between; gap:12px; }
 .graphics-builder__sliders output { font-variant-numeric:tabular-nums; color:var(--text-secondary); }
-.graphics-builder__sliders input { width:100%; min-width:0; margin:0; height:24px; cursor:pointer; accent-color:var(--text-primary); }
-.graphics-builder input[type='range']:focus-visible { outline:2px solid var(--accent); outline-offset:4px; }
 @media(max-width:600px) {
   .graphics-builder__sliders { gap:18px; }
 }

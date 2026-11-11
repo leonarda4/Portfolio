@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import groups from './noise-lab/recipes.json'
 import { createNoiseRenderer } from './noise-lab/renderer'
@@ -151,28 +151,45 @@ function GradientDetail({ selection, paused, onToggle, onClose }) {
     const previousFocus = document.activeElement
     const overflow = document.body.style.overflow
     document.body.style.overflow = 'hidden'
-    dialog.showModal()
-    return () => {
-      dialog.close()
-      document.body.style.overflow = overflow
-      previousFocus?.focus({ preventScroll: true })
+    dialog.querySelector('button')?.focus({ preventScroll: true })
+    function handleKey(event) {
+      if (event.defaultPrevented || (event.key === 'Escape' && document.activeElement.closest('[role="menu"]'))) return
+      if (event.key === 'Escape') {
+        event.preventDefault()
+        onClose()
+      }
+      if (event.key !== 'Tab') return
+      // Keep the navigation available without tabbing into the obscured page.
+      const controls = [...document.querySelectorAll('.layout-sidebar a[href], .layout-sidebar button:not([disabled]), .gradient-dialog button:not([disabled])')].filter(node => node.tabIndex >= 0 && node.getClientRects().length)
+      if (!controls.length) return
+      const current = controls.indexOf(document.activeElement)
+      const next = current < 0 ? (event.shiftKey ? controls.length - 1 : 0) : (current + (event.shiftKey ? -1 : 1) + controls.length) % controls.length
+      event.preventDefault()
+      controls[next].focus()
     }
-  }, [])
+    document.addEventListener('keydown', handleKey)
+    return () => {
+      document.removeEventListener('keydown', handleKey)
+      document.body.style.overflow = overflow
+      if (previousFocus?.isConnected && (dialog.contains(document.activeElement) || document.activeElement === document.body)) previousFocus.focus({ preventScroll: true })
+    }
+  }, [onClose])
 
-  return createPortal(<dialog ref={dialogRef} className="gradient-dialog" aria-labelledby="gradient-detail-title" onCancel={event => { event.preventDefault(); onClose() }} onClick={event => { if (event.target === event.currentTarget) onClose() }}>
+  return createPortal(<div className="gradient-overlay" onClick={event => { if (event.target === event.currentTarget) onClose() }}><dialog open ref={dialogRef} className="gradient-dialog" aria-modal="false" aria-labelledby="gradient-detail-title">
     <div className="gradient-detail">
-      <header><h3 id="gradient-detail-title">{selection.group.label} <span> / {String(selection.index + 1).padStart(2, '0')}</span></h3><button type="button" className="gradient-close" onClick={onClose} autoFocus>Close ×</button></header>
+      <header><h3 id="gradient-detail-title">{selection.group.label} <span> / {String(selection.index + 1).padStart(2, '0')}</span></h3><button type="button" className="gradient-close" onClick={onClose}>Close ×</button></header>
       <GradientSurface items={items} paused={paused}>
         <div className="gradient-detail-image" data-gradient-id={selection.recipe.id}><img src={selection.recipe.preview} alt={`${selection.group.label} gradient recipe ${selection.index + 1}`} /></div>
       </GradientSurface>
       <footer><p>{selection.index + 1} of {selection.group.recipes.length}</p><MotionButton paused={paused} onToggle={onToggle} /></footer>
     </div>
-  </dialog>, document.body)
+  </dialog></div>, document.body)
 }
 
 export default function GradientGallery() {
   const [paused, setPaused] = useState(() => window.matchMedia('(prefers-reduced-motion: reduce)').matches)
   const [selection, setSelection] = useState(null)
+  const closeDetail = useCallback(() => setSelection(null), [])
   useEffect(() => {
     const preference = window.matchMedia('(prefers-reduced-motion: reduce)')
     const change = () => setPaused(preference.matches)
@@ -193,6 +210,6 @@ export default function GradientGallery() {
       </section>)}
     </GradientSurface>
     <p className="gradient-caption">Select a study to explore it in motion. Made with <a href="https://github.com/leonarda4/The-noise-lab" target="_blank" rel="noreferrer">The Noise Lab ↗</a>.</p>
-    {selection && <GradientDetail selection={selection} paused={paused} onToggle={toggle} onClose={() => setSelection(null)} />}
+    {selection && <GradientDetail selection={selection} paused={paused} onToggle={toggle} onClose={closeDetail} />}
   </div>
 }

@@ -57,7 +57,7 @@ export function ParticipantCharts({ block }) {
 export function RecognitionChart({ block }) {
   const title = useId()
   return <figure className="study-chart recognition-chart" aria-labelledby={title}>
-    <header className="comparison-header"><h3 id={title}>{block.title}</h3><span className="chart-note">Recognized / 10 participants</span></header>
+    <header className="comparison-header"><h3 id={title}>{block.title}</h3></header>
     <div className="recognition-rings">{block.items.map(item => <div className="recognition-item" key={item.label}>
       <Ring items={[item]} total={10}><span className="chart-number">{item.value}<small>/10</small></span></Ring>
       <h4>{item.label}</h4>

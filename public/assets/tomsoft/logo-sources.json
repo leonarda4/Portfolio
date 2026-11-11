@@ -1,0 +1,13 @@
+{
+  "jira.svg": {
+    "source": "https://atlassian.design/foundations/logos",
+    "download": "https://atlassian.design/assets/4ae29dc62194/logos/jira_app.zip",
+    "asset": "jira/SVG/Jira_icon.svg"
+  },
+  "figma.svg": {
+    "source": "https://www.figma.com/using-the-figma-brand/",
+    "download": "https://static.figma.com/uploads/4fbf4d754dbbc027ba1530205f8747cd97d532e5",
+    "asset": "Figma Brand Assets/Figma Icon (Full-color)/Figma Icon (Full-color).svg",
+    "adjustment": "Trimmed empty artboard space via viewBox; logo paths and colors unchanged."
+  }
+}
