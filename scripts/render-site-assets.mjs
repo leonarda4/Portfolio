@@ -1,5 +1,6 @@
-// Run with Playwright available: node scripts/render-site-assets.mjs
-// The template reuses the site's fonts, shared accent class, and original SVGs.
+// Run with the portfolio dev server and Playwright available:
+// node scripts/render-site-assets.mjs
+// PORTFOLIO_CAPTURE_URL can point to another running preview.
 import fs from 'node:fs/promises'
 import { fileURLToPath } from 'node:url'
 import { chromium } from 'playwright'
@@ -7,15 +8,30 @@ import { chromium } from 'playwright'
 const publicDir = new URL('../public/', import.meta.url)
 const browser = await chromium.launch()
 try {
-  const page = await browser.newPage({ viewport: { width: 1200, height: 630 }, deviceScaleFactor: 1 })
-  await page.goto(new URL('./social-preview.html', import.meta.url).href)
+  const page = await browser.newPage({ viewport: { width: 1512, height: 1000 }, deviceScaleFactor: 1, colorScheme: 'dark', reducedMotion: 'reduce' })
+  await page.goto(`${process.env.PORTFOLIO_CAPTURE_URL || 'http://localhost:5173'}/#/about`)
+  await page.locator('.home-personal[data-layout="collage"]').waitFor()
   await page.evaluate(async () => {
     await document.fonts.ready
-    await Promise.all([...document.images].map(image => image.decode()))
-    if (!document.fonts.check('48px Inter') || !document.fonts.check('54px Lacquer')) throw new Error('Preview fonts did not load')
+    await Promise.all([...document.querySelectorAll('.home-personal img')].map(image => image.decode()))
+    if (!document.fonts.check('16px Inter') || !document.fonts.check('48px Lacquer')) throw new Error('Portfolio fonts did not load')
+    const top = document.querySelector('.home-personal').getBoundingClientRect().top + window.scrollY
+    window.scrollTo({ top: top - 32, behavior: 'instant' })
+  })
+  const clip = await page.evaluate(() => {
+    const section = document.querySelector('.about-collage').getBoundingClientRect()
+    const crayons = [...document.querySelectorAll('.about-crayons--about button')].map(element => element.getBoundingClientRect())
+    return { x: section.left + window.scrollX, y: section.top + window.scrollY, width: section.width, height: Math.ceil(Math.max(section.bottom, ...crayons.map(box => box.bottom)) - section.top + 16) }
   })
   await fs.mkdir(new URL('assets/social/', publicDir), { recursive: true })
-  await page.locator('.preview').screenshot({ path: fileURLToPath(new URL('assets/social/portfolio-preview.png', publicDir)) })
+  await page.screenshot({ path: fileURLToPath(new URL('assets/social/about-section.png', publicDir)), clip, fullPage: true })
+
+  await page.setViewportSize({ width: 1200, height: 630 })
+  await page.goto(new URL('./social-preview.html', import.meta.url).href)
+  await page.evaluate(async () => {
+    await Promise.all([...document.images].map(image => image.decode()))
+  })
+  await page.locator('.preview').screenshot({ path: fileURLToPath(new URL('assets/social/about-preview.png', publicDir)) })
 
   const sunUrl = new URL('assets/theme/sun.svg', publicDir).href
   for (const size of [32, 180]) {
