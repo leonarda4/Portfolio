@@ -5,9 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#ffffff" />
     <meta name="color-scheme" content="light dark" />
-    <link rel="preload" as="image" type="image/webp" href="/assets/tomsoft/cover/paperclip-screen.webp" fetchpriority="high" />
-    <link rel="preload" as="image" type="image/webp" href="/assets/tomsoft/cover/harmony-screen.webp" fetchpriority="high" />
-    <link rel="preload" as="image" type="image/webp" href="/assets/tomsoft/cover/interconnect-screen.webp" fetchpriority="high" />
+    <link rel="preload" as="image" type="image/svg+xml" href="/assets/theme/sun.svg" fetchpriority="high" />
+    <link rel="preload" as="image" type="image/svg+xml" href="/assets/theme/stars.svg" fetchpriority="high" />
+    <script>
+      if (!location.hash || /^#\/(?:home|work|play|about|contact|project\/project-three)?$/.test(location.hash)) {
+        for (const app of ['paperclip', 'harmony', 'interconnect']) {
+          const preload = document.createElement('link');
+          preload.rel = 'preload'; preload.as = 'image'; preload.type = 'image/webp';
+          preload.href = '/assets/tomsoft/cover/' + app + '-screen.webp';
+          preload.fetchPriority = 'high'; document.head.appendChild(preload);
+        }
+      }
+    </script>
     <script>
       (() => {
         let preference = 'system';

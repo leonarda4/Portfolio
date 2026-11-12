@@ -17,6 +17,8 @@ import SoundscapeCards from './components/SoundscapeCards'
 import StickerBoard from './components/StickerBoard'
 import StudyVideo from './components/StudyVideo'
 import CoverVideo from './components/CoverVideo'
+import ResponsiveImage from './components/ResponsiveImage'
+import { imageSource, videoSource } from './media'
 import { AboutContactSection, PlaySection } from './components/HomeSections'
 import ResumeScribbles from './components/ResumeScribbles'
 import useSectionNavigation from './hooks/useSectionNavigation'
@@ -51,7 +53,7 @@ function Cover({ project, hero = false }) {
   if (project.coverGraphic === 'echo') return <div className={`project-cover project-cover--graphic ${hero ? 'case-cover' : ''}`} style={{ '--tint': project.accent, '--project-accent': project.accent }}>
     <Suspense fallback={<div className="echo-cover-loading" role="img" aria-label={project.coverAlt} />}><EchoCover hero={hero} /></Suspense>
   </div>
-  return <div data-cover={project.slug} className={`project-cover ${hero ? 'case-cover' : ''} ${project.coverFit === 'contain' ? 'project-cover--contain' : ''} ${hero && project.coverAspectRatio ? 'case-cover--native-ratio' : ''}`} style={{ '--tint': project.tint, '--cover-aspect-ratio': project.coverAspectRatio, backgroundColor: project.coverBackground }}>{project.coverVideo ? <CoverVideo src={project.coverVideo} poster={project.cover} label={project.coverAlt || `${project.title}: installation video`} /> : project.cover ? <img src={project.cover} alt={project.coverAlt} /> : <><span className="cover-label">{project.slug.replaceAll('-', ' ')} / cover image</span><>{project.variant === 'installation' ? <div className="installation-placeholder"><span>＋</span><span>Installation photograph / audiovisual still</span></div> : <Mockup variant={project.variant} />}</><span className="cover-note">Your project imagery goes here</span></>}</div>
+  return <div data-cover={project.slug} className={`project-cover ${hero ? 'case-cover' : ''} ${project.coverFit === 'contain' ? 'project-cover--contain' : ''} ${hero && project.coverAspectRatio ? 'case-cover--native-ratio' : ''}`} style={{ '--tint': project.tint, '--cover-aspect-ratio': project.coverAspectRatio, backgroundColor: project.coverBackground }}>{project.coverVideo ? <CoverVideo src={project.coverVideo} poster={project.cover} hero={hero} label={project.coverAlt || `${project.title}: installation video`} /> : project.cover ? <ResponsiveImage src={project.cover} alt={project.coverAlt} sizes={hero ? "100vw" : "(max-width: 760px) 100vw, 40vw"} /> : <><span className="cover-label">{project.slug.replaceAll('-', ' ')} / cover image</span><>{project.variant === 'installation' ? <div className="installation-placeholder"><span>＋</span><span>Installation photograph / audiovisual still</span></div> : <Mockup variant={project.variant} />}</><span className="cover-note">Your project imagery goes here</span></>}</div>
 }
 function ProjectCard({ project, onOpen }) {
   return <a className="project-card" href={`#/project/${project.slug}`} aria-haspopup={onOpen ? 'dialog' : undefined} onClick={onOpen ? event => { if (event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey) { event.preventDefault(); onOpen(project) } } : undefined} style={{ '--project-accent': project.accent }}><Cover project={project} /><div className="card-copy"><h2>{project.cardTitle || project.title}{project.cardStatus && <span className="card-status"> / {project.cardStatus}</span>}</h2></div></a>
@@ -90,7 +92,7 @@ function Home({ onPreview }) {
   </div></main>
 }
 function Media({ block, onOpen }) {
-  return <figure className={`study-media media--${block.layout}`}>{block.src ? <button className="image-button" onClick={() => onOpen(block)} aria-label={`Enlarge ${block.alt}`}><img src={block.src} alt={block.alt} loading="lazy" /></button> : <div className="media-placeholder">{block.layout === 'phones' ? <div className="phone-pair"><Mockup variant="mobile" /><Mockup variant="mobile" /></div> : <div className="placeholder-frames">{Array.from({ length: block.layout === 'pair' ? 2 : 1 }, (_, i) => <div className="placeholder-frame" key={i}><span>＋</span><span>{block.layout === 'pair' ? `Screen 0${i + 1}` : 'Image / diagram / prototype'}</span></div>)}</div>}<span className="media-label">{block.label}</span></div>}{block.label && <figcaption>{block.label}</figcaption>}</figure>
+  return <figure className={`study-media media--${block.layout}`}>{block.src ? <button className="image-button" onClick={() => onOpen(block)} aria-label={`Enlarge ${block.alt}`}><ResponsiveImage src={block.src} alt={block.alt} loading="lazy" /></button> : <div className="media-placeholder">{block.layout === 'phones' ? <div className="phone-pair"><Mockup variant="mobile" /><Mockup variant="mobile" /></div> : <div className="placeholder-frames">{Array.from({ length: block.layout === 'pair' ? 2 : 1 }, (_, i) => <div className="placeholder-frame" key={i}><span>＋</span><span>{block.layout === 'pair' ? `Screen 0${i + 1}` : 'Image / diagram / prototype'}</span></div>)}</div>}<span className="media-label">{block.label}</span></div>}{block.label && <figcaption>{block.label}</figcaption>}</figure>
 }
 function Block({ block, onOpen }) {
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -198,7 +200,7 @@ function VideoPreview({ experiment, onClose }) {
   }, [])
   return createPortal(<dialog ref={dialog} className="lightbox video-preview" style={{ '--video-aspect': experiment.width / experiment.height || 16 / 9 }} aria-label={experiment.title} onCancel={event => { event.preventDefault(); onClose() }} onClick={event => { if (event.target === event.currentTarget) onClose() }}>
     <button type="button" className="lightbox-close" onClick={onClose}><span className="sidebar-back-arrow" aria-hidden="true">×</span>Close</button>
-    <video ref={player} src={experiment.video} poster={experiment.cover} width={experiment.width} height={experiment.height} autoPlay muted={false} controls playsInline preload="auto" aria-label={experiment.title}>
+    <video ref={player} src={videoSource(experiment.video)} poster={imageSource(experiment.cover)} width={experiment.width} height={experiment.height} autoPlay muted={false} controls playsInline preload="auto" aria-label={experiment.title}>
       <a href={experiment.video}>Watch the full video</a>
     </video>
   </dialog>, document.body)

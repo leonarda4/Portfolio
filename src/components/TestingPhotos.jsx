@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import ResponsiveImage from './ResponsiveImage'
 import './TestingPhotos.css'
 
 const angles = [-5, 3, -1, 6, -3, 1, -7]
@@ -85,7 +86,7 @@ export default function TestingPhotos({ block }) {
             move(index, event.currentTarget.offsetLeft + direction[0] * step, event.currentTarget.offsetTop + direction[1] * step, event.currentTarget)
           }}
         >
-          {photo.src ? <img src={photo.src} alt={photo.alt} draggable="false" loading="lazy" /> : <span className="testing-photo-placeholder"><span aria-hidden="true">＋</span>Testing photo {String(index + 1).padStart(2, '0')}</span>}
+          {photo.src ? <ResponsiveImage src={photo.src} sizes="(max-width: 760px) 28vw, 190px" alt={photo.alt} draggable="false" loading="lazy" /> : <span className="testing-photo-placeholder"><span aria-hidden="true">＋</span>Testing photo {String(index + 1).padStart(2, '0')}</span>}
         </button>
       })}
     </div>

@@ -5,6 +5,7 @@ import { trailSegments } from '../content/about-artwork'
 import { SUPPORTING_PALETTE } from '../../design-system/playful-palette'
 import AboutNote from './AboutNote'
 import AboutCrayons from './AboutCrayons'
+import ResponsiveImage from './ResponsiveImage'
 import './AboutCollage.css'
 
 export function PlaySection({ renderCard }) {
@@ -20,7 +21,7 @@ export function AboutSection() {
     <div className="about-collage">
       <div className="about-canvas">
       <header className="home-section-heading"><h2 id="about-heading" className="accent-type">About me</h2></header>
-      <img className="about-portrait" src="/assets/portrait.jpg" alt="Leonarda" width="3024" height="4032" loading="lazy" />
+      <ResponsiveImage className="about-portrait" src="/assets/portrait.jpg" sizes="(max-width: 760px) 80vw, 500px" alt="Leonarda" loading="lazy" />
       <p id="about-note-move-help" className="about-note-move-help">Drag to move this note, or use the arrow keys. Hold Shift for larger steps. Press Home to restore its original position. The text and color stay fixed.</p>
       <ol className="about-notes" aria-label="My path into design">
         {aboutNotes.map(note => <li key={note.id} className={`about-note about-note--${note.key}`} style={{ '--note-x': `${note.x}px`, '--note-y': `${note.y}px`, '--note-color': SUPPORTING_PALETTE.find(color => color.name === note.color).note }}>

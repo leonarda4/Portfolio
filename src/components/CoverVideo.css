@@ -1,5 +1,7 @@
 /* Covers are silent moving artwork; the enclosing card handles interaction. */
-.cover-video { pointer-events:none; }
+.cover-video { position:absolute; inset:0; opacity:0; pointer-events:none; }
+.cover-video[data-playing='true'] { opacity:1; }
+.cover-video-poster { pointer-events:none; }
 .cover-video::-webkit-media-controls,
 .cover-video::-webkit-media-controls-panel,
 .cover-video::-webkit-media-controls-start-playback-button,

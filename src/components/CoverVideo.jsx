@@ -1,54 +1,71 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { videoSource } from '../media'
+import ResponsiveImage from './ResponsiveImage'
 import './CoverVideo.css'
 
-export default function CoverVideo({ src, poster, label }) {
+export default function CoverVideo({ src, poster, label, hero = false }) {
   const ref = useRef(null)
+  const [playing, setPlaying] = useState(false)
 
   useEffect(() => {
     const video = ref.current
-    // Set both the property and the HTML attribute before requesting playback.
-    // Safari uses the muted/inline state when deciding whether to autoplay.
+    setPlaying(false)
+    const motion = window.matchMedia('(prefers-reduced-motion: reduce)')
     video.defaultMuted = true
     video.muted = true
     video.playsInline = true
     video.setAttribute('webkit-playsinline', '')
-
-    const bounds = video.getBoundingClientRect()
-    let visible = bounds.bottom > 0 && bounds.top < window.innerHeight && bounds.right > 0 && bounds.left < window.innerWidth
+    let visible = false
     let disposed = false
+    let filmReady = !(hero && src === '/assets/calibrated/calibrated-cover-loop.mp4')
 
     const play = () => {
-      if (disposed || !visible || document.hidden || !video.paused) return
+      if (disposed || !visible || !filmReady || document.hidden || motion.matches) return
+      if (!video.getAttribute('src')) {
+        video.src = videoSource(src)
+        video.preload = 'auto'
+      }
       video.muted = true
-      // A browser can refuse autoplay. Retry on the next visibility or user
-      // interaction event, without an unhandled rejection or a polling loop.
-      video.play()?.catch(() => {})
+      if (video.paused) video.play()?.catch(() => {})
     }
+    const sync = () => {
+      if (!visible || document.hidden || motion.matches) video.pause()
+      else play()
+    }
+    const releasePreview = () => { filmReady = true; sync() }
+    window.addEventListener('portfolio:film-ready', releasePreview)
+    // No source is assigned to offscreen videos. The lightweight poster is
+    // immediately available, without background previews competing for bandwidth.
     const observer = new IntersectionObserver(([entry]) => {
       visible = entry.isIntersecting
-      if (visible) play()
+      sync()
     })
     observer.observe(video)
-    video.addEventListener('loadedmetadata', play)
     video.addEventListener('canplay', play)
-    document.addEventListener('visibilitychange', play)
-    window.addEventListener('pageshow', play)
+    document.addEventListener('visibilitychange', sync)
+    window.addEventListener('pageshow', sync)
+    motion.addEventListener('change', sync)
     const gestures = ['touchend', 'click', 'keydown']
     gestures.forEach(event => document.addEventListener(event, play, { capture: true, passive: true }))
-    play()
-
     return () => {
       disposed = true
       observer.disconnect()
-      video.removeEventListener('loadedmetadata', play)
+      video.pause()
+      video.removeAttribute('src')
+      video.load()
       video.removeEventListener('canplay', play)
-      document.removeEventListener('visibilitychange', play)
-      window.removeEventListener('pageshow', play)
+      document.removeEventListener('visibilitychange', sync)
+      window.removeEventListener('pageshow', sync)
+      window.removeEventListener('portfolio:film-ready', releasePreview)
+      motion.removeEventListener('change', sync)
       gestures.forEach(event => document.removeEventListener(event, play, true))
     }
-  }, [src])
+  }, [src, hero])
 
-  return <video ref={ref} className="cover-video" src={src} poster={poster}
-    autoPlay muted loop playsInline controls={false} preload="auto"
-    disablePictureInPicture disableRemotePlayback tabIndex={-1} aria-label={label} />
+  return <>
+    <ResponsiveImage className="cover-video-poster" src={poster} alt="" sizes={hero ? "100vw" : "(max-width: 760px) 100vw, 40vw"} fetchPriority={hero ? "high" : "auto"} />
+    <video ref={ref} className="cover-video" data-playing={playing} onPlaying={() => setPlaying(true)}
+      muted loop playsInline controls={false} preload="none"
+      disablePictureInPicture disableRemotePlayback tabIndex={-1} aria-label={label} />
+  </>
 }
