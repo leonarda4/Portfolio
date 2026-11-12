@@ -1,0 +1,9 @@
+/* Covers are silent moving artwork; the enclosing card handles interaction. */
+.cover-video { pointer-events:none; }
+.cover-video::-webkit-media-controls,
+.cover-video::-webkit-media-controls-panel,
+.cover-video::-webkit-media-controls-start-playback-button,
+.cover-video::-webkit-media-controls-overlay-play-button {
+  display:none !important;
+  -webkit-appearance:none;
+}

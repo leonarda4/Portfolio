@@ -65,20 +65,41 @@
 .study-content .echo-graphic { padding:0; }
 .study-content .echo-graphic figcaption { max-width:var(--study-width); }
 .study-media-pair { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:24px; align-items:start; }
-/* Matched process frames preserve the full annotated screenshots. */
+/* Filled process frames share the same proportions in either orientation. */
+.case-study[data-project='project-four'] .testing-photos-board { aspect-ratio:1.65; }
+.case-study[data-project='project-four'] .testing-photo img {
+  aspect-ratio:4 / 3;
+  object-fit:cover;
+  background:var(--color-surface);
+}
+.case-study[data-project='project-four'] .testing-photo--portrait { width:21%; }
+.case-study[data-project='project-four'] .testing-photo--portrait img { aspect-ratio:3 / 4; }
+.study-metadata-photo { position:relative; height:0; z-index:1; }
+.case-study .study-metadata-photo .testing-photos-board { height:1px; aspect-ratio:auto; margin:0; }
+.case-study .study-metadata-photo .testing-photo { left:78%; top:-88px; }
+@media(max-width:760px) {
+  .study-metadata-photo { height:auto; aspect-ratio:3; margin-top:20px; }
+  .case-study .study-metadata-photo .testing-photo { left:69%; top:0; width:28%; }
+}
+/* Process thumbnails fill matched frames; the lightbox keeps each full image. */
+.case-study[data-project='project-four'] #behind-the-scenes .study-app-gallery {
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:var(--space-4);
+}
 .case-study[data-project='project-four'] #behind-the-scenes .image-button {
   aspect-ratio:4 / 3;
   background:var(--color-surface);
 }
 .case-study[data-project='project-four'] #behind-the-scenes .image-button img {
   height:100%;
-  object-fit:contain;
+  object-fit:cover;
 }
-.case-study[data-project='project-four'] #behind-the-scenes figcaption { text-align:left; }
+.case-study[data-project='project-four'] #behind-the-scenes .study-media:nth-child(2) img { object-position:20% center; }
 .study-app-gallery { display:grid; grid-template-columns:minmax(0,1fr); gap:24px; align-items:start; }
 .study-app-gallery .study-media figcaption { text-align:left; }
 @media(max-width:600px) {
   .study-media-pair { grid-template-columns:1fr; }
+  .case-study[data-project='project-four'] #behind-the-scenes .study-app-gallery { grid-template-columns:minmax(0,1fr); }
 }
 
 /* Preserve the paragraph breaks in the Tomsoft case-study copy. */

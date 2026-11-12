@@ -10,6 +10,37 @@ export default function StudyVideo({ item, block, reducedMotion }) {
 
   useEffect(() => () => clearTimeout(retryTimer.current), [])
 
+  useEffect(() => {
+    if (!autoPlay || block.muted !== false) return
+    const player = video.current
+    player.defaultMuted = false
+    player.muted = false
+    let started = false
+    const attempt = () => {
+      if (!started) player.play().catch(() => {})
+    }
+    const removeRetries = () => {
+      player.removeEventListener('canplay', attempt)
+      document.removeEventListener('pointerdown', attempt)
+      document.removeEventListener('keydown', attempt)
+    }
+    const playing = () => {
+      started = true
+      removeRetries()
+    }
+    // If audible autoplay is blocked, retry on the first user interaction.
+    // Stop retrying once playback starts so a deliberate pause stays paused.
+    player.addEventListener('playing', playing)
+    player.addEventListener('canplay', attempt)
+    document.addEventListener('pointerdown', attempt)
+    document.addEventListener('keydown', attempt)
+    attempt()
+    return () => {
+      removeRetries()
+      player.removeEventListener('playing', playing)
+    }
+  }, [autoPlay, block.muted, item.src])
+
   function reload() {
     setFailed(false)
     video.current?.load()

@@ -22,6 +22,21 @@
       "file": "collapse-feedback.png",
       "source": "images/138d2d6e1b5f49bcc274a41fbda81848627c76f0711c4bdb10d224810510437b.png",
       "imageNumber": 24
+    },
+    {
+      "file": "second-box-sketch.png",
+      "source": "images/65b6ece549793460cf1caef71284e74ae91ef5da5b40b632f005043793cb3b60.png",
+      "imageNumber": 10
+    },
+    {
+      "file": "floor-opening-sketch.png",
+      "source": "images/cb8427366a1459e53e1aacf852b49583c5c53fbeb15ab4fdbb697536a3ba3696.png",
+      "imageNumber": 12
+    },
+    {
+      "file": "wall-reveal-sketch.png",
+      "source": "images/9b2b04cf870390833d18a2652bee10b264b9171eab4d0974a66d67350d72a367.png",
+      "imageNumber": 22
     }
   ],
   "video": {
@@ -43,6 +58,43 @@
     "poster": {
       "output": "calibrated-film-poster.jpg",
       "sourceSeconds": 26
+    },
+    "caseStudyEdits": [
+      {
+        "output": "calibrated-experience.mp4",
+        "source": "calibrated-film.mp4",
+        "startSeconds": 0,
+        "endSeconds": 90,
+        "processing": "Exact first 90 seconds, H.264/AAC with fast start. Audio enabled by default in the main player."
+      },
+      {
+        "output": "participant-reactions.mp4",
+        "source": "calibrated-film.mp4",
+        "startSeconds": 90,
+        "end": "End of source (102.933 seconds)",
+        "processing": "Final reactions segment, H.264/AAC with fast start. Original audio retained, player muted by default. Poster from 91 seconds of the source."
+      }
+    ]
+  },
+  "projectReport": {
+    "source": "project-report 4.html",
+    "sectionsUsed": [
+      "3. Concept: Idea, Process and Design decision",
+      "4. How it works: Calibration and Delivery route",
+      "6. Participant test and Lessons for future projects"
+    ],
+    "usage": "Concise process and testing draft. Agentic coding account and annotated screenshots retained from the original case study and process archive. User-supplied process photos added as draggable groups without visible captions.",
+    "referencedImageDirectory": "images/",
+    "imageStatus": "Separate process-photo assets supplied by the user and included in the case study. Original relative report image filenames remain unmatched."
+  },
+  "processMedia": {
+    "sourceDirectory": "process-photo/",
+    "outputDirectory": "process-photo/web/",
+    "images": "All 11 supplied photos, orientation corrected and proportionally resized to at most 1400 pixels, WebP quality 84. Originals preserved.",
+    "video": {
+      "source": "process-photo/first-callibration.mov",
+      "output": "process-photo/web/first-calibration.mp4",
+      "processing": "Full duration, 1920px wide H.264/AAC with original stereo audio and fast start. Poster at 2 seconds. Originals preserved."
     }
   }
 }

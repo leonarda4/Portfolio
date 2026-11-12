@@ -12,9 +12,19 @@
   gap: 16px;
   height: 68px;
   padding-inline: 16px;
+}
+:root {
+  --tool-surface-background:var(--color-canvas);
+  --tool-surface-shadow:0 4px 30px #0000000d, 0 1px 5px #00000004;
+}
+:root[data-theme='dark'] {
+  --tool-surface-background:#272727;
+  --tool-surface-shadow:0 4px 28px #0005, inset 0 0 0 1px #ffffff0a;
+}
+.playful-dock,.tool-surface {
   border-radius: 20px;
-  background: var(--color-canvas);
-  box-shadow: 0 4px 30px #0000000d, 0 1px 5px #00000004;
+  background: var(--tool-surface-background);
+  box-shadow: var(--tool-surface-shadow);
 }
 .playful-tool { position: relative; flex: 0 0 70px; height: 68px; padding: 0; display: flex; align-items: flex-start; justify-content: center; clip-path: inset(-40px -16px 0); }
 .playful-tool:focus-visible { outline-offset: -4px; border-radius: 12px; }
@@ -40,7 +50,6 @@
 .playful-others { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 6px 14px; margin-bottom: 4px; border-bottom: 1px solid var(--color-border); }
 .playful-option { display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 10px 6px; border-radius: 6px; text-align: left; }
 .playful-option > span { font-size: 18px; line-height: 1; }
-:root[data-theme='dark'] .playful-dock { background: #272727; box-shadow: 0 4px 28px #0005, inset 0 0 0 1px #ffffff0a; }
 @media (hover: hover) {
   .playful-crayon-tool:not([aria-pressed='true']):hover .playful-crayon { transform: translateY(5px); }
   .playful-note-tool:hover .playful-notes { transform: translateY(7px) rotate(3deg); }

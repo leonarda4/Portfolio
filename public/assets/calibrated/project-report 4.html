@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hallway Drift: Project Documentation</title>
+<style>
+  :root {
+    --bg: #fcfcfc;          
+    --fg: #050505;         
+    --muted: #5c5c5c;
+    --line: #e4e4e4;
+    --head: #f3f3f3;
+    --accent: #050505;
+    --note-bg: #f6f6f6;
+    --warn: #a4400a;
+    --warn-bg: #fff1e6;
+    --radius: 10px;
+  }
+  * { box-sizing: border-box; }
+  html { font-size: 16px; scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.7;
+  }
+  .page { max-width: 48rem; margin: 0 auto; padding: 3rem 1.5rem 6rem; }
+  h1 { font-size: clamp(2.4rem, 6vw, 3.4rem); line-height: 1.05; letter-spacing: -0.03em; font-weight: 700; margin: 0 0 1rem; }
+  h2 { font-size: 1.6rem; letter-spacing: -0.02em; font-weight: 700; margin: 4rem 0 1.25rem; padding-top: 2rem; border-top: 1px solid var(--line); scroll-margin-top: 1.5rem; }
+  h3 { font-size: 1.05rem; font-weight: 650; letter-spacing: -0.01em; margin: 2.25rem 0 0.6rem; scroll-margin-top: 1.5rem; }
+  p { margin: 0 0 1rem; }
+  a { color: var(--accent); text-underline-offset: 3px; text-decoration-thickness: 1px; }
+  a:hover { text-decoration-thickness: 2px; }
+  .meta { margin: 0 0 2.5rem; color: var(--muted); }
+  .meta p { margin: 0.15rem 0; }
+  .meta p:first-child { font-size: 1.2rem; color: var(--fg); margin-bottom: 0.6rem; }
+  .source { font-size: 0.8rem; line-height: 1.5; color: var(--muted); margin: 0.25rem 0 1.75rem; }
+  .note { background: var(--note-bg); border-left: 3px solid var(--accent); padding: 0.8rem 1.1rem; margin: 1.5rem 0; border-radius: 0 var(--radius) var(--radius) 0; }
+  nav.toc { border: 1px solid var(--line); background: var(--note-bg); border-radius: var(--radius); padding: 1.25rem 1.75rem; margin: 2rem 0; }
+  nav.toc h2 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); border: 0; margin: 0 0 0.6rem; padding: 0; }
+  nav.toc ol { margin: 0; padding-left: 1.3rem; }
+  nav.toc li { margin: 0.35rem 0; }
+  nav.toc a { text-decoration: none; }
+  nav.toc a:hover { text-decoration: underline; }
+  .table-block { margin: 1.5rem 0 0; }
+  .table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); }
+  table { border-collapse: collapse; width: 100%; font-size: 0.92rem; line-height: 1.5; }
+  caption { text-align: left; font-weight: 600; padding: 0 0 0.6rem; }
+  th, td { padding: 0.7rem 1rem; text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); }
+  tbody tr:last-child td { border-bottom: 0; }
+  th { background: var(--head); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); font-weight: 600; }
+  td:first-child { width: 36%; font-weight: 500; }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+  .table-block > .source { margin-top: 0.75rem; }
+  ul, ol { margin: 0.5rem 0 1.25rem; padding-left: 1.4rem; }
+  li { margin: 0.45rem 0; padding-left: 0.2rem; }
+  li::marker { color: var(--muted); }
+  .toolbar { display: flex; justify-content: flex-end; margin-bottom: 1.5rem; }
+  button.save {
+    font: inherit;
+    font-size: 0.875rem;
+    font-weight: 500;
+    padding: 0.55rem 1.1rem;
+    border: 1px solid var(--fg);
+    background: var(--fg);
+    color: var(--bg);
+    border-radius: 999px;
+    cursor: pointer;
+    transition: opacity .15s;
+  }
+  button.save:hover { opacity: 0.8; }
+  button.save:focus-visible, a:focus-visible { outline: 2px solid var(--fg); outline-offset: 3px; }
+  .figure-block { margin: 2rem 0; break-inside: avoid; page-break-inside: avoid; }
+  .img-row { display: grid; gap: 1rem; }
+  .img-row.three { grid-template-columns: repeat(3, 1fr); }
+  .ph-img { border: 2px dashed var(--line); background: var(--note-bg); color: var(--muted); display: flex; align-items: center; justify-content: center; text-align: center; font-size: 0.9rem; padding: 0.5rem; border-radius: var(--radius); }
+  .ph-img.landscape { aspect-ratio: 16 / 9; width: 100%; }
+  .ph-img.portrait { aspect-ratio: 3 / 4; }
+  .fig-img { display: block; width: 100%; object-fit: cover; object-position: center; border-radius: var(--radius); background: var(--head); }
+  .fig-img.landscape { aspect-ratio: 16 / 9; }
+  .fig-img.portrait { aspect-ratio: 3 / 4; }
+  figcaption { font-size: 0.85rem; color: var(--muted); margin-top: 0.5rem; }
+  .placeholder { color: var(--muted); font-style: italic; }
+  .missing { color: var(--warn); background: var(--warn-bg); font-weight: 600; font-size: 0.8em; padding: 0.1rem 0.5rem; border-radius: 999px; white-space: nowrap; }
+  .titlepage { min-height: 50vh; }
+  @media (max-width: 600px) {
+    .page { padding: 2rem 1rem 4rem; }
+    .img-row.three { gap: 0.5rem; }
+    th, td { padding: 0.6rem 0.75rem; }
+    td:first-child { width: auto; }
+  }
+
+  @media print {
+    @page { size: A4; margin: 18mm 16mm; }
+    :root {
+      --bg: #ffffff; --fg: #000000; --muted: #333333; --line: #999999;
+      --head: #eeeeee; --accent: #000000; --note-bg: #f4f4f4; --warn: #000000; --warn-bg: #eeeeee;
+    }
+    html { font-size: 10.5pt; }
+    body { background: #fff; color: #000; }
+    .page { max-width: none; padding: 0; }
+    .no-print { display: none !important; }
+    .titlepage { min-height: 0; break-after: page; page-break-after: always; }
+    h1, h2, h3, caption { break-after: avoid; page-break-after: avoid; }
+    .table-block, table, tr, .note { break-inside: avoid; page-break-inside: avoid; }
+    .table-wrap { overflow: visible; border-radius: 0; }
+    h2 { margin-top: 1.5rem; }
+    a { color: #000; text-decoration: none; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="toolbar no-print">
+    <button class="save" type="button" onclick="window.print()">Save as PDF</button>
+  </div>
+
+  <section class="titlepage" id="title">
+    <h1>Hallway Drift</h1>
+    <div class="meta">
+      <p>Project Documentation</p>
+      <p>November 2026 </p>
+      <p>Zurich University Of The Arts</p>
+      <p>Class: Photolispia 2026</p>
+      <p>Studies: MA Interaction Design</p>
+      <p>Lecturer: Max Rheiner</p>
+      <p>Students: Lovrić Leonarda, Villegas Samantha Rue, Espig Jan, Staub Joel</p>
+
+    </div>
+
+    <nav class="toc" aria-label="Table of contents">
+      <h2>Contents</h2>
+      <ol>
+        <li><a href="#overview">Overview</a></li>
+        <li><a href="#quickfacts">Quick facts</a></li>
+        <li><a href="#concept">Concept</a></li>
+        <li><a href="#how">How it works</a></li>
+        <li><a href="#running">Running the experience</a></li>
+        <li><a href="#roadmap">Participant test, roadmap and limitations</a></li>
+      </ol>
+    </nav>
+  </section>
+
+  <!-- 1. OVERVIEW -->
+  <section id="overview">
+    <h2>1. Overview</h2>
+    <p>Hallway Drift is a PC-rendered WebXR project for the Meta Quest 3. A real hallway is captured as a 3D Gaussian splat model and calibrated so that the virtual model aligns with the physical space at real scale. Participants wearing the headset see this digital copy while their other senses still register the real hallway. The experience then changes what participants see in steps: objects appear and disappear, the room turns by 180 degrees, the lighting changes, and the hallway tilts by 90 degrees. Sound and atmosphere effects accompany each change. The project asks how strongly human perception relies on vision, and whether touch, balance, hearing and spatial memory are as reliable as assumed.</p>
+    <p class="source">Source: projectbriefing.md; PROJECT_PLAN.md; GAMEPLAY_FLOW.md; VALIDATION.md </p>
+  </section>
+
+  <!-- 2. QUICK FACTS -->
+  <section id="quickfacts">
+    <h2>2. Quick facts</h2>
+    <div class="table-block">
+      <div class="table-wrap">
+      <table>
+        <thead><tr><th>Item</th><th>Value</th></tr></thead>
+        <tbody>
+          <tr><td>Git link</td><td><a href="https://github.com/leonarda4/calibrated" target="_blank" rel="noopener">www.github.com/hallwaydrift</a>  </td></tr>
+          <tr><td>3D Gaussian scanner (device)</td><td><span >XGrid Portalcam Standart</span></td></tr>
+          <tr><td>3D scan app</td><td>X Grid LixelStudio V4.1.1.0</td></tr>
+          <tr><td>PC: operating system</td><td>Windows</td></tr>
+          <tr><td>Model used to code the calibration</td><td>Openrouter Model GLM 3.5 (agents worked directly on the Windows PC with OpenCode and OpenRouter)</td></tr>
+          <tr><td>Model used to merge the files and implement code</td><td>Chat GPT Codex</td></tr>
+          <tr><td>Model used for this documentation</td><td>Claude Sonnet 5.5 (claude-sonnet-5-5) in Claude Code, VS Code extension</td></tr>
+          <tr><td>Program for music production</td><td>Logic Pro X</td></tr>
+          <tr><td>Effect authoring</td><td>Houdini 22.0.466 (fog, mist and crawler packages); fracture source in a Blender 4.1 / Alembic 1.8 profile</td></tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. CONCEPT -->
+  <section id="concept">
+    <h2>3. Concept</h2>
+
+    <h3>Idea</h3>
+    <p>The project explores how strongly human perception relies on vision. A real hallway is captured as a 3D Gaussian splat model. After calibration, the virtual model matches the physical space one-to-one, so participants see a digital copy of the space they stand in, while touch, balance, hearing and spatial memory still report the real space.</p>
+
+    <figure class="figure-block">
+      <div class="img-row three">
+        <img class="fig-img portrait" src="images/idea01.jpeg" alt="Idea: image 1 of 3">
+        <img class="fig-img portrait" src="images/idea-02.jpg" alt="Idea: image 2 of 3">
+        <img class="fig-img portrait" src="images/idea-03.jpg" alt="Idea: image 3 of 3">
+      </div>
+    </figure>
+
+    <h3>Process</h3>
+    <p>The starting point of the concept was the question of how humans perceive reality through visual input. Gaussian splats were scanned; it was clear from the start that the work would use a real-world environment captured with a scanner. A requirement was that the calibration of the splat inside the program must be possible. Calibration was done first because it was the bottleneck: if calibration did not work, the concept could not continue. After that, modifications of the splat, sounds, atmospheric music and other objects were integrated. The storyline and interactions were then built up step by step until the final result: the complete process and journey of the user.</p>
+
+    <figure class="figure-block">
+      <img class="fig-img landscape" src="images/process-01.jpg" alt="Process">
+    </figure>
+
+    <h3>The changing experience</h3>
+    <p>After a successful calibration a game sequence starts. It has these stages:</p>
+    <ol>
+      <li>Welcome speech and a first box rising from the floor with the instruction to step on it.</li>
+      <li>When the headset is above the box, the room turns by 180 degrees around the fixed box; the first box disappears and a second box rises 10 cm inward from its wall, with an instruction to sit down.</li>
+      <li>The lights flicker once and hold at 30% brightness.</li>
+      <li>A graffiti wall appears at the far end and moves unseen toward the participant at 1 m/s, stopping if the participant looks at it; it disappears after 5 seconds of gaze or when the participant passes through it.</li>
+      <li>Hidden by the wall, a floor opening with a connected downward hallway appears. When the headset is above the opening, the whole environment tilts by 90 degrees about the opening's edge.</li>
+      <li>A scanned broom appears in the added hallway with the speech "Clean the room" and disappears when the participant stands over it.</li>
+      <li>Ten fractures break up the added hallway, which then fades into white void.</li>
+      <li>On return through the opening, or after a fallback timer, the environment glitches out to opaque white and a final recording, "What is reality", plays alone.</li>
+    </ol>
+    <p class="source">Source: GAMEPLAY_FLOW.md; CONTROL_OVERVIEW.md; INTERACTION_PLAN.md; projectbriefing.md.</p>
+    <p>The intent is that, guided by instructions, participants progressively lose orientation while the physical space stays the same. Objects are moved or removed, the room is rotated, the hallway tilts and the lighting changes.</p>
+    <p>The 180-degree turn "is an artistic divergence from calibrated alignment": the reversed hallway may no longer match the real walls.</p>
+    <p class="source">Source: INTERACTION_PLAN.md (Coordinate and lifecycle contract).</p>
+
+    <figure class="figure-block">
+      <div class="img-row three">
+        <img class="fig-img portrait" src="images/Participanttest-01.png" alt="Participant test: image 1 of 3">
+        <img class="fig-img portrait" src="images/Participanttest-02.png" alt="Participant test: image 2 of 3">
+        <img class="fig-img portrait" src="images/Participanttest-04.png" alt="Participant test: image 3 of 3">
+      </div>
+    </figure>
+
+    <h3>Design decision: no synthetic assets</h3>
+    <p>A handoff package describes a low, white, see-through creature (the crawler ghost, about 21 s animation); the package states that nothing has been tested in the app or on the headset. The crawler ghost is not used: it is aesthetically too synthetic. All splats show real objects, and a synthetic asset would cause alienation.</p>
+    <p class="source">Source: crawler_v4_handoff.md.</p>
+
+    <figure class="figure-block">
+      <img class="fig-img landscape" src="images/Participanttest-03.png" alt="Participant test">
+    </figure>
+  </section>
+
+  <!-- 4. HOW IT WORKS -->
+  <section id="how">
+    <h2>4. How it works</h2>
+
+    <h3>Calibration</h3>
+    <p>Two marked floor points, A and B, exist in the scan (raw coordinates A [2.99, 19.14, -1.41] and B [2.90, 18.16, -1.26]). After entering VR, the participant starts calibration with a controller trigger or a PC button, then has seven seconds to place the LEFT controller on physical mark A and the RIGHT controller on mark B. The scan is fitted by rotation about the vertical axis plus translation, and fades in over one second. The fit changes only the scan; the tracked headset and controller positions are not changed. A fit result is a consistency check, not independent acceptance. Small errors grow with distance: a 0.5 degree heading error creates about 8.7 cm lateral error at 10 m, and a 0.5% scale error creates 5 cm over 10 m.</p>
+    <p class="source">Source: projectbriefing.md; HEADSET_SETUP.md; PROJECT_PLAN.md; CALIBRATION.md.</p>
+
+    <h3>Delivery route</h3>
+    <p>The PC renders and streams to the Quest 3 over Wi-Fi: PC web app in Chrome, SteamVR as OpenXR runtime, Steam Link. This single route is the only one under development (decision 2026-11-03). A Meta Link route is parked because of an upstream bug (three.js sessions never presented over Horizon Link 208). Meta Link had problems rendering 3JS models, so the team switched to Steam Link. A Quest Browser route was used first for development and is not part of the current path. The SteamVR route has no passthrough, so the application renders an opaque world.</p>
+    <p class="source">Source: projectbriefing.md; PROJECT_PLAN.md; HEADSET_SETUP.md.</p>
+
+    <h3>Technology</h3>
+    <p>TypeScript, Vite, Three.js 0.180 and the gaussian-splats-3d library 0.4.7. All music, speech and sound effects are supplied local recordings; no speech service or key is needed. Tracked hands use generic WebXR hand models if the runtime exposes joint data.</p>
+    <p class="source">Source: PROJECT_PLAN.md; VOICE_SETUP.md; RENDER_QUALITY.md.</p>
+
+    <h3>Atmosphere and sound</h3>
+    <p>Four looping ambience pieces and three transition pieces form the soundtrack, with 1.2 s crossfades; each transition starts 2 s before its visual change. Spoken lines guide the participant. Foley includes footsteps that suggest other people passing, box knocks, a rumble for the wall, a tilt sound, fracture rumbles and a light-flicker sound. A boundary voice warns the participant when moving within 0.5 m of the live headset boundary toward a hallway end. Fog and mist fill the added hallway between 5 m and 33 m; the original hallway has no mist.</p>
+    <p class="source">Source: GAMEPLAY_FLOW.md; FOG.md; VOICE_SETUP.md.</p>
+  </section>
+
+  <!-- 5. RUNNING -->
+  <section id="running">
+    <h2>5. Running the experience</h2>
+
+    <h3>Procedure</h3>
+    <ol>
+      <li>Start the PC web app in Chrome, with SteamVR as the OpenXR runtime.</li>
+      <li>Connect the Meta Quest 3 through Steam Link.</li>
+      <li>Enter VR and start calibration with a controller trigger or the PC button.</li>
+      <li>Within seven seconds, place the LEFT controller on physical mark A and the RIGHT controller on mark B. The scan fades in over one second.</li>
+      <li>The game sequence starts. The operator supervises throughout and can use the operator panel (see below).</li>
+    </ol>
+    <p class="source">Source: HEADSET_SETUP.md; PROJECT_PLAN.md; GAMEPLAY_FLOW.md.</p>
+
+    <h3>Safety and operation</h3>
+    <p>Physical runs are supervised. Participants cannot see their own feet or the real floor through the fog, and the operator must brief participants. An operator panel offers STOP, reset, manual control of each effect, and a desktop preview of the full sequence without a headset.</p>
+    <p class="source">Source: FOG_V3_ADDENDUM.md; CONTROL_OVERVIEW.md.</p>
+    <p>The application can only be used with supervision by another person in the room who is not wearing a headset, because the person wearing the headset does not see the real world, only the modified Gaussian splats. In the tests, at least three team members guided each participant.</p>
+  </section>
+
+  <!-- 6. ROADMAP -->
+  <section id="roadmap">
+    <h2>6. Participant test, roadmap and limitations</h2>
+    <p class="source">Source: user input (Project_text.md). Wording follows the team's answers; nothing is added.</p>
+
+    <h3>Participant test</h3>
+    <p>A test with at least 15 participants has been carried out, supervised by at least three team members per participant. In the team's rough overview, participants were surprised, the room turning made them lose balance, and orientation after the turn was impossible. No measurements of participants are recorded.</p>
+
+    <div class="table-block">
+      <div class="table-wrap">
+      <table>
+        <caption>Table 1. Participant test and scale check</caption>
+        <thead><tr><th>Item</th><th>Value</th></tr></thead>
+        <tbody>
+          <tr><td>Participants tested</td><td>At least 15</td></tr>
+          <tr><td>Team members guiding each participant</td><td>At least three</td></tr>
+          <tr><td>Scale of the scan</td><td>1:1, checked against a door frame (90 cm)</td></tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+
+    <h3>Planned tests and changes</h3>
+    <ul>
+      <li>Test running the rendering entirely on the headset, without streaming from the PC via Steam Link.</li>
+      <li>Remove the Meta Quest boundary. Reason: the program is currently interrupted when the user leaves the boundary.</li>
+      <li>Larger tested areas in further tests, in segments: 30 m and more. This requires the Meta Quest in developer mode to modify and adjust the boundary. The current boundary allows an area of approximately 10 x 5 m.</li>
+    </ul>
+
+    <h3>Open decisions (no decision yet)</h3>
+    <ul>
+      <li>Continuation of the project.</li>
+      <li>Retrying the Meta Link route.</li>
+      <li>Other headsets, other PCs or standalone operation.</li>
+      <li>Which other hallways or rooms to capture (to be defined).</li>
+      <li>Next step and milestones (no date or name given).</li>
+    </ul>
+
+    <h3>Known limitations and out of scope</h3>
+    <ul>
+      <li>No additional changes to the experience sequence.</li>
+      <li>The crawler ghost is not added: it is aesthetically too synthetic; all splats show real objects, and a synthetic asset would cause alienation.</li>
+      <li>No version for a different audience. The reviewed version is the last version.</li>
+      <li>No several users or headsets at the same time. One device only.</li>
+      <li>No passthrough or mixed-reality version with the current setup, because Steam Link does not provide passthrough yet.</li>
+    </ul>
+
+    <h3>Lessons for future projects</h3>
+    <ul>
+      <li>In a group of four, work was sometimes blocked because there was only one computer for modifying the code, connected to the single VR headset. For future projects of this kind and group size, two setups are required so tasks can be executed in parallel.</li>
+    </ul>
+
+    <figure class="figure-block">
+      <img class="fig-img landscape" src="images/lesson-01.jpg" alt="Lessons for future projects">
+    </figure>
+  </section>
+
+</div>
+</body>
+</html>

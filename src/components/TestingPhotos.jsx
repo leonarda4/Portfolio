@@ -63,8 +63,8 @@ export default function TestingPhotos({ block }) {
         return <button
           type="button"
           key={index}
-          className={`testing-photo${active === index ? ' is-dragging' : ''}`}
-          style={{ '--angle': `${angles[index % angles.length]}deg`, '--column': index % 3, '--row': Math.floor(index / 3), ...(position ? { left: `${position.x / (board.current?.clientWidth || 1) * 100}%`, top: `${position.y / (board.current?.clientHeight || 1) * 100}%`, zIndex: position.z } : {}) }}
+          className={`testing-photo${photo.orientation === 'portrait' ? ' testing-photo--portrait' : ''}${active === index ? ' is-dragging' : ''}`}
+          style={{ '--angle': `${photo.angle ?? angles[index % angles.length]}deg`, '--column': index % 3, '--row': Math.floor(index / 3), ...(position ? { left: `${position.x / (board.current?.clientWidth || 1) * 100}%`, top: `${position.y / (board.current?.clientHeight || 1) * 100}%`, zIndex: position.z } : {}) }}
           aria-label={`${photo.alt || `Testing photo ${index + 1}`}. Move photo with arrow keys.`}
           onPointerDown={event => start(event, index)}
           onPointerMove={event => {

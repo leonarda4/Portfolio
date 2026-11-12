@@ -1,5 +1,5 @@
-import { lazy, Suspense, useEffect, useRef, useState } from 'react'
-import { createPortal } from 'react-dom'
+import { lazy, Suspense, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { createPortal, flushSync } from 'react-dom'
 import { experiments, profile, projects } from './portfolioData'
 import BeforeAfterChart from './components/BeforeAfterChart'
 import TestingPhotos from './components/TestingPhotos'
@@ -10,11 +10,13 @@ import TomsoftCover from './components/TomsoftCover'
 import AdminSetupFlow from './components/AdminSetupFlow'
 import './components/EchoProject.css'
 import LayoutNav from './components/LayoutNav'
+import MobileNavigation from './components/MobileNavigation'
 import ThemeToggle from './components/ThemeToggle'
 import { SUPPORTING_PALETTE } from '../design-system/playful-palette'
 import SoundscapeCards from './components/SoundscapeCards'
 import StickerBoard from './components/StickerBoard'
 import StudyVideo from './components/StudyVideo'
+import CoverVideo from './components/CoverVideo'
 import { AboutContactSection, PlaySection } from './components/HomeSections'
 import ResumeScribbles from './components/ResumeScribbles'
 import useSectionNavigation from './hooks/useSectionNavigation'
@@ -27,18 +29,18 @@ const EchoCover = lazy(() => import('./components/EchoCover'))
 const EchoParticipantPreview = lazy(() => import('./components/EchoParticipantPreview'))
 const GradientGallery = lazy(() => import('./components/GradientGallery'))
 
-const HOME_SECTIONS = [{ id: 'home', label: 'Home' }, { id: 'work', label: 'Work' }, { id: 'play', label: 'Playground' }, { id: 'about', label: 'About me' }, { id: 'contact', label: 'Contact' }]
+const HOME_SECTIONS = [{ id: 'home', label: 'Home' }, { id: 'work', label: 'Work' }, { id: 'play', label: 'Fun' }, { id: 'about', label: 'About me' }, { id: 'contact', label: 'Contact' }]
 const HOME_ROUTES = new Set(['/', ...HOME_SECTIONS.map(section => `/${section.id}`)])
 
 function SiteNavigation({ active, onJump }) {
   const links = HOME_SECTIONS.map(section => ({ ...section, ...(onJump ? { onClick: () => onJump(section.id) } : { href: section.id === 'home' ? '#/' : `#/${section.id}` }) }))
-  return <aside className="layout-sidebar home-nav"><LayoutNav label="Main navigation" items={links} active={active} /><ThemeToggle /></aside>
+  links.push({ id: 'resume', label: 'Resume', href: profile.resume, external: true })
+  return <aside className="layout-sidebar home-nav"><LayoutNav className="desktop-nav" label="Main navigation" items={links} active={active} /><ThemeToggle /><MobileNavigation label="Main navigation" items={links} active={active} /></aside>
 }
 function Mockup({ variant = 'desktop' }) {
   return <div className={`mockup mockup--${variant}`} aria-hidden="true"><div className="mockup-bar"><i /><i /><i /></div><div className="mockup-body"><div className="mockup-side"><b /><b /><b /><b /></div><div className="mockup-content"><span className="skeleton heading" /><span className="skeleton" /><div className="mockup-tiles"><i /><i /><i /></div><div className="mockup-chart">{[34, 55, 43, 76, 60, 85, 70].map((h,i) => <i key={i} style={{height: `${h}%`}} />)}</div><span className="skeleton" /><span className="skeleton" /></div></div></div>
 }
 function Cover({ project, hero = false }) {
-  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
   if (project.coverGraphic === 'tomsoft') return <div data-cover="tomsoft" className={`project-cover project-cover--graphic ${hero ? 'case-cover' : ''}`}><TomsoftCover label={project.coverAlt} /></div>
   if (project.coverPlaceholder && !project.cover && !project.coverVideo) return <div data-cover={project.slug} className={`project-cover ${hero ? 'case-cover' : ''}`} style={{ '--tint': project.tint }}>
     <StoryCover {...project.coverPlaceholder} />
@@ -49,7 +51,7 @@ function Cover({ project, hero = false }) {
   if (project.coverGraphic === 'echo') return <div className={`project-cover project-cover--graphic ${hero ? 'case-cover' : ''}`} style={{ '--tint': project.accent, '--project-accent': project.accent }}>
     <Suspense fallback={<div className="echo-cover-loading" role="img" aria-label={project.coverAlt} />}><EchoCover hero={hero} /></Suspense>
   </div>
-  return <div data-cover={project.slug} className={`project-cover ${hero ? 'case-cover' : ''} ${project.coverFit === 'contain' ? 'project-cover--contain' : ''} ${hero && project.coverAspectRatio ? 'case-cover--native-ratio' : ''}`} style={{ '--tint': project.tint, '--cover-aspect-ratio': project.coverAspectRatio, backgroundColor: project.coverBackground }}>{project.coverVideo ? <video src={project.coverVideo} poster={project.cover} autoPlay={!reducedMotion} muted loop playsInline controls={false} disablePictureInPicture disableRemotePlayback preload="metadata" aria-label={project.coverAlt || `${project.title}: installation video`} /> : project.cover ? <img src={project.cover} alt={project.coverAlt} /> : <><span className="cover-label">{project.slug.replaceAll('-', ' ')} / cover image</span><>{project.variant === 'installation' ? <div className="installation-placeholder"><span>＋</span><span>Installation photograph / audiovisual still</span></div> : <Mockup variant={project.variant} />}</><span className="cover-note">Your project imagery goes here</span></>}</div>
+  return <div data-cover={project.slug} className={`project-cover ${hero ? 'case-cover' : ''} ${project.coverFit === 'contain' ? 'project-cover--contain' : ''} ${hero && project.coverAspectRatio ? 'case-cover--native-ratio' : ''}`} style={{ '--tint': project.tint, '--cover-aspect-ratio': project.coverAspectRatio, backgroundColor: project.coverBackground }}>{project.coverVideo ? <CoverVideo src={project.coverVideo} poster={project.cover} label={project.coverAlt || `${project.title}: installation video`} /> : project.cover ? <img src={project.cover} alt={project.coverAlt} /> : <><span className="cover-label">{project.slug.replaceAll('-', ' ')} / cover image</span><>{project.variant === 'installation' ? <div className="installation-placeholder"><span>＋</span><span>Installation photograph / audiovisual still</span></div> : <Mockup variant={project.variant} />}</><span className="cover-note">Your project imagery goes here</span></>}</div>
 }
 function ProjectCard({ project, onOpen }) {
   return <a className="project-card" href={`#/project/${project.slug}`} aria-haspopup={onOpen ? 'dialog' : undefined} onClick={onOpen ? event => { if (event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey) { event.preventDefault(); onOpen(project) } } : undefined} style={{ '--project-accent': project.accent }}><Cover project={project} /><div className="card-copy"><h2>{project.cardTitle || project.title}{project.cardStatus && <span className="card-status"> / {project.cardStatus}</span>}</h2></div></a>
@@ -81,7 +83,7 @@ function Footer() {
 function Home({ onPreview }) {
   const { active, jump } = useSectionNavigation(HOME_SECTIONS)
   return <main className="home page-grid"><SiteNavigation active={active} onJump={jump} /><div className="layout-main">
-    <section id="home" className="intro" aria-label="Home"><h1>Leonarda Lovrić is a product designer who thinks in systems <span className="accent-heading accent-type">&amp; plays with tech.</span></h1></section>
+    <section id="home" className="intro" aria-label="Home"><h1><span className="intro-statement">Leonarda Lovrić is a product designer who <span className="intro-phrase">thinks in systems</span></span><span className="accent-heading accent-type">&amp; plays with tech.</span></h1></section>
     <section id="work" className="home-work" aria-label="Selected work"><div className="project-grid">{projects.map(p => <ProjectCard key={p.slug} project={p} />)}</div></section>
     <PlaySection renderCard={experiment => <ProjectCard key={experiment.slug} project={experiment} onOpen={onPreview} />} />
     <AboutContactSection><Footer /></AboutContactSection>
@@ -168,28 +170,35 @@ function CaseStudy({ project }) {
     return () => { document.removeEventListener('keydown', key); document.body.style.overflow = oldOverflow; previous?.focus() }
   }, [lightbox])
   function jump(id) { document.getElementById(id)?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: 'start' }); setActive(id) }
-  return <><main className="case-study" data-project={project.slug} style={{ '--project-accent': project.accent }}><Cover project={project} hero /><div className="study-layout page-grid"><aside className="study-nav layout-sidebar"><div className="sidebar-heading"><a className="sidebar-back" href="#/"><span className="sidebar-back-arrow" aria-hidden="true">←</span>Back to Home</a></div><LayoutNav label="Case study sections" items={project.sections.map(section => ({ id: section.id, label: section.navLabel || section.label, onClick: () => jump(section.id) }))} active={active} /></aside><article className="study-content"><h1 className="study-title">{project.title}</h1><p className="study-summary">{project.summary}</p><dl className="project-metadata">{project.metadata.map(item => <div key={item.label}><dt>{item.label}</dt><dd>{item.value}</dd></div>)}</dl>{project.sections.filter(section => section.placement === 'opening').map(section => <StudySection key={section.id} section={section} onOpen={setLightbox} />)}{project.teaser && <div className="study-teaser"><Block block={{ ...project.teaser, title: '' }} onOpen={setLightbox} /></div>}{project.sections.filter(section => section.placement !== 'opening').map(section => <StudySection key={section.id} section={section} onOpen={setLightbox} />)}<nav className="study-end" aria-label="Project navigation"><button type="button" onClick={() => window.scrollTo({ top: 0, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' })}>Back to top ↑</button><a href={`#/project/${nextProject.slug}`}>Next project →</a></nav></article></div></main>{lightbox && createPortal(<div className="lightbox" role="dialog" aria-modal="true" aria-label={lightbox.alt} onClick={() => setLightbox(null)}><button className="lightbox-close" onClick={() => setLightbox(null)}><span className="sidebar-back-arrow" aria-hidden="true">×</span>Close</button><img src={lightbox.src} alt={lightbox.alt} onClick={e => e.stopPropagation()} /></div>, document.body)}</>
+  const sectionLinks = project.sections.map(section => ({ id: section.id, label: section.navLabel || section.label, onClick: () => jump(section.id) }))
+  return <><main className="case-study" data-project={project.slug} style={{ '--project-accent': project.accent }}><Cover project={project} hero /><div className="study-layout page-grid"><aside className="study-nav layout-sidebar"><div className="sidebar-heading"><a className="sidebar-back" href="#/"><span className="sidebar-back-arrow" aria-hidden="true">←</span>Back to Home</a></div><LayoutNav className="desktop-nav" label="Case study sections" items={sectionLinks} active={active} /><MobileNavigation label="Case study sections" items={sectionLinks} active={active} backLink /></aside><article className="study-content"><h1 className="study-title">{project.title}</h1><p className="study-summary">{project.summary}</p><dl className="project-metadata">{project.metadata.map(item => <div key={item.label}><dt>{item.label}</dt><dd>{item.value}</dd></div>)}</dl>{project.metadataPhoto && <div className="study-metadata-photo"><TestingPhotos block={{ items: [project.metadataPhoto] }} /></div>}{project.sections.filter(section => section.placement === 'opening').map(section => <StudySection key={section.id} section={section} onOpen={setLightbox} />)}{project.teaser && <div className="study-teaser"><Block block={{ ...project.teaser, title: '' }} onOpen={setLightbox} /></div>}{project.sections.filter(section => section.placement !== 'opening').map(section => <StudySection key={section.id} section={section} onOpen={setLightbox} />)}<nav className="study-end" aria-label="Project navigation"><button type="button" onClick={() => window.scrollTo({ top: 0, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' })}>Back to top ↑</button><a href={`#/project/${nextProject.slug}`}>Next project →</a></nav></article></div></main>{lightbox && createPortal(<div className="lightbox" role="dialog" aria-modal="true" aria-label={lightbox.alt} onClick={() => setLightbox(null)}><button className="lightbox-close" onClick={() => setLightbox(null)}><span className="sidebar-back-arrow" aria-hidden="true">×</span>Close</button><img src={lightbox.src} alt={lightbox.alt} onClick={e => e.stopPropagation()} /></div>, document.body)}</>
 }
 function VideoPreview({ experiment, onClose }) {
   const dialog = useRef(null)
-  useEffect(() => {
+  const player = useRef(null)
+  useLayoutEffect(() => {
     const element = dialog.current
+    const video = player.current
     const previousFocus = document.activeElement
     const overflow = document.body.style.overflow
     const playing = [...document.querySelectorAll('#root video')].filter(video => !video.paused)
     playing.forEach(video => video.pause())
     element.showModal()
     document.body.style.overflow = 'hidden'
+    // Start during the opening click/tap, while its audio permission is active.
+    video.muted = false
+    video.play().catch(() => {}) // Native Play remains available if playback is blocked.
     return () => {
+      video.pause()
       element.close()
       document.body.style.overflow = overflow
       playing.forEach(video => { if (video.isConnected) video.play().catch(() => {}) })
       previousFocus?.focus({ preventScroll: true })
     }
   }, [])
-  return createPortal(<dialog ref={dialog} className="lightbox video-preview" aria-label={experiment.title} onCancel={event => { event.preventDefault(); onClose() }} onClick={event => { if (event.target === event.currentTarget) onClose() }}>
+  return createPortal(<dialog ref={dialog} className="lightbox video-preview" style={{ '--video-aspect': experiment.width / experiment.height || 16 / 9 }} aria-label={experiment.title} onCancel={event => { event.preventDefault(); onClose() }} onClick={event => { if (event.target === event.currentTarget) onClose() }}>
     <button type="button" className="lightbox-close" onClick={onClose}><span className="sidebar-back-arrow" aria-hidden="true">×</span>Close</button>
-    <video src={experiment.video} poster={experiment.cover} width={experiment.width} height={experiment.height} controls playsInline preload="metadata" aria-label={experiment.title}>
+    <video ref={player} src={experiment.video} poster={experiment.cover} width={experiment.width} height={experiment.height} autoPlay muted={false} controls playsInline preload="auto" aria-label={experiment.title}>
       <a href={experiment.video}>Watch the full video</a>
     </video>
   </dialog>, document.body)
@@ -197,6 +206,10 @@ function VideoPreview({ experiment, onClose }) {
 export default function App() {
   const [route, setRoute] = useState(window.location.hash.slice(1) || '/')
   const [videoPreview, setVideoPreview] = useState(null)
+  function openPreview(experiment) {
+    // Mount and start the player before the user's activation event returns.
+    flushSync(() => setVideoPreview(experiment))
+  }
   useEffect(() => { const change = () => setRoute(window.location.hash.slice(1) || '/'); window.addEventListener('hashchange', change); return () => window.removeEventListener('hashchange', change) }, [])
   const project = projects.find(p => route === `/project/${p.slug}`)
   const experiment = experiments.find(item => route === `/project/${item.slug}`)
@@ -209,5 +222,5 @@ export default function App() {
     else if (isHome && route !== '/' && route !== '/home') document.getElementById(route.slice(1))?.scrollIntoView({ block: 'start', behavior: 'instant' })
     else window.scrollTo({ top: 0, behavior: 'instant' })
   }, [route, project, experiment, isHome])
-  return <><a className="skip-link" href="#main-content" onClick={e => { e.preventDefault(); document.getElementById('main-content')?.focus() }}>Skip to content</a><StickerBoard localOnly key={isHome || experiment ? '/' : route} page={isHome || experiment ? '/' : route} /><div id="main-content" tabIndex={-1}>{project ? <CaseStudy key={project.slug} project={project} /> : isHome || experiment ? <Home onPreview={setVideoPreview} /> : <main className="about-page page-grid"><SiteNavigation /><div className="layout-main about-content"><h1>Project not found</h1><a href="#/work">Back to selected work</a></div></main>}</div>{preview && <VideoPreview key={preview.slug} experiment={preview} onClose={closePreview} />}</>
+  return <><a className="skip-link" href="#main-content" onClick={e => { e.preventDefault(); document.getElementById('main-content')?.focus() }}>Skip to content</a><StickerBoard localOnly key={isHome || experiment ? '/' : route} page={isHome || experiment ? '/' : route} /><div id="main-content" tabIndex={-1}>{project ? <CaseStudy key={project.slug} project={project} /> : isHome || experiment ? <Home onPreview={openPreview} /> : <main className="about-page page-grid"><SiteNavigation /><div className="layout-main about-content"><h1>Project not found</h1><a href="#/work">Back to selected work</a></div></main>}</div>{preview && <VideoPreview key={preview.slug} experiment={preview} onClose={closePreview} />}</>
 }

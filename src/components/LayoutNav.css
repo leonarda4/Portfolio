@@ -1,6 +1,8 @@
 .layout-nav { display:flex; flex-direction:column; gap:var(--space-1); }
-.layout-nav .layout-nav-item { position:relative; display:block; padding:var(--space-2) 0 var(--space-2) var(--space-6); margin:0; text-align:left; font:var(--weight-regular) var(--type-small-size)/var(--type-small-line) var(--font-family); color:var(--color-muted); background:none; border:0; }
-.layout-nav .layout-nav-item::before { content:''; position:absolute; left:0; top:50%; width:6px; height:6px; border-radius:50%; background:currentColor; transform:translateY(-50%); opacity:0; }
+.layout-nav .layout-nav-item,.sidebar-back,.mobile-menu-back { --nav-icon-size:1em; position:relative; display:block; padding:var(--space-2) 0 var(--space-2) var(--space-6); margin:0; text-align:left; font:var(--weight-regular) var(--type-small-size)/var(--type-small-line) var(--font-family); color:var(--color-muted); background:none; border:0; }
+/* Dots and back arrows share one centered icon column at every text size. */
+.layout-nav .layout-nav-item::before { content:''; position:absolute; left:calc(var(--nav-icon-size) / 2); top:50%; width:6px; height:6px; border-radius:50%; background:currentColor; transform:translate(-50%,-50%); opacity:0; }
+:is(.sidebar-back,.mobile-menu-back) > .sidebar-back-arrow { position:absolute; left:0; top:50%; display:grid; place-items:center; width:var(--nav-icon-size); height:var(--nav-icon-size); line-height:1; transform:translateY(-50%); }
 .layout-nav .layout-nav-item:is(:hover,.active) { color:var(--color-text); }
 .layout-nav .layout-nav-item.active { font-weight:var(--weight-medium); }
 .layout-nav .layout-nav-item.active::before { opacity:1; }

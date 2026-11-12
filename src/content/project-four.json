@@ -31,7 +31,7 @@
     },
     {
       "label": "Timeline",
-      "value": "Oct 2026 – Nov 2026"
+      "value": "1 week"
     }
   ],
   "sections": [
@@ -46,15 +46,16 @@
         },
         {
           "type": "videos",
-          "autoPlay": false,
+          "autoPlay": true,
           "muted": false,
           "loop": false,
           "controls": true,
+          "preload": "auto",
           "items": [
             {
-              "src": "/assets/calibrated/calibrated-film.mp4",
+              "src": "/assets/calibrated/calibrated-experience.mp4",
               "poster": "/assets/calibrated/calibrated-film-poster.jpg",
-              "title": "Calibrated: full film",
+              "title": "Calibrated: the experience",
               "width": 1920,
               "height": 1080
             }
@@ -63,57 +64,126 @@
       ]
     },
     {
-      "id": "working-with-codex",
+      "id": "behind-the-scenes",
       "label": "Process",
       "blocks": [
         {
           "type": "text",
-          "title": "Designing through conversation with Codex",
-          "body": "I described the behaviour, tested the result, and used annotated screenshots to explain what needed to change. Each iteration made the instructions more specific: what should move, what should stay fixed, and when the illusion should unfold."
+          "title": "From a scanned hallway to an impossible space",
+          "body": "We began with a question about perception, captured a real hallway, then built the experience one interaction at a time. Calibration came first: the illusion needed a believable starting point."
         },
         {
-          "type": "storyFlow",
+          "type": "testingPhotos",
           "items": [
             {
-              "title": "01 / Alignment",
-              "body": "We used controller landmarks to align the scan with the physical space. A believable starting point gave the later distortions something to break."
+              "src": "/assets/calibrated/process-photo/web/brainstorming-warrior.webp",
+              "alt": "Playful brainstorming during the early concept stage",
+              "orientation": "portrait"
             },
             {
-              "title": "02 / Interaction",
-              "body": "Manual buttons let me test box placement and hallway rotation before adding automatic triggers. The physical props stayed anchored while the virtual space moved."
+              "src": "/assets/calibrated/process-photo/web/calibration-class.webp",
+              "alt": "Early headset calibration in the classroom",
+              "orientation": "portrait"
             },
             {
-              "title": "03 / Refinement",
-              "body": "When the collapsing hallway looked too neatly cut, I asked Codex for uneven patches of disappearing splats. Visual feedback shaped the effect, timing and transitions."
+              "src": "/assets/calibrated/process-photo/web/calibration.webp",
+              "alt": "Checking headset alignment at the hallway doorway",
+              "orientation": "portrait"
+            },
+            {
+              "src": "/assets/calibrated/process-photo/web/desktop-connection.webp",
+              "alt": "Desktop view while connecting the headset",
+              "orientation": "portrait"
+            },
+            {
+              "src": "/assets/calibrated/process-photo/web/hallway-objects.webp",
+              "alt": "Physical box placed in the hallway for the experience",
+              "orientation": "portrait"
+            },
+            {
+              "src": "/assets/calibrated/process-photo/web/IMG_1867.webp",
+              "alt": "Developing the experience on a laptop"
+            },
+            {
+              "src": "/assets/calibrated/process-photo/web/IMG_1881.webp",
+              "alt": "Team working beside the hallway installation"
             }
-          ],
-          "label": "Three stages of prototyping with Codex"
-        }
-      ]
-    },
-    {
-      "id": "behind-the-scenes",
-      "label": "Behind the scenes",
-      "blocks": [
+          ]
+        },
         {
           "type": "text",
-          "title": "Screenshots as prompts",
-          "body": "I drew directly on screenshots to show Codex where to cut and how the spaces should connect. These behind-the-scenes images became instructions for the next iteration. Prompts below are condensed from the original conversations."
+          "title": "Virtual characters anchored to real people",
+          "body": "An early direction was to recognise people standing in the hallway and map game characters or ghosts onto their positions in VR. They would move through the Gaussian splat world as the real people walked around, alongside generated characters that could pass straight through the participant. We wanted to explore the unsettling moment of reaching out to a virtual character and feeling a real person in exactly the same place. This idea later gave way to transforming the hallway itself."
         },
         {
-          "type": "mediaPair",
+          "type": "text",
+          "title": "Aligning the digital copy with the real hallway",
+          "body": "Two controller landmarks aligned the scan with the physical space. We checked its scale against a door frame and moved to SteamVR and Steam Link when the original streaming route failed."
+        },
+        {
+          "type": "videos",
+          "autoPlay": false,
+          "muted": true,
+          "loop": false,
+          "controls": true,
+          "preload": "metadata",
           "items": [
             {
+              "src": "/assets/calibrated/process-photo/web/first-calibration.mp4",
+              "poster": "/assets/calibrated/process-photo/web/first-calibration-poster.jpg",
+              "title": "First calibration trial",
+              "width": 1920,
+              "height": 1080
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "title": "Shaping Gaussian splats through agentic coding",
+          "body": "I started with a cube and a hallway rotation, then directed Codex through prompts and annotated screenshots. It understood where I wanted to cut, move and connect the splats. I found this more effective than manipulating them by hand with the tools available to me."
+        },
+        {
+          "type": "testingPhotos",
+          "items": [
+            {
+              "src": "/assets/calibrated/box-alignment.png",
+              "alt": "Early prototype with a simple blue cube in the scanned hallway"
+            },
+            {
+              "src": "/assets/calibrated/second-box-sketch.png",
+              "alt": "Red floor sketch marking the second box position beside the wall"
+            },
+            {
+              "src": "/assets/calibrated/floor-opening-sketch.png",
+              "alt": "Hallway screenshot with a red outline marking the proposed floor opening"
+            },
+            {
+              "src": "/assets/calibrated/wall-reveal-sketch.png",
+              "alt": "Annotated screenshot outlining the moving wall and the opening it should reveal"
+            },
+            {
               "src": "/assets/calibrated/hallway-cut-sketch.png",
-              "alt": "Screenshot sent to Codex with red markings defining the hallway section to extract",
-              "label": "Prompt: Extract this section as a separate splat, with cuts perpendicular to the walls and floor. Keep the existing interactions and positions unchanged."
+              "alt": "Screenshot sent to Codex with red markings defining the hallway section to extract"
             },
             {
               "src": "/assets/calibrated/hallway-connection-sketch.png",
-              "alt": "Screenshot sent to Codex with handwritten floor and orientation labels around the opening",
-              "label": "Prompt: Connect the hallway cutout to this opening. Match its floor, ceiling and walls to the marked edges, and keep it attached to the hole."
+              "alt": "Screenshot sent to Codex with handwritten floor and orientation labels around the opening"
+            },
+            {
+              "src": "/assets/calibrated/collapse-feedback.png",
+              "alt": "Screenshot used to ask Codex for irregular disintegration instead of a perfectly straight cut"
             }
           ]
+        },
+        {
+          "type": "text",
+          "title": "Building the sequence one interaction at a time",
+          "body": "A second box, a moving wall and an opening into another corridor followed. We added sound, lighting and atmosphere through headset trials, keeping the scanned objects familiar as the space became increasingly disorienting."
+        },
+        {
+          "type": "text",
+          "title": "Choosing a believable visual language",
+          "body": "We left out a creature that looked too synthetic. Real scanned objects made the impossible transformations more convincing; the final collapse broke the hallway into uneven patches before dissolving into white."
         }
       ]
     },
@@ -123,15 +193,64 @@
       "blocks": [
         {
           "type": "text",
-          "title": "Disorientation from two perspectives",
-          "body": "We recorded both the VR view and what participants were doing in the physical space. This let us compare what they saw with how they moved and reacted."
+          "title": "A two-minute experience that drew a crowd",
+          "body": "People queued to try calibrated, with each experience lasting about two minutes. We recorded most participants both in the physical hallway and from their view inside VR, capturing how they moved and reacted as the world around them changed."
+        },
+        {
+          "type": "storyCallout",
+          "title": "From concept to 15 participants in one week",
+          "body": "We built calibrated in just one week and tested it with 15 people. All participant sessions ran without technical difficulties."
         },
         {
           "type": "text",
-          "title": "Participant reactions",
-          "body": "Participants described the experience as very disorienting, compared it to Inception, and called it amazing. Their reactions echoed our intention: to make a familiar space feel impossible and leave people questioning what their eyes were telling them."
+          "title": "Convincing realism and enthusiastic reactions",
+          "body": "Participants were amazed by how real the experience felt. Some mistook the position of the door and bumped into a wall, showing how strongly the virtual space had shifted their sense of the physical hallway. The feedback was overwhelmingly positive, with people comparing the experience to Inception and describing it as both amazing and disorienting."
+        },
+        {
+          "type": "videos",
+          "autoPlay": false,
+          "muted": true,
+          "loop": false,
+          "controls": true,
+          "preload": "metadata",
+          "items": [
+            {
+              "src": "/assets/calibrated/participant-reactions.mp4",
+              "poster": "/assets/calibrated/participant-reactions-poster.jpg",
+              "title": "Participant reactions",
+              "width": 1920,
+              "height": 1080
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "reflection",
+      "label": "Reflection",
+      "blocks": [
+        {
+          "type": "text",
+          "title": "Finding direction through pivots",
+          "body": "I really enjoyed the shifts in direction. We began with the idea of mapping characters onto people and ended up making the hallway itself feel impossible. The idea changed, but the intention stayed consistent: to unsettle the relationship between what someone sees and what they physically feel. Each pivot was a chance to reconsider how we could create that feeling."
+        },
+        {
+          "type": "text",
+          "title": "Aligning intentions, agents and people",
+          "body": "It felt like half the work was alignment: agreeing on what we wanted people to experience, communicating that intention to the coding agents, and keeping a shared understanding within the team. Building and testing helped us make those intentions concrete. Directing the work meant continually interpreting the results together and deciding what to change next."
+        },
+        {
+          "type": "text",
+          "title": "More room for parallel experimentation",
+          "body": "Four people shared one computer and headset, which sometimes held up the work. For a next iteration, we would use two setups so building and testing could happen in parallel."
         }
       ]
     }
-  ]
+  ],
+  "metadataPhoto": {
+    "src": "/assets/calibrated/process-photo/web/IMG_2092.webp",
+    "alt": "Headset worn during a trial of the experience",
+    "orientation": "portrait",
+    "angle": 6
+  }
 }

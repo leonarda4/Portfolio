@@ -28,6 +28,7 @@ export default function StoryBlocks({ block }) {
     </ol>
   </figure>
   if (block.type === 'storyCallout') return <aside className="story-callout">
+    {block.title && <h3>{block.title}</h3>}
     <p>{block.body}</p>
   </aside>
   if (block.type === 'storyCards') return <div className="story-cards">
