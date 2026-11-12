@@ -1,61 +1,61 @@
 // Leonarda's original notes and strokes, promoted to permanent About me content.
-// Coordinates use the original 1002px content column; drawing paths live in the SVGs.
+// Desktop positions follow the 1056px Figma content column, relative to its heading.
 export const aboutNotes = [
   {
     "key": "school",
     "id": "d875808f-0350-4eb3-8fad-fd6a965268a1",
     "text": "I was programming in Python in high school",
     "color": "Mint",
-    "x": 465,
-    "y": 124
+    "x": 408,
+    "y": 15.06
   },
   {
     "key": "degree",
     "id": "d8f9c620-ea56-4360-bd59-a94312bde9da",
     "text": "Went to do a BSc in Computer Science\n- everyone was doing it @ FER Zagreb :,)",
     "color": "Yellow",
-    "x": 573.5,
-    "y": 215.5
+    "x": 604,
+    "y": 15.06
   },
   {
     "key": "discovery",
     "id": "84d6097b-6126-43a4-ba78-e6303b969122",
     "text": "Realized that I wanted to make fun things and really research what to build - not just how",
     "color": "Blue",
-    "x": 331.8,
-    "y": 353.8
+    "x": 800,
+    "y": 15.06
   },
   {
     "key": "design",
     "id": "0d13f4c5-366e-4577-9ac1-82db7065ff30",
     "text": "Taught myself design tools, made a bunch of projects, and won some competitions",
     "color": "Peach",
-    "x": 643.2,
-    "y": 443.8
+    "x": 781,
+    "y": 236.06
   },
   {
     "key": "job",
     "id": "9b03f958-343f-4116-b091-5eb90e7a2e27",
     "text": "Got my first UX job, initially as an internship, but took on more responsibility as time went on",
     "color": "Yellow",
-    "x": 393.51,
-    "y": 601.83
+    "x": 489,
+    "y": 440.06
   },
   {
     "key": "erasmus",
     "id": "71e21ccb-1a98-490e-872c-ffd0b2e7e2e1",
-    "text": "Went on Erasmus to do a semester in Creative Tech @ the University of Twente in the Netherlands",
+    "text": "Went on Erasmus to do a semester in Creative Tech @ the UT in the Netherlands",
     "color": "Mint",
-    "x": 61.31,
-    "y": 560.87
+    "x": 568,
+    "y": 275.06
   },
   {
     "key": "masters",
     "id": "f59f3600-1a76-480b-bb82-7bb0dd79f286",
     "text": "Now doing an MA in Interaction Design at ZHdK Zurich :))",
     "color": "Pink",
-    "x": -113.08,
-    "y": 237.11
+    "x": 344,
+    "y": 162.06
   }
 ]
 

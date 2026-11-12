@@ -1,12 +1,11 @@
+import { useLayoutEffect, useRef, useState } from 'react'
 import { experiments } from '../portfolioData'
-import { aboutDrawings, aboutNotes } from '../content/about-collage'
+import { aboutNotes } from '../content/about-collage'
+import { trailSegments } from '../content/about-artwork'
 import { SUPPORTING_PALETTE } from '../../design-system/playful-palette'
 import AboutNote from './AboutNote'
-import loopArrow from '../../public/assets/about/loop-arrow.svg?raw'
-import trail from '../../public/assets/about/trail.svg?raw'
+import AboutCrayons from './AboutCrayons'
 import './AboutCollage.css'
-
-const drawingArtwork = { 'loop-arrow': loopArrow, trail }
 
 export function PlaySection({ renderCard }) {
   const readyExperiments = experiments.filter(experiment => (experiment.cover || experiment.coverVideo) && experiment.title)
@@ -19,15 +18,38 @@ export function PlaySection({ renderCard }) {
 export function AboutSection() {
   return <section id="about" className="home-section home-about" aria-labelledby="about-heading">
     <div className="about-collage">
+      <div className="about-canvas">
       <header className="home-section-heading"><h2 id="about-heading" className="accent-type">About me</h2></header>
       <img className="about-portrait" src="/assets/portrait.jpg" alt="Leonarda" width="3024" height="4032" loading="lazy" />
       <p id="about-note-move-help" className="about-note-move-help">Drag to move this note, or use the arrow keys. Hold Shift for larger steps. Press Home to restore its original position. The text and color stay fixed.</p>
       <ol className="about-notes" aria-label="My path into design">
-        {aboutNotes.map(note => <li key={note.id} className={`about-note about-note--${note.key}`} style={{ '--note-x': `${note.x / 10.02}%`, '--note-y': `${note.y / 10.02}cqw`, '--note-color': SUPPORTING_PALETTE.find(color => color.name === note.color).note }}>
+        {aboutNotes.map(note => <li key={note.id} className={`about-note about-note--${note.key}`} style={{ '--note-x': `${note.x}px`, '--note-y': `${note.y}px`, '--note-color': SUPPORTING_PALETTE.find(color => color.name === note.color).note }}>
           <AboutNote>{note.text}</AboutNote>
         </li>)}
       </ol>
-      {aboutDrawings.map(item => <div key={item.key} className={`about-drawing about-drawing--${item.key}`} aria-hidden="true" style={{ '--drawing-x': `${item.x / 10.02}%`, '--drawing-y': `${item.y / 10.02}cqw`, '--drawing-width': `${item.width / 10.02}%` }} dangerouslySetInnerHTML={{ __html: drawingArtwork[item.key] }} />)}
+      <div className="about-drawing about-drawing--loop-arrow" aria-hidden="true"><div className="about-arrow-art"><img src="/assets/about/figma/f096b.svg" alt="" /></div></div>
+      <div className="about-drawing about-drawing--trail" aria-hidden="true"><div className="about-trail-art">
+        {trailSegments.map(([asset, x, y]) => <img key={asset} src={`/assets/about/figma/${asset}.svg`} alt="" style={{ left: x, top: y }} />)}
+      </div></div>
+      </div>
     </div>
   </section>
+}
+
+export function AboutContactSection({ children }) {
+  const container = useRef(null)
+  const [width, setWidth] = useState(1056)
+  useLayoutEffect(() => {
+    const observer = new ResizeObserver(([entry]) => setWidth(entry.contentRect.width))
+    observer.observe(container.current)
+    setWidth(container.current.clientWidth)
+    return () => observer.disconnect()
+  }, [])
+  const layout = width >= 900 ? 'collage' : width >= 640 ? 'tablet' : 'mobile'
+  return <div ref={container} className="home-personal" data-layout={layout} style={{ '--about-scale': width / 1056 }}>
+    <AboutSection />
+    <AboutCrayons group="about" />
+    {children}
+    <AboutCrayons group="contact" />
+  </div>
 }

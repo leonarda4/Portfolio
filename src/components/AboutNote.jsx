@@ -9,6 +9,14 @@ export default function AboutNote({ children }) {
   const button = useRef(null)
   const gesture = useRef(null)
 
+  function constrain(left, top, box, drop) {
+    const point = (drop ? safeDrop : clampDrop)(left, top, box)
+    const area = button.current.closest('.about-collage').getBoundingClientRect()
+    return { left: Math.max(area.left, Math.min(point.left, area.right - box.width)), top: Math.max(area.top, Math.min(point.top, area.bottom - box.height)) }
+  }
+
+  function scale() { return button.current.getBoundingClientRect().width / button.current.offsetWidth }
+
   function cancel() {
     const current = gesture.current
     if (!current) return
@@ -55,10 +63,11 @@ export default function AboutNote({ children }) {
     current.moved = true
     const rawLeft = current.box.left + event.clientX - current.clientX
     const rawTop = current.box.top + event.clientY - current.clientY
-    const point = (drop ? safeDrop : clampDrop)(rawLeft, rawTop, current.box)
+    const point = constrain(rawLeft, rawTop, current.box, drop)
+    const factor = scale()
     setOffset({
-      x: current.offset.x + point.left - current.box.left + window.scrollX - current.scrollX,
-      y: current.offset.y + point.top - current.box.top + window.scrollY - current.scrollY,
+      x: current.offset.x + (point.left - current.box.left + window.scrollX - current.scrollX) / factor,
+      y: current.offset.y + (point.top - current.box.top + window.scrollY - current.scrollY) / factor,
     })
   }
 
@@ -82,8 +91,9 @@ export default function AboutNote({ children }) {
     if (gesture.current) return
     const box = event.currentTarget.getBoundingClientRect()
     const step = event.shiftKey ? 30 : 10
-    const point = safeDrop(box.left + direction[0] * step, box.top + direction[1] * step, box)
-    setOffset(previous => ({ x: previous.x + point.left - box.left, y: previous.y + point.top - box.top }))
+    const point = constrain(box.left + direction[0] * step, box.top + direction[1] * step, box, true)
+    const factor = scale()
+    setOffset(previous => ({ x: previous.x + (point.left - box.left) / factor, y: previous.y + (point.top - box.top) / factor }))
   }
 
   return <button ref={button} type="button" className={`about-note-paper${dragging ? ' is-dragging' : ''}`}

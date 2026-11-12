@@ -1,11 +1,11 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useSyncExternalStore } from 'react'
 import { createPortal } from 'react-dom'
 import { clampDrop, COLORS, placementAt, positionOf, safeDrop, STICKER_SIZE } from './stickers/placement'
 import { createEditKey, deleteSticker, editKeys, getShowOthers, readStickers, saveShowOthers, saveSticker } from './stickers/api'
 import { aboutNoteIds } from '../content/about-collage'
 import PlayfulToolbar from './PlayfulToolbar'
 import PlayfulDrawing from './PlayfulDrawing'
-import { nextDrawingColor } from './playful/brush'
+import { subscribeDrawingTool, getDrawingTool, setDrawingActive as setDrawing, advanceCrayon } from './playful/drawing-tool'
 import './StickerBoard.css'
 
 const localNotes = new Map()
@@ -22,8 +22,7 @@ export default function StickerBoard({ page, localOnly = false }) {
   const [showOthers, setShowOthers] = useState(() => localOnly ? false : getShowOthers())
   const [drag, setDrag] = useState(null)
   const [failure, setFailure] = useState(null)
-  const [drawing, setDrawing] = useState(false)
-  const [inkColor, setInkColor] = useState(nextDrawingColor)
+  const { active: drawing, color: inkColor } = useSyncExternalStore(subscribeDrawingTool, getDrawingTool)
   const [strokeCount, setStrokeCount] = useState(0)
   const [noteColor, setNoteColor] = useState('Mint')
   const [, refreshLayout] = useState(0)
@@ -40,6 +39,8 @@ export default function StickerBoard({ page, localOnly = false }) {
   const queue = useRef(Promise.resolve())
   const mounted = useRef(true)
   const revision = useRef(0)
+
+  useEffect(() => () => setDrawing(false), [page])
 
   function select(note) { if (selection.current?.id !== note?.id) setTyping(false); selection.current = note; setSelected(note) }
 
@@ -232,7 +233,7 @@ export default function StickerBoard({ page, localOnly = false }) {
   if (selected && !aboutNoteIds.has(selected.id)) visible.push(selected)
 
   return <>
-    <PlayfulDrawing ref={crayon} active={drawing} page={page} color={inkColor} showOthers={showOthers} localOnly={localOnly} onStrokeComplete={() => setInkColor(nextDrawingColor)} onStrokeCountChange={setStrokeCount} />
+    <PlayfulDrawing ref={crayon} active={drawing} page={page} color={inkColor} showOthers={showOthers} localOnly={localOnly} onStrokeComplete={advanceCrayon} onStrokeCountChange={setStrokeCount} />
     <PlayfulToolbar localOnly={localOnly} trayRef={tray} drawing={drawing} inkColor={inkColor} onToggleDrawing={() => { finishEditing(); setDrawing(current => !current) }} noteColor={noteColor} peeling={!!drag && !drag.note} onNotePointerDown={event => startDrag(event)} onAddNote={event => {
         if (event.detail && suppressClick.current) { suppressClick.current = false; return }
         const box = tray.current.getBoundingClientRect()

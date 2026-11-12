@@ -15,7 +15,7 @@ import { SUPPORTING_PALETTE } from '../design-system/playful-palette'
 import SoundscapeCards from './components/SoundscapeCards'
 import StickerBoard from './components/StickerBoard'
 import StudyVideo from './components/StudyVideo'
-import { AboutSection, PlaySection } from './components/HomeSections'
+import { AboutContactSection, PlaySection } from './components/HomeSections'
 import useSectionNavigation from './hooks/useSectionNavigation'
 const BrainyCover = lazy(() => import('./components/BrainyCover'))
 const BrainyIdeaAgents = lazy(() => import('./components/BrainyIdeaAgents'))
@@ -82,8 +82,7 @@ function Home({ onPreview }) {
     <section id="home" className="intro" aria-label="Home"><h1>Leonarda Lovrić is a product designer who thinks in systems <span className="accent-heading accent-type">&amp; plays with tech.</span></h1></section>
     <section id="work" className="home-work" aria-label="Selected work"><div className="project-grid">{projects.map(p => <ProjectCard key={p.slug} project={p} />)}</div></section>
     <PlaySection renderCard={experiment => <ProjectCard key={experiment.slug} project={experiment} onOpen={onPreview} />} />
-    <AboutSection />
-    <Footer />
+    <AboutContactSection><Footer /></AboutContactSection>
   </div></main>
 }
 function Media({ block, onOpen }) {
