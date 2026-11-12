@@ -16,6 +16,7 @@ import SoundscapeCards from './components/SoundscapeCards'
 import StickerBoard from './components/StickerBoard'
 import StudyVideo from './components/StudyVideo'
 import { AboutContactSection, PlaySection } from './components/HomeSections'
+import ResumeScribbles from './components/ResumeScribbles'
 import useSectionNavigation from './hooks/useSectionNavigation'
 const BrainyCover = lazy(() => import('./components/BrainyCover'))
 const BrainyIdeaAgents = lazy(() => import('./components/BrainyIdeaAgents'))
@@ -74,7 +75,7 @@ function Footer() {
       <button type="button" className="contact-email accent-type" onClick={copyEmail} aria-label={`Copy email address ${profile.email}`}>{profile.email}</button>
       <span className="contact-tooltip" role="status" aria-live="polite" aria-atomic="true" data-visible={Boolean(status)}>{status}</span>
     </div>
-    <a className="contact-resume accent-type" href={profile.resume} target="_blank" rel="noopener noreferrer" aria-label="Resume (opens in a new tab)">Resume</a>
+    <a className="contact-resume accent-type" href={profile.resume} target="_blank" rel="noopener noreferrer" aria-label="Resume (opens in a new tab)"><ResumeScribbles />Resume</a>
   </footer>
 }
 function Home({ onPreview }) {
