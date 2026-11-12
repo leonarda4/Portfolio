@@ -74,6 +74,7 @@ function Footer() {
       <button type="button" className="contact-email accent-type" onClick={copyEmail} aria-label={`Copy email address ${profile.email}`}>{profile.email}</button>
       <span className="contact-tooltip" role="status" aria-live="polite" aria-atomic="true" data-visible={Boolean(status)}>{status}</span>
     </div>
+    <a className="contact-resume accent-type" href={profile.resume} target="_blank" rel="noopener noreferrer" aria-label="Resume (opens in a new tab)">Resume</a>
   </footer>
 }
 function Home({ onPreview }) {

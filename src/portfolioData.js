@@ -12,7 +12,7 @@ export const profile = {
   update: 'Currently putting together my selected work',
   location: 'Zurich', timeZone: 'Europe/Zurich',
   email: 'Leonarda.lovric@zhdk.ch', // Your email enables the copy-email interaction.
-  resume: '', // e.g. /assets/Leonarda_Lovric_CV.pdf
+  resume: '/assets/Leonarda_Lovric_CV.pdf',
   socials: [{ label: 'LinkedIn', url: '' }, { label: 'GitHub', url: '' }, { label: 'X (Twitter)', url: '' }],
   about: 'Introduce yourself here. Share what draws you to design, how your background shapes your approach, and the kinds of problems you enjoy working on.',
 }
