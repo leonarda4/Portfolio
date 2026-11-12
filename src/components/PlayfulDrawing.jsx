@@ -26,6 +26,16 @@ const PlayfulDrawing = forwardRef(function PlayfulDrawing({ active, page, color,
     setPreview(null)
   }, [])
 
+  const commit = useCallback(() => {
+    const current = gesture.current
+    if (!current) return
+    const stroke = { id: crypto.randomUUID(), color: current.color, ...captureStroke(current.points, current.seed) }
+    // Clear the gesture before releasing capture, which can fire another event.
+    cancel()
+    board.add(stroke)
+    onStrokeComplete?.()
+  }, [board, cancel, onStrokeComplete])
+
   useEffect(() => {
     cancel()
     if (localOnly) return
@@ -58,13 +68,14 @@ const PlayfulDrawing = forwardRef(function PlayfulDrawing({ active, page, color,
   }, [active, cancel])
 
   useEffect(() => {
-    const blur = () => cancel()
+    // Browser interruptions must keep the ink the visitor has already drawn.
+    const blur = () => commit()
     window.addEventListener('blur', blur)
     return () => {
       window.removeEventListener('blur', blur)
       cancelAnimationFrame(frame.current)
     }
-  }, [cancel])
+  }, [commit])
 
   useImperativeHandle(ref, () => ({
     undo() { cancel(); board.undo() },
@@ -111,10 +122,11 @@ const PlayfulDrawing = forwardRef(function PlayfulDrawing({ active, page, color,
     const current = gesture.current
     if (!current || current.pointerId !== event.pointerId) return
     addPoints(event)
-    const stroke = { id: crypto.randomUUID(), color: current.color, ...captureStroke(current.points, current.seed) }
-    cancel()
-    board.add(stroke)
-    onStrokeComplete?.()
+    commit()
+  }
+
+  function interrupt(event) {
+    if (event.pointerId === gesture.current?.pointerId) commit()
   }
 
   return <>
@@ -122,7 +134,7 @@ const PlayfulDrawing = forwardRef(function PlayfulDrawing({ active, page, color,
       {strokes.filter(stroke => showOthers || board.isOwn(stroke.id)).map(stroke => <path key={stroke.id} d={stroke.path} fill={stroke.color} transform={strokeTransform(stroke.placement)} />)}
       {preview && <path d={preview.path} fill={preview.color} />}
     </svg>
-    <div ref={surface} className={`playful-drawing-input${active ? ' is-active' : ''}`} aria-hidden="true" onPointerDown={start} onPointerMove={move} onPointerUp={finish} onPointerCancel={cancel} onLostPointerCapture={cancel} />
+    <div ref={surface} className={`playful-drawing-input${active ? ' is-active' : ''}`} aria-hidden="true" onPointerDown={start} onPointerMove={move} onPointerUp={finish} onPointerCancel={interrupt} onLostPointerCapture={interrupt} onContextMenu={event => event.preventDefault()} />
     {error && <div className="sticker-save-error" role="alert">{error} <button type="button" onClick={() => board.retry()}>Retry</button></div>}
   </>
 })
