@@ -202,7 +202,7 @@ export default function App() {
   const preview = experiment || videoPreview
   const closePreview = () => { setVideoPreview(null); if (experiment) window.location.hash = '/play' }
   useEffect(() => {
-    document.title = `${project?.title || experiment?.title || 'Product designer'} · ${profile.name}`
+    document.title = project || experiment ? `${project?.title || experiment?.title} · ${profile.name}` : `${profile.name} | Product Designer`
     if (experiment) document.getElementById('play')?.scrollIntoView({ block: 'start', behavior: 'instant' })
     else if (isHome && route !== '/' && route !== '/home') document.getElementById(route.slice(1))?.scrollIntoView({ block: 'start', behavior: 'instant' })
     else window.scrollTo({ top: 0, behavior: 'instant' })
