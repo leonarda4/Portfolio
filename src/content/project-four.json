@@ -69,7 +69,7 @@
       "blocks": [
         {
           "type": "text",
-          "title": "From a scanned hallway to an impossible space",
+          "title": "From a normal hallway to an impossible space where you can't trust your eyes",
           "body": "We began with a question about perception, captured a real hallway, then built the experience one interaction at a time. Calibration came first: the illusion needed a believable starting point."
         },
         {
@@ -107,13 +107,19 @@
             {
               "src": "/assets/calibrated/process-photo/web/IMG_1881.webp",
               "alt": "Team working beside the hallway installation"
+            },
+            {
+              "src": "/assets/calibrated/process-photo/web/IMG_2092.webp",
+              "alt": "Headset worn during a trial of the experience",
+              "orientation": "portrait",
+              "angle": 6
             }
           ]
         },
         {
           "type": "text",
-          "title": "Virtual characters anchored to real people",
-          "body": "An early direction was to recognise people standing in the hallway and map game characters or ghosts onto their positions in VR. They would move through the Gaussian splat world as the real people walked around, alongside generated characters that could pass straight through the participant. We wanted to explore the unsettling moment of reaching out to a virtual character and feeling a real person in exactly the same place. This idea later gave way to transforming the hallway itself."
+          "title": "Early experiment: virtual characters anchored to real people",
+          "body": "We explored mapping virtual characters onto real people, so reaching out in VR would mean touching someone physically present. We later shifted focus to transforming the hallway itself."
         },
         {
           "type": "text",
@@ -174,11 +180,6 @@
               "alt": "Screenshot used to ask Codex for irregular disintegration instead of a perfectly straight cut"
             }
           ]
-        },
-        {
-          "type": "text",
-          "title": "Building the sequence one interaction at a time",
-          "body": "A second box, a moving wall and an opening into another corridor followed. We added sound, lighting and atmosphere through headset trials, keeping the scanned objects familiar as the space became increasingly disorienting."
         },
         {
           "type": "text",
@@ -246,11 +247,5 @@
         }
       ]
     }
-  ],
-  "metadataPhoto": {
-    "src": "/assets/calibrated/process-photo/web/IMG_2092.webp",
-    "alt": "Headset worn during a trial of the experience",
-    "orientation": "portrait",
-    "angle": 6
-  }
+  ]
 }

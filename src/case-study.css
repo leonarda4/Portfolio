@@ -45,7 +45,7 @@
 @media(max-width:760px) {
  .study-end { padding-bottom:calc(2 * var(--space-16) + env(safe-area-inset-bottom)); }
  .case-study { --page-gutter:24px; }
- .case-study[data-project] > .project-cover.case-cover { height:auto; aspect-ratio:var(--aspect-cover); }
+ .case-study[data-project] > .project-cover.case-cover { width:100%; max-width:none; margin-inline:0; height:auto; aspect-ratio:var(--aspect-cover); }
  .study-layout { display:block; padding:0; margin:var(--space-8) auto 0; }
  .study-content { max-width:var(--study-width); }
  .study-summary { font-size:var(--type-body-size); line-height:var(--type-body-line); }
@@ -74,13 +74,7 @@
 }
 .case-study[data-project='project-four'] .testing-photo--portrait { width:21%; }
 .case-study[data-project='project-four'] .testing-photo--portrait img { aspect-ratio:3 / 4; }
-.study-metadata-photo { position:relative; height:0; z-index:1; }
-.case-study .study-metadata-photo .testing-photos-board { height:1px; aspect-ratio:auto; margin:0; }
-.case-study .study-metadata-photo .testing-photo { left:78%; top:-88px; }
-@media(max-width:760px) {
-  .study-metadata-photo { height:auto; aspect-ratio:3; margin-top:20px; }
-  .case-study .study-metadata-photo .testing-photo { left:69%; top:0; width:28%; }
-}
+.case-study[data-project='project-four'] .testing-photo:nth-child(8) { left:76%; top:52%; z-index:6; }
 /* Process thumbnails fill matched frames; the lightbox keeps each full image. */
 .case-study[data-project='project-four'] #behind-the-scenes .study-app-gallery {
   grid-template-columns:repeat(3,minmax(0,1fr));

@@ -10,7 +10,7 @@ import './AboutCollage.css'
 export function PlaySection({ renderCard }) {
   const readyExperiments = experiments.filter(experiment => (experiment.cover || experiment.coverVideo) && experiment.title)
   return <section id="play" className="home-section home-play" aria-labelledby="play-heading">
-    <header className="home-section-heading"><h2 id="play-heading" className="accent-type">fun</h2></header>
+    <header className="home-section-heading"><h2 id="play-heading" className="accent-type">side quests</h2></header>
     {readyExperiments.length > 0 && <div className="project-grid experiment-grid">{readyExperiments.map(renderCard)}</div>}
   </section>
 }

@@ -40,8 +40,8 @@
 .playful-settings { flex: 0 0 44px; align-self: center; height: 44px; display: grid; place-items: center; padding: 10px; border-radius: 12px; color: var(--color-muted); }
 .playful-settings svg { width: 22px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
 .playful-settings:hover, .playful-settings[aria-expanded='true'] { background: var(--color-surface); color: var(--color-text); }
-.playful-drawing-actions { display: flex; align-items: center; justify-content: space-between; gap: 2px; margin-bottom: 28px; min-height: 34px; padding: 3px 5px 3px 10px; border-radius: 12px; background: var(--color-canvas); box-shadow: 0 2px 14px #0000000c; }
-.playful-drawing-actions > span { font-size: 11px; color: var(--color-muted); }
+.playful-drawing-actions { display: flex; align-items: center; gap: 2px; margin-bottom: 28px; min-height: 34px; padding: 3px 5px 3px 10px; border-radius: 12px; background: var(--color-canvas); box-shadow: 0 2px 14px #0000000c; }
+.playful-drawing-actions > span { margin-right: auto; font-size: 11px; color: var(--color-muted); }
 .playful-drawing-actions button { width: 30px; height: 30px; display: grid; place-items: center; padding: 5px; border-radius: 7px; }
 .playful-drawing-actions svg { width: 18px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
 .playful-drawing-actions button:hover, .playful-option:hover { background: var(--color-surface); }
