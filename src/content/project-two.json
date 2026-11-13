@@ -15,20 +15,20 @@
   "coverAlt": "A live brainy storm discussion in a laptop: the transcript and listening waveform animate as the focus moves between ideas, with named agents rushing around it.",
   "metadata": [
     {
-      "label": "Context",
-      "value": "Zurich Agentic AI Hack · Team project"
+      "label": "Role",
+      "value": "0→1 product design · Code prototyping · Frontend development · Brand identity"
     },
     {
-      "label": "My role",
-      "value": "0→1 product design · Brand identity"
+      "label": "Team",
+      "value": "Three developers and me @ Zurich Agentic AI Hack"
     },
     {
-      "label": "Focus",
+      "label": "Tools",
       "value": "Web experience · Visual system · Motion"
     },
     {
-      "label": "Status",
-      "value": "In progress"
+      "label": "Timeline",
+      "value": "12 hours · Oct 2026"
     }
   ],
   "sections": [

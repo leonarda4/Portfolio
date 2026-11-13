@@ -51,8 +51,8 @@
   "coverAlt": "A participant wearing headphones explores Echo’s projected visuals at the Vrijhof gallery.",
   "metadata": [
     {
-      "label": "Project type",
-      "value": "Bachelor’s thesis · Research through making"
+      "label": "Role",
+      "value": "Interaction design · Creative technology · Research through making"
     },
     {
       "label": "Team",
@@ -60,11 +60,11 @@
     },
     {
       "label": "Tools",
-      "value": "Python, MediaPipe, React, TypeScript, WebGL/GLSL, Tone.js"
+      "value": "Python · MediaPipe · React · TypeScript · WebGL/GLSL · Tone.js"
     },
     {
       "label": "Timeline",
-      "value": "April – June 2026"
+      "value": "Apr 2026–Jun 2026"
     }
   ],
   "sections": [

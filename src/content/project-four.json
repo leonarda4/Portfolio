@@ -18,20 +18,20 @@
   "coverAlt": "Calibrated VR experience with a scanned hallway and shifting geometry",
   "metadata": [
     {
-      "label": "Project type",
-      "value": "Experimental VR installation"
+      "label": "Role",
+      "value": "Experience direction · Spatial interaction · AI-assisted prototyping"
     },
     {
-      "label": "My role",
-      "value": "Experience direction, spatial interaction and AI-assisted prototyping"
+      "label": "Team",
+      "value": "Three other interaction designers · Supervisor: Max Rheiner"
     },
     {
       "label": "Tools",
-      "value": "Codex, Gaussian splats, WebXR, Three.js, Meta Quest 3, SteamVR / Steam Link"
+      "value": "Codex · Gaussian splats · WebXR · Three.js · Meta Quest 3 · SteamVR / Steam Link"
     },
     {
       "label": "Timeline",
-      "value": "1 week"
+      "value": "1 week · Nov 2026"
     }
   ],
   "sections": [
