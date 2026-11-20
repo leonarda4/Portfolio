@@ -791,6 +791,29 @@
           "width": 1600
         }
       ]
+    },
+    "/assets/calibrated/calibrated-cover-poster.jpg": {
+      "width": 1920,
+      "height": 1080,
+      "src": "/assets/optimized/calibrated-cover-poster-6f112fa59c8d-1600.webp",
+      "sources": [
+        {
+          "src": "/assets/optimized/calibrated-cover-poster-a85dd792e835-320.webp",
+          "width": 320
+        },
+        {
+          "src": "/assets/optimized/calibrated-cover-poster-298d16705c9b-640.webp",
+          "width": 640
+        },
+        {
+          "src": "/assets/optimized/calibrated-cover-poster-26ddf454c92c-960.webp",
+          "width": 960
+        },
+        {
+          "src": "/assets/optimized/calibrated-cover-poster-6f112fa59c8d-1600.webp",
+          "width": 1600
+        }
+      ]
     }
   },
   "videos": {
@@ -799,8 +822,8 @@
       "src": "/assets/optimized/echo-cover-44f3e8dda086-1280.mp4"
     },
     "/assets/calibrated/calibrated-cover-loop.mp4": {
-      "mobile": "/assets/optimized/calibrated-cover-loop-10a2454ba7a5-720.mp4",
-      "src": "/assets/optimized/calibrated-cover-loop-fd7ab47e94ce-1280.mp4"
+      "mobile": "/assets/optimized/calibrated-cover-loop-bfacc1f19cbb-720.mp4",
+      "src": "/assets/optimized/calibrated-cover-loop-b324492cbfeb-1280.mp4"
     },
     "/assets/professor-feathers/preview.mp4": {
       "mobile": "/assets/optimized/preview-f20542e8a72e-720.mp4",

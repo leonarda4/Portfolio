@@ -11,11 +11,11 @@
   ],
   "tint": "#e8e7e2",
   "accent": "#727468",
-  "cover": "/assets/calibrated/calibrated-film-poster.jpg",
+  "cover": "/assets/calibrated/calibrated-cover-poster.jpg",
   "coverVideo": "/assets/calibrated/calibrated-cover-loop.mp4",
   "coverFit": "cover",
   "coverBackground": "#e8e7e2",
-  "coverAlt": "Calibrated VR experience with a scanned hallway and shifting geometry",
+  "coverAlt": "Split view of a VR participant and the virtual hallway as its lights go out",
   "metadata": [
     {
       "label": "Role",
