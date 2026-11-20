@@ -5,9 +5,16 @@ import './MobileNavigation.css'
 
 export default function MobileNavigation({ label, items, active, backLink }) {
   const [open, setOpen] = useState(false)
+  const [pointerFocus, setPointerFocus] = useState(false)
   const dialog = useRef(null)
   const trigger = useRef(null)
   const id = useId()
+
+  useEffect(() => {
+    const keyboard = () => setPointerFocus(false)
+    document.addEventListener('keydown', keyboard, true)
+    return () => document.removeEventListener('keydown', keyboard, true)
+  }, [])
 
   function close() {
     dialog.current?.close()
@@ -35,16 +42,18 @@ export default function MobileNavigation({ label, items, active, backLink }) {
 
   return <>
     <button ref={trigger} type="button" className="mobile-menu-trigger tool-surface" data-sticker-obstacle aria-label="Open navigation menu"
+      data-pointer-focus={pointerFocus || undefined} onPointerDown={() => setPointerFocus(true)}
       aria-expanded={open} aria-controls={id} aria-haspopup="dialog" onClick={() => setOpen(true)}>
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" /></svg>
     </button>
     {open && createPortal(<dialog ref={dialog} id={id} className="mobile-menu" aria-label={label}
+      onPointerDownCapture={() => setPointerFocus(true)}
       onCancel={event => { event.preventDefault(); close() }} onClick={event => {
         if (event.target !== event.currentTarget) return
         const box = event.currentTarget.getBoundingClientRect()
         if (event.clientX < box.left || event.clientX > box.right || event.clientY < box.top || event.clientY > box.bottom) close()
       }}>
-      <button type="button" className="mobile-menu-close" aria-label="Close navigation menu" onClick={close} autoFocus>
+      <button type="button" className="mobile-menu-close" aria-label="Close navigation menu" data-pointer-focus={pointerFocus || undefined} onClick={close} autoFocus>
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6" /></svg>
       </button>
       {backLink && <a className="mobile-menu-back" href="#/" onClick={close}><span className="sidebar-back-arrow" aria-hidden="true">←</span>Back to Home</a>}

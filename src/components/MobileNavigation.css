@@ -39,12 +39,16 @@
   }
   .mobile-menu::backdrop { background:var(--color-canvas); }
   .mobile-menu-close { position:fixed; top:max(var(--space-4),env(safe-area-inset-top)); right:max(var(--page-gutter),env(safe-area-inset-right)); display:grid; place-items:center; width:56px; height:56px; padding:16px; color:var(--color-muted); background:var(--color-canvas); }
-  .mobile-menu-close:focus-visible { border-radius:20px; outline-offset:-6px; }
+  :is(.mobile-menu-trigger,.mobile-menu-close):focus-visible { border-radius:20px; outline-offset:-6px; }
+  /* Dialog autofocus and focus restoration must not add a ring after a tap. */
+  :is(.mobile-menu-trigger,.mobile-menu-close)[data-pointer-focus]:focus { outline:none; }
   .mobile-menu .layout-nav { flex-direction:column; gap:var(--space-2); overflow:visible; }
   .mobile-menu .layout-nav-item,.mobile-menu .mobile-menu-back { padding:8px 0 8px calc(var(--nav-icon-size) + var(--space-2)); font-size:24px; line-height:32px; white-space:normal; }
   .mobile-menu .layout-nav-item::before { width:8px; height:8px; }
   .mobile-menu .mobile-menu-back { margin-bottom:24px; }
   .mobile-menu-back:hover { color:var(--color-text); }
-  .mobile-menu-trigger:hover,.mobile-menu-close:hover { color:var(--color-text); }
+  @media (hover:hover) and (pointer:fine) {
+    .mobile-menu-trigger:hover,.mobile-menu-close:hover { color:var(--color-text); }
+  }
   body:has(.mobile-menu[open]) :is(.playful-tools,.playful-drawing-input) { visibility:hidden; }
 }
