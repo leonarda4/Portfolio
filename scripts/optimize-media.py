@@ -68,7 +68,7 @@ covers = [
     '/assets/reticulations/preview.mp4',
 ]
 films = [
-    '/assets/calibrated/calibrated-experience.mp4',
+    '/assets/calibrated/calibrated_final.mp4',
     '/assets/calibrated/process-photo/web/first-calibration.mp4',
     '/assets/calibrated/participant-reactions.mp4',
     '/assets/professor-feathers/Professor Feathers.mp4',

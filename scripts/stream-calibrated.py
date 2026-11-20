@@ -6,7 +6,7 @@ import subprocess
 import imageio_ffmpeg
 
 root = Path(__file__).resolve().parents[1]
-source = root / 'public/assets/calibrated/calibrated-experience.mp4'
+source = root / 'public/assets/calibrated/calibrated_final.mp4'
 version = hashlib.sha256(source.read_bytes() + b'hls-4s-360-480-720-1080-crf22-v2').hexdigest()[:12]
 output = root / 'public/assets/optimized' / f'calibrated-stream-{version}'
 output.mkdir(exist_ok=True)

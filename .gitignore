@@ -6,3 +6,6 @@ jabuka.pub
 .data/
 # Local source master; the site uses calibrated-film.mp4.
 public/assets/calibrated/CALIBRATED_TEASER_FINAL_DIRECTORS_CUT.mp4
+
+# Local 4K source master; the site uses generated MP4 and HLS variants.
+public/assets/calibrated/calibrated_final.mp4

@@ -64,22 +64,22 @@
     "/assets/calibrated/calibrated-film-poster.jpg": {
       "width": 1920,
       "height": 1080,
-      "src": "/assets/optimized/calibrated-film-poster-32d4f43ffe85-1600.webp",
+      "src": "/assets/optimized/calibrated-film-poster-e2273fdec0c4-1600.webp",
       "sources": [
         {
-          "src": "/assets/optimized/calibrated-film-poster-a85c9b59d512-320.webp",
+          "src": "/assets/optimized/calibrated-film-poster-aaf7ae41a11d-320.webp",
           "width": 320
         },
         {
-          "src": "/assets/optimized/calibrated-film-poster-93b2bec37df3-640.webp",
+          "src": "/assets/optimized/calibrated-film-poster-e3e64d790823-640.webp",
           "width": 640
         },
         {
-          "src": "/assets/optimized/calibrated-film-poster-371fb0198072-960.webp",
+          "src": "/assets/optimized/calibrated-film-poster-a3958020caba-960.webp",
           "width": 960
         },
         {
-          "src": "/assets/optimized/calibrated-film-poster-32d4f43ffe85-1600.webp",
+          "src": "/assets/optimized/calibrated-film-poster-e2273fdec0c4-1600.webp",
           "width": 1600
         }
       ]
@@ -799,8 +799,8 @@
       "src": "/assets/optimized/echo-cover-44f3e8dda086-1280.mp4"
     },
     "/assets/calibrated/calibrated-cover-loop.mp4": {
-      "mobile": "/assets/optimized/calibrated-cover-loop-ae0b23b5e6fc-720.mp4",
-      "src": "/assets/optimized/calibrated-cover-loop-fa80e1b73355-1280.mp4"
+      "mobile": "/assets/optimized/calibrated-cover-loop-10a2454ba7a5-720.mp4",
+      "src": "/assets/optimized/calibrated-cover-loop-fd7ab47e94ce-1280.mp4"
     },
     "/assets/professor-feathers/preview.mp4": {
       "mobile": "/assets/optimized/preview-f20542e8a72e-720.mp4",
@@ -810,8 +810,8 @@
       "mobile": "/assets/optimized/preview-405f086ac1e8-720.mp4",
       "src": "/assets/optimized/preview-774ea97bffbc-1280.mp4"
     },
-    "/assets/calibrated/calibrated-experience.mp4": {
-      "src": "/assets/optimized/calibrated-experience-4135a61ee72a-1280.mp4"
+    "/assets/calibrated/calibrated_final.mp4": {
+      "src": "/assets/optimized/calibrated-final-3bdc19e02e8f-1280.mp4"
     },
     "/assets/calibrated/process-photo/web/first-calibration.mp4": {
       "src": "/assets/optimized/first-calibration-5f81fa6e4683-1280.mp4"

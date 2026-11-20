@@ -11,7 +11,7 @@ export default function StudyVideo({ item, block, reducedMotion }) {
   const autoPlay = block.autoPlay !== false && !reducedMotion
   const audible = block.muted === false
   const priority = autoPlay && audible
-  const stream = item.src === '/assets/calibrated/calibrated-experience.mp4' ? calibratedStream.src : null
+  const stream = item.src === '/assets/calibrated/calibrated_final.mp4' ? calibratedStream.src : null
 
   useEffect(() => {
     const player = video.current

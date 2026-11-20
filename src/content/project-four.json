@@ -53,7 +53,7 @@
           "preload": "auto",
           "items": [
             {
-              "src": "/assets/calibrated/calibrated-experience.mp4",
+              "src": "/assets/calibrated/calibrated_final.mp4",
               "poster": "/assets/calibrated/calibrated-film-poster.jpg",
               "title": "Calibrated: the experience",
               "width": 1920,
