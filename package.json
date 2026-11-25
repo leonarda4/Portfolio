@@ -5,11 +5,12 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && node scripts/generate-machine-readable.js",
     "preview": "vite preview",
     "start": "node server/index.js",
     "test:stickers": "node --test server/stickers.test.js src/components/stickers/placement.test.js",
-    "test:drawings": "node --test server/drawings.test.js src/components/playful/drawings.test.js src/components/playful/placement.test.js"
+    "test:drawings": "node --test server/drawings.test.js src/components/playful/drawings.test.js src/components/playful/placement.test.js",
+    "test:machine-readability": "node scripts/test-machine-readability.js"
   },
   "dependencies": {
     "@vitejs/plugin-react": "latest",

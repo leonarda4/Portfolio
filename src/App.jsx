@@ -56,7 +56,7 @@ function Cover({ project, hero = false }) {
   return <div data-cover={project.slug} className={`project-cover ${hero ? 'case-cover' : ''} ${project.coverFit === 'contain' ? 'project-cover--contain' : ''} ${hero && project.coverAspectRatio ? 'case-cover--native-ratio' : ''}`} style={{ '--tint': project.tint, '--cover-aspect-ratio': project.coverAspectRatio, backgroundColor: project.coverBackground }}>{project.coverVideo ? <CoverVideo src={project.coverVideo} poster={project.cover} hero={hero} label={project.coverAlt || `${project.title}: installation video`} /> : project.cover ? <ResponsiveImage src={project.cover} alt={project.coverAlt} sizes={hero ? "100vw" : "(max-width: 760px) 100vw, 40vw"} /> : <><span className="cover-label">{project.slug.replaceAll('-', ' ')} / cover image</span><>{project.variant === 'installation' ? <div className="installation-placeholder"><span>＋</span><span>Installation photograph / audiovisual still</span></div> : <Mockup variant={project.variant} />}</><span className="cover-note">Your project imagery goes here</span></>}</div>
 }
 function ProjectCard({ project, onOpen }) {
-  return <a className="project-card" href={`#/project/${project.slug}`} aria-haspopup={onOpen ? 'dialog' : undefined} onClick={onOpen ? event => { if (event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey) { event.preventDefault(); onOpen(project) } } : undefined} style={{ '--project-accent': project.accent }}><Cover project={project} /><div className="card-copy"><h2>{project.cardTitle || project.title}{project.cardStatus && <span className="card-status"> / {project.cardStatus}</span>}</h2></div></a>
+  return <a className="project-card" href={onOpen ? `#/project/${project.slug}` : `/projects/${project.slug}/`} aria-haspopup={onOpen ? 'dialog' : undefined} onClick={onOpen ? event => { if (event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey) { event.preventDefault(); onOpen(project) } } : undefined} style={{ '--project-accent': project.accent }}><Cover project={project} /><div className="card-copy"><h2>{project.cardTitle || project.title}{project.cardStatus && <span className="card-status"> / {project.cardStatus}</span>}</h2></div></a>
 }
 function Footer() {
   const [status, setStatus] = useState('')
@@ -96,7 +96,7 @@ function Media({ block, onOpen }) {
 }
 function Block({ block, onOpen }) {
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-  if (block.type === 'adminSetupFlow') return <AdminSetupFlow onOpen={onOpen} />
+  if (block.type === 'adminSetupFlow') return <AdminSetupFlow description={block.description} onOpen={onOpen} />
   if (['storyTimeline', 'storyFlow', 'storyCallout', 'storyCards'].includes(block.type)) return <StoryBlocks block={block} />
   if (block.type === 'brainyGraphics') return <Suspense fallback={<p>Loading graphic recipes…</p>}><BrainyGraphicsBuilder /></Suspense>
   if (block.type === 'brainyBuilder' || block.type === 'brainyFamily') return <Suspense fallback={<p>Loading agents…</p>}><BrainyMotionBuilder family={block.type === 'brainyFamily'} /></Suspense>
@@ -206,13 +206,27 @@ function VideoPreview({ experiment, onClose }) {
   </dialog>, document.body)
 }
 export default function App() {
-  const [route, setRoute] = useState(window.location.hash.slice(1) || '/')
+  const getRoute = () => {
+    if (window.location.hash) {
+      const hashRoute = window.location.hash.slice(1)
+      if (hashRoute.startsWith('/')) return hashRoute
+      return HOME_ROUTES.has(`/${hashRoute}`) ? `/${hashRoute}` : '/'
+    }
+    const projectPath = window.location.pathname.match(/^\/projects\/([^/]+)\/?$/)
+    return projectPath ? `/project/${projectPath[1]}` : '/'
+  }
+  const [route, setRoute] = useState(getRoute)
   const [videoPreview, setVideoPreview] = useState(null)
   function openPreview(experiment) {
     // Mount and start the player before the user's activation event returns.
     flushSync(() => setVideoPreview(experiment))
   }
-  useEffect(() => { const change = () => setRoute(window.location.hash.slice(1) || '/'); window.addEventListener('hashchange', change); return () => window.removeEventListener('hashchange', change) }, [])
+  useEffect(() => {
+    const change = () => setRoute(getRoute())
+    window.addEventListener('hashchange', change)
+    window.addEventListener('popstate', change)
+    return () => { window.removeEventListener('hashchange', change); window.removeEventListener('popstate', change) }
+  }, [])
   const project = projects.find(p => route === `/project/${p.slug}`)
   const experiment = experiments.find(item => route === `/project/${item.slug}`)
   const isHome = HOME_ROUTES.has(route)

@@ -11,6 +11,8 @@ npm run dev
 
 `npm run build` creates the production site in `dist/`.
 
+The production build also prerenders the homepage and project routes, then generates Markdown, JSON, JSON-LD, `robots.txt`, and `sitemap.xml` from the portfolio content. See [MACHINE_READABILITY.md](MACHINE_READABILITY.md) for the routes, source-of-truth workflow, deployment requirements, and validation steps. Run `npm run test:machine-readability` after building to test the generated production pages without JavaScript.
+
 ## Visitor drawings and sticky notes
 
 The published site currently enables browser-only drawings and sticky notes. Both live in memory for the current tab, remain available when navigating between pages, and clear on reload. Drawing undo/clear and note editing, moving, recoloring, and deleting work without any API or browser-storage writes. Shared visitor controls are hidden until a persistence backend is deployed. The permanent About me notes and artwork remain visible.
@@ -38,7 +40,8 @@ Run `npm run test:stickers` and `npm run test:drawings` for persistence, simulta
 
 Use [PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md) as your writing outline. It includes the complete block order, fill-in prompts, and paragraph word-count targets.
 
-- `src/portfolioData.js`: name, introduction, About text, location/timezone, email, resume, and social links.
+- `src/content/profile.js`: name, introduction, location/timezone, email, resume, and social links.
+- `src/content/about-collage.js`: published About me notes and background.
 - `src/content/project-one.json` through `project-four.json`: independent project titles, card descriptions, tags, covers, metadata, and complete case-study content.
 - `src/App.jsx`: reusable rendering components and navigation.
 - `src/index.css`: global site styles.

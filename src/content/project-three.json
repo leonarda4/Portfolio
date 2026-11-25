@@ -283,7 +283,8 @@
           "body": "New opens a form with dropdowns for related data. Users can select an existing option or, if none is suitable, choose Add new to create that item in a new tab. The original form stays open while they set up the missing workflow, status, or city."
         },
         {
-          "type": "adminSetupFlow"
+          "type": "adminSetupFlow",
+          "description": "Two independent setup examples. New type opens a document type form with a Workflow dropdown. If no suitable workflow exists, Add new workflow opens a workflow form in Tab 2. Its Status dropdown can open a new status form in Tab 3. New partner opens a partner form with a City dropdown; Add new city opens a city form in Tab 2. Existing options can be selected without opening a new tab, and earlier forms remain open."
         }
       ]
     },

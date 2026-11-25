@@ -1,7 +1,6 @@
 import { useId, useRef } from 'react'
 import './AdminSetupFlow.css'
 
-const description = 'Two independent setup examples. New type opens a document type form with a Workflow dropdown. If no suitable workflow exists, Add new workflow opens a workflow form in Tab 2. Its Status dropdown can open a new status form in Tab 3. New partner opens a partner form with a City dropdown; Add new city opens a city form in Tab 2. Existing options can be selected without opening a new tab, and earlier forms remain open.'
 const width = 1200
 const height = 832
 
@@ -41,7 +40,7 @@ function Form({ x, y, title, field, item }) {
   </g>
 }
 
-export default function AdminSetupFlow({ onOpen }) {
+export default function AdminSetupFlow({ description, onOpen }) {
   const svgRef = useRef(null)
   const arrowId = `setup-arrow-${useId().replaceAll(':', '')}`
   const arrow = `url(#${arrowId})`

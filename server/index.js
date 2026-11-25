@@ -8,16 +8,20 @@ import { createDrawingHandler } from './drawings.js'
 const root = resolve('dist')
 const api = createStickerHandler()
 const drawings = createDrawingHandler()
-const types = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.json': 'application/json', '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.gif': 'image/gif', '.webp': 'image/webp', '.mp4': 'video/mp4', '.mov': 'video/quicktime', '.pdf': 'application/pdf', '.woff': 'font/woff', '.woff2': 'font/woff2' }
+const types = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.json': 'application/json; charset=utf-8', '.md': 'text/markdown; charset=utf-8', '.txt': 'text/plain; charset=utf-8', '.xml': 'application/xml; charset=utf-8', '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.gif': 'image/gif', '.webp': 'image/webp', '.mp4': 'video/mp4', '.mov': 'video/quicktime', '.pdf': 'application/pdf', '.woff': 'font/woff', '.woff2': 'font/woff2' }
 
 const server = createServer(async (request, response) => {
   const url = new URL(request.url, 'http://localhost')
   if (url.pathname.startsWith('/api/')) return api(request, response, () => drawings(request, response))
   if (!['GET', 'HEAD'].includes(request.method)) { response.writeHead(405, { Allow: 'GET, HEAD' }).end(); return }
   try {
-    const path = resolve(root, `.${decodeURIComponent(url.pathname === '/' ? '/index.html' : url.pathname)}`)
+    let path = resolve(root, `.${decodeURIComponent(url.pathname === '/' ? '/index.html' : url.pathname)}`)
     if (!path.startsWith(root + sep)) { response.writeHead(403).end(); return }
-    const info = await stat(path)
+    let info = await stat(path)
+    if (info.isDirectory()) {
+      path = resolve(path, 'index.html')
+      info = await stat(path)
+    }
     if (!info.isFile()) { response.writeHead(404).end(); return }
     const headers = { 'Content-Type': types[extname(path).toLowerCase()] || 'application/octet-stream', 'X-Content-Type-Options': 'nosniff', 'Accept-Ranges': 'bytes', 'Cache-Control': path.endsWith('/index.html') ? 'no-cache' : 'public, max-age=3600' }
     // Preserve seeking and efficient loading for the portfolio's existing videos.
