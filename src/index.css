@@ -1,4 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lacquer&display=swap');
 @import '../design-system/portfolio.css';
 @import './layout-tokens.css';
 
@@ -36,6 +35,10 @@ button,a {
 button:focus-visible,a:focus-visible {
   outline:2px solid var(--color-accent);
   outline-offset:5px
+}
+/* Pointer users keep focus without inheriting a keyboard ring from a dialog. */
+html[data-input-modality='pointer'] :is(button,a):focus {
+  outline:none
 }
 h1,h2,h3,p,figure {
   margin:0
@@ -613,7 +616,7 @@ blockquote cite {
   height:auto;
   object-fit:contain;
 }
-.video-preview {
+.media-preview {
   --preview-top:80px;
   --preview-bottom:80px;
   width:100%;
@@ -624,24 +627,32 @@ blockquote cite {
   border:0;
   padding-block:var(--preview-top) var(--preview-bottom);
 }
-.video-preview::backdrop { background:transparent; }
-.video-preview > video {
+.media-preview::backdrop { background:transparent; }
+.media-preview-content {
   display:block;
-  width:min(100%, calc((100dvh - var(--preview-top) - var(--preview-bottom)) * var(--video-aspect, 1.777777778)));
+  width:min(100%, calc((100dvh - var(--preview-top) - var(--preview-bottom)) * var(--media-aspect, 1.777777778)));
   height:auto;
   max-height:calc(100dvh - var(--preview-top) - var(--preview-bottom));
   background:#000;
+  position:relative;
+  outline:none;
+}
+.media-preview-content > video {
+  display:block;
+  width:100%;
+  height:auto;
+  max-height:inherit;
   object-fit:contain;
 }
 @media (orientation:landscape) and (max-height:600px) {
-  .video-preview {
+  .media-preview {
     --preview-top:max(var(--space-2),env(safe-area-inset-top));
     --preview-bottom:max(var(--space-2),env(safe-area-inset-bottom));
     padding-inline:max(var(--space-2),env(safe-area-inset-left)) max(var(--space-2),env(safe-area-inset-right));
   }
 }
 @media (max-width:760px), (orientation:landscape) and (max-height:600px) {
-  .video-preview .lightbox-close {
+  .media-preview .lightbox-close {
     position:fixed;
     z-index:1;
     top:max(var(--space-4),env(safe-area-inset-top));
@@ -655,7 +666,7 @@ blockquote cite {
     background:var(--tool-surface-background);
     box-shadow:var(--tool-surface-shadow);
   }
-  .video-preview .lightbox-close > .sidebar-back-arrow { left:16px; top:50%; transform:translateY(-50%); }
+  .media-preview .lightbox-close > .sidebar-back-arrow { left:16px; top:50%; transform:translateY(-50%); }
 }
 .lightbox-close {
   position:absolute;

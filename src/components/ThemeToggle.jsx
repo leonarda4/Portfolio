@@ -76,7 +76,7 @@ export default function ThemeToggle() {
       aria-label={label} title={label} aria-disabled={motion ? true : undefined}>
       <span key={`${icon}-${motion?.phase || 'idle'}`} className={`theme-art${motion ? ` theme-art--${motion.phase}` : ''}`}
         style={{ '--theme-slide-x': `${-(motion?.distance || 0)}px` }} onAnimationEnd={finishPhase} aria-hidden="true">
-        <img src={themeArtwork[icon]} alt="" width="233" height="257" draggable="false" />
+        <img src={themeArtwork[icon]} alt="" width="233" height="257" draggable="false" loading="eager" fetchPriority="high" />
       </span>
     </button>
   </div>

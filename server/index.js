@@ -12,6 +12,10 @@ const types = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; ch
 
 const server = createServer(async (request, response) => {
   const url = new URL(request.url, 'http://localhost')
+  if (request.headers.host?.split(':')[0].toLowerCase() === 'www.leonardalovric.com') {
+    response.writeHead(308, { Location: `https://leonardalovric.com${url.pathname}${url.search}` }).end()
+    return
+  }
   if (url.pathname.startsWith('/api/')) return api(request, response, () => drawings(request, response))
   if (!['GET', 'HEAD'].includes(request.method)) { response.writeHead(405, { Allow: 'GET, HEAD' }).end(); return }
   try {
@@ -21,6 +25,10 @@ const server = createServer(async (request, response) => {
     if (info.isDirectory()) {
       path = resolve(path, 'index.html')
       info = await stat(path)
+      if (!url.pathname.endsWith('/')) {
+        response.writeHead(308, { Location: `${url.pathname}/${url.search}` }).end()
+        return
+      }
     }
     if (!info.isFile()) { response.writeHead(404).end(); return }
     const headers = { 'Content-Type': types[extname(path).toLowerCase()] || 'application/octet-stream', 'X-Content-Type-Options': 'nosniff', 'Accept-Ranges': 'bytes', 'Cache-Control': path.endsWith('/index.html') ? 'no-cache' : 'public, max-age=3600' }

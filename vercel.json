@@ -1,4 +1,14 @@
 {
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "trailingSlash": true,
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "www.leonardalovric.com" }],
+      "destination": "https://leonardalovric.com/:path*",
+      "permanent": true
+    }
+  ],
   "headers": [
     {
       "source": "/assets/optimized/(.*)",

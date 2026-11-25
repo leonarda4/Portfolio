@@ -56,7 +56,8 @@
             }
           ]
         }
-      ]
+      ],
+      "navLabel": "Impact"
     },
     {
       "id": "foundation",
@@ -140,7 +141,8 @@
             }
           ]
         }
-      ]
+      ],
+      "navLabel": "Foundations"
     },
     {
       "id": "delivery",
@@ -183,7 +185,8 @@
             }
           ]
         }
-      ]
+      ],
+      "navLabel": "Shared reference"
     },
     {
       "id": "patterns",
@@ -286,7 +289,8 @@
           "type": "adminSetupFlow",
           "description": "Two independent setup examples. New type opens a document type form with a Workflow dropdown. If no suitable workflow exists, Add new workflow opens a workflow form in Tab 2. Its Status dropdown can open a new status form in Tab 3. New partner opens a partner form with a City dropdown; Add new city opens a city form in Tab 2. Existing options can be selected without opening a new tab, and earlier forms remain open."
         }
-      ]
+      ],
+      "navLabel": "Patterns"
     },
     {
       "id": "versioning",
@@ -331,7 +335,8 @@
             }
           ]
         }
-      ]
+      ],
+      "navLabel": "Alignment"
     }
   ],
   "coverBrief": "Animated Paperclip, Harmony, and Interconnect screens, scaled proportionally within the existing cover.",

@@ -1,6 +1,7 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import App from './App.jsx'
+import './input-modality.js'
 import './index.css'
 import './case-study.css'
 import './footer.css'

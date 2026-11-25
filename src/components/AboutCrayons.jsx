@@ -10,7 +10,7 @@ export default function AboutCrayons({ group }) {
       const color = SUPPORTING_PALETTE.find(item => item.name === crayon.name).crayon
       return <div key={crayon.name} className="about-crayon-position" style={{ '--crayon-x': crayon.x, '--crayon-y': crayon.y, '--crayon-angle': `${crayon.angle}deg`, '--crayon-tilt': `${crayon.tilt}deg` }}>
         <button type="button" className="about-crayon" aria-label={`Draw with ${crayon.name.toLowerCase()} crayon`} aria-pressed={tool.active && tool.color === color} onClick={() => selectCrayon(color)}>
-          <img src={`/assets/about/figma/${crayon.asset}.svg`} alt="" draggable="false" />
+          <img src={`/assets/about/figma/${crayon.asset}.svg`} alt="" width="48" height="228" draggable="false" />
         </button>
       </div>
     })}

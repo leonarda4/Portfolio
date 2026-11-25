@@ -59,7 +59,8 @@
             }
           ]
         }
-      ]
+      ],
+      "navLabel": "Overview"
     },
     {
       "id": "product",
@@ -151,35 +152,38 @@
         {
           "type": "brainyScene"
         }
-      ]
-    },
-    {
-      "id": "movement",
-      "label": "Movement builder",
-      "blocks": [
+      ],
+      "subsections": [
         {
-          "type": "text",
-          "title": "Give each agent its own character",
-          "body": "I built a movement tool to explore how each agent behaves. Choose an agent and adjust its body movement, expression, and tempo. Each keeps its own mix as you move between them."
+          "id": "movement",
+          "label": "Movement builder",
+          "blocks": [
+            {
+              "type": "text",
+              "title": "Give each agent its own character",
+              "body": "I built a movement tool to explore how each agent behaves. Choose an agent and adjust its body movement, expression, and tempo. Each keeps its own mix as you move between them."
+            },
+            {
+              "type": "brainyBuilder"
+            }
+          ]
         },
         {
-          "type": "brainyBuilder"
+          "id": "graphics",
+          "label": "Graphics playground",
+          "blocks": [
+            {
+              "type": "text",
+              "title": "A graphic language to play with",
+              "body": "The same shapes extend into a flexible set of compositions. Explore the recipes, mix their colors, and adjust scale and spacing to see how the visual language holds together."
+            },
+            {
+              "type": "brainyGraphics"
+            }
+          ]
         }
-      ]
-    },
-    {
-      "id": "graphics",
-      "label": "Graphics playground",
-      "blocks": [
-        {
-          "type": "text",
-          "title": "A graphic language to play with",
-          "body": "The same shapes extend into a flexible set of compositions. Explore the recipes, mix their colors, and adjust scale and spacing to see how the visual language holds together."
-        },
-        {
-          "type": "brainyGraphics"
-        }
-      ]
+      ],
+      "navLabel": "Branding"
     }
   ],
   "coverGraphic": "brainy"

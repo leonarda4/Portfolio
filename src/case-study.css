@@ -65,6 +65,8 @@
 .study-content .echo-graphic { padding:0; }
 .study-content .echo-graphic figcaption { max-width:var(--study-width); }
 .study-media-pair { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:24px; align-items:start; }
+/* Static HTML uses direct media children before the interactive renderer mounts. */
+.study-media > :is(img,video) { display:block; width:100%; max-width:100%; height:auto; }
 /* Filled process frames share the same proportions in either orientation. */
 .case-study[data-project='project-four'] .testing-photos-board { aspect-ratio:1.65; }
 .case-study[data-project='project-four'] .testing-photo img {
@@ -74,7 +76,7 @@
 }
 .case-study[data-project='project-four'] .testing-photo--portrait { width:21%; }
 .case-study[data-project='project-four'] .testing-photo--portrait img { aspect-ratio:3 / 4; }
-.case-study[data-project='project-four'] .testing-photo:nth-child(8) { left:76%; top:52%; z-index:6; }
+.case-study[data-project='project-four'] .testing-photo:nth-child(8) { left:36%; top:-4%; z-index:6; }
 /* Process thumbnails fill matched frames; the lightbox keeps each full image. */
 .case-study[data-project='project-four'] #behind-the-scenes .study-app-gallery {
   grid-template-columns:repeat(3,minmax(0,1fr));

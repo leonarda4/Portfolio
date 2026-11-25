@@ -2,10 +2,28 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import { resolve } from 'node:path'
 import { profile } from '../src/content/profile.js'
 import { aboutNotes } from '../src/content/about-collage.js'
+import { experiments } from '../src/content/experiments.js'
+import { imageMetadata } from './lib/image-metadata.js'
 
 const root = process.cwd()
 const output = resolve(root, 'dist')
 const origin = 'https://leonardalovric.com'
+const readyExperiments = experiments.filter(item => (item.cover || item.coverVideo) && item.title)
+const optimizedMedia = JSON.parse(await readFile(resolve(root, 'src/content/optimized-media.json'), 'utf8'))
+const tomsoftPreviews = JSON.parse(await readFile(resolve(root, 'src/content/tomsoft-cover-previews.json'), 'utf8'))
+const fallbackImage = {
+  url: `${origin}/assets/social/portfolio-preview.png`,
+  alt: 'Leonarda Lovrić’s portfolio landing screen with her name, product designer title, and playful introduction.',
+  ...await imageMetadata(resolve(root, 'public/assets/social/portfolio-preview.png')),
+}
+async function socialImageFor(project) {
+  if (!/\.(png|jpe?g)$/i.test(project?.cover || '')) return fallbackImage
+  return {
+    url: new URL(project.cover, origin).href,
+    alt: project.coverAlt || project.title,
+    ...await imageMetadata(resolve(root, 'public', `.${project.cover}`)),
+  }
+}
 const projectFiles = ['project-three.json', 'project-one.json', 'project-two.json', 'project-four.json']
 const projects = await Promise.all(projectFiles.map(async file =>
   JSON.parse(await readFile(resolve(root, 'src/content', file), 'utf8')),
@@ -26,7 +44,7 @@ function publicValue(value) {
 }
 
 function publicProject(project) {
-  const fields = ['slug', 'title', 'cardTitle', 'cardStatus', 'summary', 'tags', 'cover', 'coverVideo', 'coverAlt', 'metadata', 'teaser', 'sections']
+  const fields = ['slug', 'title', 'cardTitle', 'cardStatus', 'summary', 'tags', 'cover', 'coverGraphic', 'coverVideo', 'coverAlt', 'metadata', 'teaser', 'sections']
   return {
     ...Object.fromEntries(fields.filter(key => project[key] !== undefined).map(key => [key, publicValue(project[key])])),
     canonicalUrl: `${origin}/projects/${project.slug}/`,
@@ -36,15 +54,32 @@ function publicProject(project) {
 const publicProjects = projects.map(publicProject)
 await mkdir(resolve(output, 'projects'), { recursive: true })
 
+function renderImage(src, alt, { eager = false, sizes = '(max-width: 760px) calc(100vw - 48px), 680px' } = {}) {
+  const image = optimizedMedia.images[src]
+  const attributes = image
+    ? ` width="${image.width}" height="${image.height}" srcset="${image.sources.map(source => `${escapeHtml(source.src)} ${source.width}w`).join(', ')}" sizes="${escapeHtml(sizes)}"`
+    : ''
+  return `<img src="${escapeHtml(image?.src || src)}" alt="${escapeHtml(alt)}"${attributes} decoding="async"${eager ? ' fetchpriority="high"' : ' loading="lazy"'}>`
+}
+
+function renderCover(project, options) {
+  if (project.coverGraphic === 'tomsoft') {
+    // Match the existing component's embedded previews instead of fetching its
+    // multi-megabyte archival SVG before React mounts the interactive cover.
+    return `<div class="tomsoft-cover" role="img" aria-label="${escapeHtml(project.coverAlt)}">${Object.entries(tomsoftPreviews).map(([name, src]) => `<div class="tomsoft-cover__panel tomsoft-cover__panel--${escapeHtml(name)}"><div class="tomsoft-cover__screen"><img class="tomsoft-cover__screen-preview" src="${escapeHtml(src)}" alt="" width="480" height="300"></div></div>`).join('')}</div>`
+  }
+  return project.cover ? renderImage(project.cover, project.coverAlt || '', options) : `<p class="cover-label">${escapeHtml(project.coverAlt || project.title)}</p>`
+}
+
 function renderMedia(item) {
   const source = item.src
   const alt = item.alt || item.title || ''
   const caption = item.caption || item.label
   if (!source) return ''
   if (/\.(mp4|mov|webm)(?:\?|$)/i.test(source)) {
-    return `<figure><video controls preload="metadata"${item.poster ? ` poster="${escapeHtml(item.poster)}"` : ''}><source src="${escapeHtml(source)}"><a href="${escapeHtml(source)}">Watch ${escapeHtml(item.title || 'the video')}</a></video>${caption ? `<figcaption>${escapeHtml(caption)}</figcaption>` : ''}</figure>`
+    return `<figure class="study-media"><video controls preload="metadata"${item.poster ? ` poster="${escapeHtml(item.poster)}"` : ''}><source src="${escapeHtml(source)}"><a href="${escapeHtml(source)}">Watch ${escapeHtml(item.title || 'the video')}</a></video>${caption ? `<figcaption>${escapeHtml(caption)}</figcaption>` : ''}</figure>`
   }
-  return `<figure><img src="${escapeHtml(source)}" alt="${escapeHtml(alt)}" loading="lazy">${caption ? `<figcaption>${escapeHtml(caption)}</figcaption>` : ''}</figure>`
+  return `<figure class="study-media">${renderImage(source, alt)}${caption ? `<figcaption>${escapeHtml(caption)}</figcaption>` : ''}</figure>`
 }
 
 const hiddenKeys = new Set([
@@ -94,9 +129,7 @@ function renderBlock(block) {
 }
 
 function renderProjectHtml(project) {
-  const mediaCover = project.cover
-    ? `<img src="${escapeHtml(project.cover)}" alt="${escapeHtml(project.coverAlt || '')}" fetchpriority="high">`
-    : `<p class="cover-label">${escapeHtml(project.coverAlt || project.title)}</p>`
+  const mediaCover = renderCover(project, { eager: true, sizes: '100vw' })
   const metadata = (project.metadata || []).map(item =>
     `<div><dt>${escapeHtml(item.label)}</dt><dd>${escapeHtml(item.value)}</dd></div>`,
   ).join('')
@@ -122,13 +155,17 @@ function renderProjectHtml(project) {
 }
 
 function renderHomeHtml() {
-  const projectCards = publicProjects.map(project =>
-    `<a class="project-card" href="/projects/${escapeHtml(project.slug)}/"><div class="project-cover" role="img" aria-label="${escapeHtml(project.coverAlt || project.title)}">${project.cover ? `<img src="${escapeHtml(project.cover)}" alt="" loading="lazy">` : ''}</div><div class="card-copy"><h2>${escapeHtml(project.cardTitle || project.title)}${project.cardStatus ? `<span class="card-status"> / ${escapeHtml(project.cardStatus)}</span>` : ''}</h2><p>${escapeHtml(project.summary)}</p></div></a>`,
+  const projectCards = publicProjects.map((project, index) =>
+    `<a class="project-card" href="/projects/${escapeHtml(project.slug)}/"><div class="project-cover" role="img" aria-label="${escapeHtml(project.coverAlt || project.title)}">${renderCover(project, { eager: index < 2, sizes: '(max-width: 760px) 100vw, 40vw' })}</div><div class="card-copy"><h2>${escapeHtml(project.cardTitle || project.title)}${project.cardStatus ? `<span class="card-status"> / ${escapeHtml(project.cardStatus)}</span>` : ''}</h2><p>${escapeHtml(project.summary)}</p></div></a>`,
   ).join('')
+  const experimentCards = readyExperiments.map(item =>
+    `<a class="project-card" href="${escapeHtml(item.video)}"><div class="project-cover">${renderImage(item.cover, item.coverAlt, { sizes: '(max-width: 760px) 100vw, 40vw' })}</div><div class="card-copy"><h2>${escapeHtml(item.cardTitle || item.title)}${item.cardStatus ? `<span class="card-status"> / ${escapeHtml(item.cardStatus)}</span>` : ''}</h2></div></a>`,
+  ).join('')
+  const sideQuests = `<section id="play" class="home-section home-play" aria-labelledby="play-heading"><header class="home-section-heading"><h2 id="play-heading" class="accent-type">side quests</h2></header><div class="project-grid experiment-grid">${experimentCards}</div></section>`
   const notes = aboutNotes.map(note => `<li>${escapeHtml(note.text).replace(/\n/g, '<br>')}</li>`).join('')
-  const navigationLinks = [['home', 'Home'], ['work', 'Work'], ['about', 'About me'], ['contact', 'Contact']]
+  const navigationLinks = [['home', 'Home'], ['work', 'Work'], ['play', 'Side quests'], ['about', 'About me'], ['contact', 'Contact']]
     .map(([id, label]) => `<a class="layout-nav-item" href="#${id}">${label}</a>`).join('')
-  return `<a class="skip-link" href="#main-content">Skip to content</a><div id="main-content"><main class="home page-grid"><aside class="layout-sidebar home-nav"><nav class="layout-nav desktop-nav" aria-label="Main navigation">${navigationLinks}</nav></aside><div class="layout-main"><section id="home" class="intro"><h1><span class="intro-statement">${escapeHtml(profile.name)} is a product designer who thinks in systems</span><span class="accent-heading accent-type">&amp; plays with tech.</span></h1><p>${escapeHtml(profile.introduction)}</p></section><section id="work" class="home-work" aria-label="Selected work"><div class="project-grid">${projectCards}</div></section><section id="about" class="home-section home-about" aria-labelledby="about-heading"><header class="home-section-heading"><h2 id="about-heading">About me</h2></header><ol class="about-notes" aria-label="My path into design">${notes}</ol></section><footer id="contact" class="footer home-section home-contact"><h2 id="contact-heading">Let’s connect</h2><a href="mailto:${escapeHtml(profile.email)}">${escapeHtml(profile.email)}</a><a href="${escapeHtml(profile.resume)}">Resume</a></footer></div></main></div>`
+  return `<a class="skip-link" href="#main-content">Skip to content</a><div id="main-content"><main class="home page-grid"><aside class="layout-sidebar home-nav"><nav class="layout-nav desktop-nav" aria-label="Main navigation">${navigationLinks}</nav></aside><div class="layout-main"><section id="home" class="intro"><h1><span class="intro-statement">${escapeHtml(profile.name)} is a product designer who thinks in systems</span><span class="accent-heading accent-type">&amp; plays with tech.</span></h1><p>${escapeHtml(profile.introduction)}</p></section><section id="work" class="home-work" aria-label="Selected work"><div class="project-grid">${projectCards}</div></section>${sideQuests}<section id="about" class="home-section home-about" aria-labelledby="about-heading"><header class="home-section-heading"><h2 id="about-heading">About me</h2></header><ol class="about-notes" aria-label="My path into design">${notes}</ol></section><footer id="contact" class="footer home-section home-contact"><h2 id="contact-heading">Let’s connect</h2><a href="mailto:${escapeHtml(profile.email)}">${escapeHtml(profile.email)}</a><a href="${escapeHtml(profile.resume)}">Resume</a></footer></div></main></div>`
 }
 
 function jsonLdProject(project) {
@@ -169,7 +206,7 @@ function jsonLdForProject(project) {
   return {
     '@context': 'https://schema.org',
     '@graph': [
-      { '@type': 'Person', '@id': `${origin}/#person`, name: profile.name, url: `${origin}/`, description: profile.introduction },
+      { '@type': 'Person', '@id': `${origin}/#person`, name: profile.name, url: `${origin}/`, description: profile.introduction, sameAs: profile.socials.filter(item => item.url).map(item => item.url) },
       { ...jsonLdProject(project), isPartOf: { '@id': `${origin}/#website` } },
       { '@type': 'WebSite', '@id': `${origin}/#website`, url: `${origin}/`, name: `${profile.name} Portfolio` },
     ],
@@ -199,10 +236,15 @@ function preparePage(template, { title, description, canonical, image, jsonLd, c
   if (openGraphType) html = setProperty(html, 'og:type', openGraphType)
   html = setProperty(html, 'og:description', description)
   html = setProperty(html, 'og:url', canonical)
-  html = setProperty(html, 'og:image', image)
+  html = setProperty(html, 'og:image', image.url)
+  html = setProperty(html, 'og:image:type', image.type)
+  html = setProperty(html, 'og:image:width', image.width)
+  html = setProperty(html, 'og:image:height', image.height)
+  html = setProperty(html, 'og:image:alt', image.alt)
   html = setMeta(html, 'twitter:title', title)
   html = setMeta(html, 'twitter:description', description)
-  html = setMeta(html, 'twitter:image', image)
+  html = setMeta(html, 'twitter:image', image.url)
+  html = setMeta(html, 'twitter:image:alt', image.alt)
   html = html.replace('</head>', `<script type="application/ld+json">${JSON.stringify(jsonLd).replace(/</g, '\\u003c')}</script>\n  </head>`)
   return html.replace('<div id="root"></div>', `<div id="root">${content}</div>`)
 }
@@ -294,7 +336,7 @@ const projectMarkdownFiles = await Promise.all(publicProjects.map(async project 
 
 const baseTemplate = await readFile(resolve(output, 'index.html'), 'utf8')
 const homeDescription = profile.introduction
-const socialImage = `${origin}/assets/social/portfolio-preview.png`
+const socialImage = fallbackImage
 const homeHtml = preparePage(baseTemplate, {
   title: `${profile.name} | Product Designer`,
   description: homeDescription,
@@ -310,7 +352,7 @@ for (const project of publicProjects) {
     title: `${project.title} | ${profile.name}`,
     description: project.summary,
     canonical: `${origin}/projects/${project.slug}/`,
-    image: project.cover ? new URL(project.cover, origin).href : socialImage,
+    image: await socialImageFor(project),
     jsonLd: jsonLdForProject(project),
     content: renderProjectHtml(project),
     openGraphType: 'article',
@@ -334,14 +376,17 @@ const experience = tomsoft ? [{
 const projectIndex = publicProjects.map(project =>
   `- [${project.title}](${project.canonicalUrl}): ${project.summary} Topics: ${(project.tags || []).join(', ')}. [Markdown](${origin}/projects/${project.slug}.md).`,
 ).join('\n')
+const experimentIndex = readyExperiments.map(item =>
+  `- [${item.title}](${new URL(item.video, origin).href}): ${item.coverAlt}`,
+).join('\n')
 const education = aboutNotes.filter(note => ['degree', 'erasmus', 'masters'].includes(note.key)).map(note => `- ${note.text.replace(/\n/g, ' ')}`).join('\n')
 const llmsExperience = experience.map(item =>
   `- [Tomsoft](${item.url}): ${item.role}. Project period: ${item.projectPeriod}. ${item.description}`,
 ).join('\n')
-const llms = `# ${profile.name}\n\n> ${profile.introduction}\n\n## About\n\n${profile.headline}\n\n## Education\n\n${education}\n\n## Professional experience\n\n${llmsExperience}\n\n## Background\n\n${notes}\n\n## Projects\n\n${projectIndex}\n\n## Contact\n\n- Email: [${profile.email}](mailto:${profile.email})\n- [Resume](${new URL(profile.resume, origin).href})\n`
+const llms = `# ${profile.name}\n\n> ${profile.introduction}\n\n## About\n\n${profile.headline}\n\n## Education\n\n${education}\n\n## Professional experience\n\n${llmsExperience}\n\n## Background\n\n${notes}\n\n## Projects\n\n${projectIndex}\n\n## Side quests\n\n${experimentIndex}\n\n## Contact\n\n- Email: [${profile.email}](mailto:${profile.email})\n- [Resume](${new URL(profile.resume, origin).href})\n`
 await writeFile(resolve(output, 'llms.txt'), llms)
 
-const fullText = `# ${profile.name}\n\nCanonical URL: ${origin}/\n\n${profile.introduction}\n\n## Background\n\n${notes}\n\n## Contact\n\n- Email: ${profile.email}\n- Resume: ${new URL(profile.resume, origin).href}\n\n${projectMarkdownFiles.join('\n\n---\n\n')}`
+const fullText = `# ${profile.name}\n\nCanonical URL: ${origin}/\n\n${profile.introduction}\n\n## Background\n\n${notes}\n\n## Side quests\n\n${experimentIndex}\n\n## Contact\n\n- Email: ${profile.email}\n- Resume: ${new URL(profile.resume, origin).href}\n\n${projectMarkdownFiles.join('\n\n---\n\n')}`
 await writeFile(resolve(output, 'llms-full.txt'), fullText)
 
 const allTopics = [...new Set(publicProjects.flatMap(project => project.tags || []))]
@@ -360,6 +405,7 @@ const portfolio = {
     links: profile.socials.filter(item => item.url),
   },
   professionalExperience: experience,
+  experiments: readyExperiments.map(item => ({ ...item, video: new URL(item.video, origin).href })),
   projects: publicProjects,
 }
 await writeFile(resolve(output, 'portfolio.json'), `${JSON.stringify(portfolio, null, 2)}\n`)
@@ -382,6 +428,9 @@ await writeFile(resolve(output, 'portfolio.schema.json'), `${JSON.stringify({
       areasOfPractice: { type: 'array', items: { type: 'string' } },
       links: { type: 'array', items: { type: 'object' } },
     } },
+    experiments: { type: 'array', items: { type: 'object', required: ['slug', 'title', 'video'], properties: {
+      slug: { type: 'string' }, title: { type: 'string' }, video: { type: 'string', format: 'uri' },
+    } } },
     professionalExperience: { type: 'array', items: { type: 'object', required: ['organization', 'role', 'projectPeriod', 'url'], properties: {
       organization: { type: 'string' },
       role: { type: 'string' },

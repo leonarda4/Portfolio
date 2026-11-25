@@ -7,6 +7,9 @@ export const profile = {
   timeZone: 'Europe/Zurich',
   email: 'Leonarda.lovric@zhdk.ch',
   resume: '/assets/Leonarda_Lovric_CV.pdf?v=21d82234fb37',
-  socials: [{ label: 'LinkedIn', url: '' }, { label: 'GitHub', url: '' }, { label: 'X (Twitter)', url: '' }],
+  socials: [
+    { label: 'LinkedIn', url: 'https://www.linkedin.com/in/leonarda-lovrić-7b4479234/' },
+    { label: 'GitHub', url: 'https://github.com/leonarda4' },
+  ],
   about: 'Introduce yourself here. Share what draws you to design, how your background shapes your approach, and the kinds of problems you enjoy working on.',
 }

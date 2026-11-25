@@ -17,6 +17,7 @@ import SoundscapeCards from './components/SoundscapeCards'
 import StickerBoard from './components/StickerBoard'
 import StudyVideo from './components/StudyVideo'
 import CoverVideo from './components/CoverVideo'
+import MediaPreview from './components/MediaPreview'
 import ResponsiveImage from './components/ResponsiveImage'
 import { imageSource, videoSource } from './media'
 import { AboutContactSection, PlaySection } from './components/HomeSections'
@@ -173,38 +174,24 @@ function CaseStudy({ project }) {
   }, [lightbox])
   function jump(id) { document.getElementById(id)?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: 'start' }); setActive(id) }
   const sectionLinks = project.sections.map(section => ({ id: section.id, label: section.navLabel || section.label, onClick: () => jump(section.id) }))
-  return <><main className="case-study" data-project={project.slug} style={{ '--project-accent': project.accent }}><Cover project={project} hero /><div className="study-layout page-grid"><aside className="study-nav layout-sidebar"><div className="sidebar-heading"><a className="sidebar-back" href="#/"><span className="sidebar-back-arrow" aria-hidden="true">←</span>Back to Home</a></div><LayoutNav className="desktop-nav" label="Case study sections" items={sectionLinks} active={active} /><ThemeToggle /><MobileNavigation label="Case study sections" items={sectionLinks} active={active} backLink /></aside><article className="study-content"><h1 className="study-title">{project.title}</h1><p className="study-summary">{project.summary}</p><dl className="project-metadata">{project.metadata.map(item => <div key={item.label}><dt>{item.label}</dt><dd>{item.value}</dd></div>)}</dl>{project.sections.filter(section => section.placement === 'opening').map(section => <StudySection key={section.id} section={section} onOpen={setLightbox} />)}{project.teaser && <div className="study-teaser"><Block block={{ ...project.teaser, title: '' }} onOpen={setLightbox} /></div>}{project.sections.filter(section => section.placement !== 'opening').map(section => <StudySection key={section.id} section={section} onOpen={setLightbox} />)}<nav className="study-end" aria-label="Project navigation"><button type="button" onClick={() => window.scrollTo({ top: 0, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' })}>Back to top ↑</button><a href={`#/project/${nextProject.slug}`}>Next project →</a></nav></article></div></main>{lightbox && createPortal(<div className="lightbox" role="dialog" aria-modal="true" aria-label={lightbox.alt} onClick={() => setLightbox(null)}><button className="lightbox-close" onClick={() => setLightbox(null)}><span className="sidebar-back-arrow" aria-hidden="true">×</span>Close</button><img src={lightbox.src} alt={lightbox.alt} onClick={e => e.stopPropagation()} /></div>, document.body)}</>
+  return <><main className="case-study" data-project={project.slug} style={{ '--project-accent': project.accent }}><Cover project={project} hero /><div className="study-layout page-grid"><aside className="study-nav layout-sidebar"><div className="sidebar-heading"><a className="sidebar-back" href="/"><span className="sidebar-back-arrow" aria-hidden="true">←</span>Back to Home</a></div><LayoutNav className="desktop-nav" label="Case study sections" items={sectionLinks} active={active} /><ThemeToggle /><MobileNavigation label="Case study sections" items={sectionLinks} active={active} backLink /></aside><article className="study-content"><h1 className="study-title">{project.title}</h1><p className="study-summary">{project.summary}</p><dl className="project-metadata">{project.metadata.map(item => <div key={item.label}><dt>{item.label}</dt><dd>{item.value}</dd></div>)}</dl>{project.sections.filter(section => section.placement === 'opening').map(section => <StudySection key={section.id} section={section} onOpen={setLightbox} />)}{project.teaser && <div className="study-teaser"><Block block={{ ...project.teaser, title: '' }} onOpen={setLightbox} /></div>}{project.sections.filter(section => section.placement !== 'opening').map(section => <StudySection key={section.id} section={section} onOpen={setLightbox} />)}<nav className="study-end" aria-label="Project navigation"><button type="button" onClick={() => window.scrollTo({ top: 0, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' })}>Back to top ↑</button><a href={`/projects/${nextProject.slug}/`}>Next project →</a></nav></article></div></main>{lightbox && createPortal(<div className="lightbox" role="dialog" aria-modal="true" aria-label={lightbox.alt} onClick={() => setLightbox(null)}><button className="lightbox-close" onClick={() => setLightbox(null)}><span className="sidebar-back-arrow" aria-hidden="true">×</span>Close</button><img src={lightbox.src} alt={lightbox.alt} onClick={e => e.stopPropagation()} /></div>, document.body)}</>
 }
 function VideoPreview({ experiment, onClose }) {
-  const dialog = useRef(null)
   const player = useRef(null)
   useLayoutEffect(() => {
-    const element = dialog.current
     const video = player.current
-    const previousFocus = document.activeElement
-    const overflow = document.body.style.overflow
-    const playing = [...document.querySelectorAll('#root video')].filter(video => !video.paused)
-    playing.forEach(video => video.pause())
-    element.showModal()
-    document.body.style.overflow = 'hidden'
     // Start during the opening click/tap, while its audio permission is active.
     video.muted = false
     video.play().catch(() => {}) // Native Play remains available if playback is blocked.
-    return () => {
-      video.pause()
-      element.close()
-      document.body.style.overflow = overflow
-      playing.forEach(video => { if (video.isConnected) video.play().catch(() => {}) })
-      previousFocus?.focus({ preventScroll: true })
-    }
+    return () => video.pause()
   }, [])
-  return createPortal(<dialog ref={dialog} className="lightbox video-preview" style={{ '--video-aspect': experiment.width / experiment.height || 16 / 9 }} aria-label={experiment.title} onCancel={event => { event.preventDefault(); onClose() }} onClick={event => { if (event.target === event.currentTarget) onClose() }}>
-    <button type="button" className="lightbox-close" onClick={onClose}><span className="sidebar-back-arrow" aria-hidden="true">×</span>Close</button>
+  return <MediaPreview label={experiment.title} aspect={experiment.width / experiment.height || 16 / 9} className="video-preview" onClose={onClose}>
     <video ref={player} src={videoSource(experiment.video)} poster={imageSource(experiment.cover)} width={experiment.width} height={experiment.height} autoPlay muted={false} controls playsInline preload="auto" aria-label={experiment.title}>
       <a href={experiment.video}>Watch the full video</a>
     </video>
-  </dialog>, document.body)
+  </MediaPreview>
 }
+
 export default function App() {
   const getRoute = () => {
     if (window.location.hash) {

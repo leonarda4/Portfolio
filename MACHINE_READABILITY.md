@@ -12,6 +12,7 @@ The build reads these existing public sources:
 
 - `src/content/profile.js` for the public identity, introduction, contact address, and resume link.
 - `src/content/about-collage.js` for the public background and education notes.
+- `src/content/experiments.js` for the Side quests cards, shared with the interactive homepage.
 - `src/content/project-one.json` through `src/content/project-four.json` for project pages.
 
 `npm run build` runs Vite and then `scripts/generate-machine-readable.js`. The generator creates the prerendered pages, metadata, structured data, sitemap, crawler policy, Markdown pages, and JSON index from those sources. Hidden `pending` blocks, `editorialNotes`, and `coverBrief` fields are excluded from public machine-readable outputs.
@@ -30,7 +31,7 @@ Update public profile and About content in their source files. Do not copy conte
 | URL | Format | Purpose |
 | --- | --- | --- |
 | `/` | HTML | Prerendered homepage, About notes, work links, contact |
-| `/projects/{slug}/` | HTML | Prerendered case study and hydrated React experience |
+| `/projects/{slug}/` | HTML | Prerendered case study and interactive React experience |
 | `/projects/{slug}.md` | Markdown | Case study text and media descriptions |
 | `/llms.txt` | Markdown | Concise portfolio and project index |
 | `/llms-full.txt` | Markdown | Homepage background and complete project text |
@@ -46,7 +47,9 @@ Markdown project files are served as `text/markdown` by the included Node server
 
 The homepage has canonical, description, Open Graph, and Twitter card metadata, plus a JSON-LD graph for the portfolio owner, website, and profile page. Each project has unique title and description metadata, its canonical URL, Open Graph fields, and a `CreativeWork` JSON-LD entity connected to the owner with a stable `@id`.
 
-The portfolio JSON includes only information already published in the page content. The education field preserves the text of the existing About notes rather than inferring institution details. The Tomsoft experience entry is derived from its published role, project period, summary, and canonical case-study URL. Awards, publications, external professional profiles, and other details without supporting public content are omitted.
+Sharing-image MIME types and dimensions are read from the actual PNG/JPEG files at build time. Project images use their own descriptive alternative text. SVG covers use the existing raster portfolio preview for social cards. The static HTML uses the same responsive image manifest as React. Side quests text and direct video links are also included in the homepage HTML, both AI text indexes, and `portfolio.json`; they do not have separate case-study routes.
+
+The portfolio JSON includes only information already published in the page content. The education field preserves the text of the existing About notes rather than inferring institution details. The Tomsoft experience entry is derived from its published role, project period, summary, and canonical case-study URL. Awards, publications, and other details without supporting source content are omitted. The owner-confirmed LinkedIn and GitHub URLs are metadata only; they do not add visible profile links.
 
 ## Crawler policy
 
@@ -62,7 +65,7 @@ The policy disallows `/api/` from automated crawling. The public website's inter
 
 ## Deployment requirements and limitations
 
-The generated canonical domain is `https://leonardalovric.com`. This repository cannot configure DNS, TLS, a CDN, or hosting-level redirects. Configure the hosting provider to:
+The generated canonical domain is `https://leonardalovric.com`. `vercel.json` configures trailing slashes and a permanent www-to-apex redirect. The Node server also normalizes directory URLs and redirects the www hostname, preserving query strings. These settings take effect after deployment; they cannot redirect traffic that still goes to another provider. Configure the hosting provider to:
 
 - Redirect HTTP to HTTPS.
 - Redirect `www.leonardalovric.com` to `leonardalovric.com`.
@@ -92,3 +95,77 @@ npm run preview -- --host 127.0.0.1 --port 4173
 ```
 
 After deployment, verify the canonical pages, generated endpoints, HTTP status codes, crawler access, and apex/`www` redirects over HTTPS. The HTML, Markdown, and JSON responses should include all currently published source content without requiring JavaScript.
+
+## Domain repair and publishing
+
+The live audit on Nov 25, 2026 found that the apex domain served the portfolio from Vercel, while `https://www.leonardalovric.com/` returned a Framer 404. No DNS settings or external accounts were changed by this implementation.
+
+1. Deploy the reviewed changes to the existing Vercel project. Keep its build command as `npm run build` and output directory as `dist` so the generated HTML and crawler files are published.
+2. In that project's Domains settings, add `www.leonardalovric.com` if it is missing. Configure it to redirect permanently to `leonardalovric.com`.
+3. At the DNS provider, replace the obsolete www destination with the exact record Vercel shows for this domain. Do not guess the target or change email/MX records. This account-level change is required before the repository's host redirect can receive www requests.
+4. Wait for Vercel to confirm the domain configuration and TLS certificate. Test both `http://www.leonardalovric.com/projects/echo/` and `https://www.leonardalovric.com/projects/echo/`; both must finish at `https://leonardalovric.com/projects/echo/` with HTTP 200.
+5. Confirm `/projects/echo?ref=check` redirects permanently to `/projects/echo/?ref=check`, while `/robots.txt`, `/sitemap.xml`, media, and Markdown files remain directly accessible.
+
+See [Vercel domain configuration](https://vercel.com/docs/domains/working-with-domains/deploying-and-redirecting) and [trailing-slash configuration](https://vercel.com/docs/project-configuration/vercel-json#trailingslash).
+
+## Google Search Console setup
+
+1. Open [Search Console](https://search.google.com/search-console) using the Google account that should own the site.
+2. Add a Domain property for `leonardalovric.com`. Copy Google's exact verification TXT record into the domain's DNS, then select Verify. Keep that record after verification. If DNS access is unavailable, use a URL-prefix property for `https://leonardalovric.com/` and its HTML-file method instead: put the supplied file unchanged in `public/`, rebuild, deploy, and verify. Do not put it only in `dist`, which is regenerated. See [ownership verification](https://support.google.com/webmasters/answer/9008080?hl=en).
+3. In Sitemaps, submit `https://leonardalovric.com/sitemap.xml`. Check that its status becomes Success. See [the Sitemaps report](https://support.google.com/webmasters/answer/7451001?hl=en).
+4. Use URL Inspection for the homepage and each of the four project URLs listed in the sitemap. Run Test Live URL and then Request Indexing where available. Confirm that Google's selected canonical eventually agrees with the declared canonical. See [URL Inspection](https://support.google.com/webmasters/answer/9012289?hl=en).
+5. Monitor Page indexing and Core Web Vitals after Google has collected data. A successful live test or submission does not guarantee indexing. This implementation has not verified account ownership or submitted URLs on the owner's behalf.
+
+## Bing Webmaster Tools setup
+
+1. Sign in to [Bing Webmaster Tools](https://www.bing.com/webmasters/).
+2. Import the verified Google Search Console property, or add `https://leonardalovric.com/` manually. For manual verification, use Bing's supplied XML file: place it unchanged in `public/`, deploy, confirm its public URL works, then verify. Follow the exact instructions supplied by the account. See [Bing site verification](https://www.bing.com/webmasters/help/add-and-verify-site-12184f8b).
+3. Check the Sitemaps section for the imported sitemap, or submit `https://leonardalovric.com/sitemap.xml` if missing. Use URL Inspection to check the homepage and case studies. See [Bing's setup checklist](https://www.bing.com/webmasters/help/getting-started-checklist-66a806de).
+
+## Professional profile links
+
+The owner-confirmed LinkedIn and GitHub URLs are stored in `src/content/profile.js`. They are included in the Person schema's `sameAs` links on all five pages and in the portfolio JSON. They are not rendered as new UI links.
+
+
+## Implementation verification, Nov 25, 2026
+
+- Production build and the expanded machine-readability regression suite pass. The suite covers all five pages, actual social-image MIME types/dimensions, social alternative text, metadata-only professional profiles, Side quests HTML/AI/JSON content, directory redirects with query strings, the www host rule, and real 404 responses.
+- All five JSON-LD graphs were checked against the current official Schema.org vocabulary: 64 property uses passed class inheritance, property domains, value ranges, and local entity-reference checks. This is a vocabulary check, not a promise of Google rich-result eligibility.
+- Browser checks covered all five routes at 1440px and 390px in light and dark appearances. No horizontal overflow was found. Case-study covers retained their top position and desktop/mobile dimensions. Homepage, Side quests, and Echo screenshots were visually inspected against the baseline.
+- Keyboard checks passed for Skip to content, opening/closing Side quests previews, focus containment and restoration, and the mobile navigation dialog. Cover videos stayed paused under reduced motion. Side quests text, artwork, and video links were also verified with JavaScript disabled. All five pages were checked without JavaScript at both widths after constraining static media to the article column; none had horizontal overflow.
+- The static Tomsoft cover reuses the component's embedded previews, avoiding an extra 3.77 MB archival SVG request before React loads. Responsive images in the static pages use the existing optimization manifest.
+- No production dependencies were added. Lighthouse was installed in a temporary audit directory. Live deployment, DNS repair, search-account ownership verification, and sitemap submission remain owner-account tasks.
+
+Files changed for this work:
+
+| Files | Purpose |
+| --- | --- |
+| `scripts/generate-machine-readable.js`, `scripts/lib/image-metadata.js` | Accurate sharing metadata, responsive static images, lightweight Tomsoft fallback, Side quests exports, professional schema links |
+| `src/content/experiments.js`, `src/portfolioData.js` | One shared Side quests content source for React and the build |
+| `src/content/profile.js` | Owner-confirmed LinkedIn and GitHub metadata URLs |
+| `index.html`, `src/index.css`, `src/case-study.css` | Earlier discovery of the same fonts, correct default image dimensions, route-specific Tomsoft preloading, static media constrained to the article column |
+| `vercel.json`, `server/index.js` | Permanent www and directory canonical redirects |
+| `src/components/StickerBoard.jsx`, `src/components/AboutCrayons.jsx` | Valid named group semantics and explicit crayon dimensions |
+| `scripts/test-machine-readability.js` | Regression coverage for the SEO fixes |
+| `MACHINE_READABILITY.md` | Deployment, verification, submission, and audit instructions |
+
+Other existing workspace edits are outside this change list.
+
+### Lighthouse measurements
+
+Local homepage lab measurements, using Lighthouse with mobile throttling. These are not field Core Web Vitals; the local Node server also does not provide Vercel's production compression.
+
+| Measurement | Before the static-cover optimization | After the static-cover optimization |
+| --- | --- | --- |
+| Performance | 57 | 65 |
+| First contentful paint | 3.4 s | 3.2 s |
+| Largest contentful paint | 10.7 s | 8.2 s |
+| Total blocking time | 240 ms | 100 ms |
+| Cumulative layout shift | 0 | 0 |
+| Accessibility | 100 | 100 |
+| Best practices | 100 | 100 |
+| SEO | 100 | 100 |
+
+These two runs used the same DevTools throttling configuration. The initial audit, before the accessibility and font fixes, scored 96 for accessibility and 100 for SEO/best practices. Its simulated performance score was 71; it is not directly comparable to the DevTools-throttled measurements. Two later simulated runs returned `NO_FCP` despite producing page screenshots, so their performance scores were discarded.
+
+The remaining local performance findings include oversized detailed Tomsoft artwork and deferred brainy storm workspace imagery, along with shared JavaScript/CSS unused on the homepage. No animation timing or visual layout was changed to improve the score. Recheck the deployed site with production compression and monitor real-user LCP/INP/CLS in Search Console; no field data was available during this work.

@@ -1,10 +1,11 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
-import { createPortal } from 'react-dom'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import MediaPreview from './MediaPreview'
 import groups from './noise-lab/recipes.json'
 import { createNoiseRenderer } from './noise-lab/renderer'
 import './GradientGallery.css'
 
 const recipes = groups.flatMap(group => group.recipes)
+const selections = groups.flatMap(group => group.recipes.map((recipe, index) => ({ group, recipe, index })))
 
 // All recipe viewports share one WebGL context. The images underneath are only
 // loading / unsupported-WebGL fallbacks, exported from the original presets.
@@ -137,59 +138,34 @@ function GradientSurface({ items, paused, children, className = '' }) {
   </div>
 }
 
-function MotionButton({ paused, onToggle }) {
+function MotionButton({ paused, onToggle, compact = false }) {
   return <button className="gradient-motion" type="button" onClick={onToggle}>
-    <span aria-hidden="true">{paused ? '▷' : 'Ⅱ'}</span>{paused ? 'Play motion' : 'Pause motion'}
+    <span aria-hidden="true">{paused ? '▷' : 'Ⅱ'}</span>{paused ? 'Play' : 'Pause'}{!compact && ' motion'}
   </button>
 }
 
-function GradientDetail({ selection, paused, onToggle, onClose }) {
-  const dialogRef = useRef(null)
-  const [items] = useState(() => [selection.recipe])
-  useEffect(() => {
-    const dialog = dialogRef.current
-    const previousFocus = document.activeElement
-    const overflow = document.body.style.overflow
-    document.body.style.overflow = 'hidden'
-    dialog.querySelector('button')?.focus({ preventScroll: true })
-    function handleKey(event) {
-      if (event.defaultPrevented || (event.key === 'Escape' && document.activeElement.closest('[role="menu"]'))) return
-      if (event.key === 'Escape') {
-        event.preventDefault()
-        onClose()
-      }
-      if (event.key !== 'Tab') return
-      // Keep the navigation available without tabbing into the obscured page.
-      const controls = [...document.querySelectorAll('.layout-sidebar a[href], .layout-sidebar button:not([disabled]), .gradient-dialog button:not([disabled])')].filter(node => node.tabIndex >= 0 && node.getClientRects().length)
-      if (!controls.length) return
-      const current = controls.indexOf(document.activeElement)
-      const next = current < 0 ? (event.shiftKey ? controls.length - 1 : 0) : (current + (event.shiftKey ? -1 : 1) + controls.length) % controls.length
-      event.preventDefault()
-      controls[next].focus()
-    }
-    document.addEventListener('keydown', handleKey)
-    return () => {
-      document.removeEventListener('keydown', handleKey)
-      document.body.style.overflow = overflow
-      if (previousFocus?.isConnected && (dialog.contains(document.activeElement) || document.activeElement === document.body)) previousFocus.focus({ preventScroll: true })
-    }
-  }, [onClose])
-
-  return createPortal(<div className="gradient-overlay" onClick={event => { if (event.target === event.currentTarget) onClose() }}><dialog open ref={dialogRef} className="gradient-dialog" aria-modal="false" aria-labelledby="gradient-detail-title">
-    <div className="gradient-detail">
-      <header><h3 id="gradient-detail-title">{selection.group.label} <span> / {String(selection.index + 1).padStart(2, '0')}</span></h3><button type="button" className="gradient-close" onClick={onClose}>Close ×</button></header>
-      <GradientSurface items={items} paused={paused}>
-        <div className="gradient-detail-image" data-gradient-id={selection.recipe.id}><img src={selection.recipe.preview} alt={`${selection.group.label} gradient recipe ${selection.index + 1}`} /></div>
-      </GradientSurface>
-      <footer><p>{selection.index + 1} of {selection.group.recipes.length}</p><MotionButton paused={paused} onToggle={onToggle} /></footer>
+function GradientDetail({ selection, paused, onToggle, onClose, onPrevious, onNext }) {
+  const items = useMemo(() => [selection.recipe], [selection.recipe])
+  return <MediaPreview label={`${selection.group.label} gradient recipe ${selection.index + 1}`} aspect={2.05} className="gradient-preview" onClose={onClose}>
+    <GradientSurface key={selection.recipe.id} items={items} paused={paused}>
+      <div className="gradient-detail-image" data-gradient-id={selection.recipe.id}><img src={selection.recipe.preview} alt={`${selection.group.label} gradient recipe ${selection.index + 1}`} /></div>
+    </GradientSurface>
+    <div className="gradient-preview-controls">
+      <button type="button" className="gradient-previous" onClick={onPrevious} aria-label="Previous gradient"><span aria-hidden="true">‹</span>Previous</button>
+      <MotionButton paused={paused} onToggle={onToggle} compact />
+      <button type="button" className="gradient-next" onClick={onNext} aria-label="Next gradient">Next<span aria-hidden="true">›</span></button>
     </div>
-  </dialog></div>, document.body)
+  </MediaPreview>
 }
 
 export default function GradientGallery() {
   const [paused, setPaused] = useState(() => window.matchMedia('(prefers-reduced-motion: reduce)').matches)
   const [selection, setSelection] = useState(null)
   const closeDetail = useCallback(() => setSelection(null), [])
+  const moveSelection = direction => setSelection(current => {
+    const index = selections.findIndex(item => item.recipe.id === current.recipe.id)
+    return selections[(index + direction + selections.length) % selections.length]
+  })
   useEffect(() => {
     const preference = window.matchMedia('(prefers-reduced-motion: reduce)')
     const change = () => setPaused(preference.matches)
@@ -210,6 +186,6 @@ export default function GradientGallery() {
       </section>)}
     </GradientSurface>
     <p className="gradient-caption">Select a study to explore it in motion. Made with <a href="https://github.com/leonarda4/The-noise-lab" target="_blank" rel="noreferrer">The Noise Lab ↗</a>.</p>
-    {selection && <GradientDetail selection={selection} paused={paused} onToggle={toggle} onClose={closeDetail} />}
+    {selection && <GradientDetail selection={selection} paused={paused} onToggle={toggle} onClose={closeDetail} onPrevious={() => moveSelection(-1)} onNext={() => moveSelection(1)} />}
   </div>
 }
