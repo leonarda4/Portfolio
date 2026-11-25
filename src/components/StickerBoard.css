@@ -3,7 +3,8 @@
 .sticker-switch > span { width: 14px; height: 14px; border-radius: 50%; background: var(--text-tertiary); transition: transform 180ms, background 180ms; }
 .sticker-switch[aria-checked='true'] { background: var(--text-primary); border-color: var(--text-primary); }
 .sticker-switch[aria-checked='true'] > span { transform: translateX(12px); background: var(--surface-solid); }
-.sticker-layer { position: absolute; inset: 0; z-index: 1000; overflow: clip; pointer-events: none; }
+.sticker-layer { position: absolute; inset: 0; z-index: 5000; overflow: visible; pointer-events: none; }
+.sticker-layer:has(.sticker-editor) { z-index:5001; }
 .sticker-paper { position: relative; width: 100%; height: var(--sticky-size); color: #403b2d; filter: drop-shadow(0 3px 6px #0000001f); }
 .sticker-paper-face { position: absolute; inset: 0; display: flex; padding: var(--sticky-padding); background: var(--paper); }
 .sticker-fold { display: none; }
@@ -24,7 +25,7 @@
 .sticker-editor textarea { width: 100%; height: 100%; padding: 0; border: 0; border-radius: 0; outline: none; resize: none; background: transparent; font: inherit; font-size: 16px; line-height: 1.4; color: #403b2d; scrollbar-width: thin; pointer-events: none; }
 .sticker-editor.is-typing textarea { pointer-events: auto; cursor: text; }
 /* The active tool gesture lifts above the toolbar and all page layers. */
-.sticker-in-flight { position: fixed; z-index: 3001; pointer-events: none; transform: rotate(var(--lift)) scale(var(--lift-scale)); }
+.sticker-in-flight { position: fixed; z-index: 5002; pointer-events: none; transform: rotate(var(--lift)) scale(var(--lift-scale)); }
 .sticker-in-flight .sticker-paper { filter: drop-shadow(0 8px 12px #0000002e); }
 .sticker-in-flight .sticker-paper-face { clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--peel)), calc(100% - var(--peel)) 100%, 0 100%); }
 .sticker-in-flight .sticker-fold { display: block; position: absolute; right: 0; bottom: 0; width: var(--peel); height: var(--peel); background: linear-gradient(135deg, #fff8, transparent 48%, #0002), var(--paper-back); clip-path: polygon(0 0, 100% 0, 0 100%); }

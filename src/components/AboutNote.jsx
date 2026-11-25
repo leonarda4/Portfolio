@@ -1,79 +1,84 @@
-import { useEffect, useRef, useState } from 'react'
-import { clampDrop, safeDrop } from './stickers/placement'
+import { useLayoutEffect, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
+import { freeDrop } from './stickers/placement'
+import { createDragScroller } from './stickers/drag-scroll'
 
-// Only the local offset changes. The authored text, color, and original position
-// never enter the visitor board's edit, delete, or persistence APIs.
+// Keep the authored slot in the layout, but render the paper outside the scaled
+// collage so it can travel across the whole page without clipping or stacking traps.
 export default function AboutNote({ children }) {
   const [offset, setOffset] = useState({ x: 0, y: 0 })
+  const [frame, setFrame] = useState(null)
   const [dragging, setDragging] = useState(false)
+  const slot = useRef(null)
   const button = useRef(null)
   const gesture = useRef(null)
 
-  function constrain(left, top, box, drop) {
-    const point = (drop ? safeDrop : clampDrop)(left, top, box)
-    const area = button.current.closest('.about-collage').getBoundingClientRect()
-    return { left: Math.max(area.left, Math.min(point.left, area.right - box.width)), top: Math.max(area.top, Math.min(point.top, area.bottom - box.height)) }
-  }
-
-  function scale() { return button.current.getBoundingClientRect().width / button.current.offsetWidth }
+  useLayoutEffect(() => {
+    function measure() {
+      const box = slot.current.getBoundingClientRect()
+      const style = getComputedStyle(slot.current)
+      const next = { left: box.left + window.scrollX, top: box.top + window.scrollY,
+        width: slot.current.offsetWidth, height: slot.current.offsetHeight,
+        scale: box.width / slot.current.offsetWidth, color: style.backgroundColor }
+      setFrame(previous => JSON.stringify(previous) === JSON.stringify(next) ? previous : next)
+    }
+    const observer = new ResizeObserver(measure)
+    observer.observe(slot.current)
+    observer.observe(document.getElementById('main-content'))
+    // The collage switches layouts without necessarily resizing each paper.
+    const layoutObserver = new MutationObserver(measure)
+    layoutObserver.observe(slot.current.closest('.home-personal'), { attributes: true })
+    window.addEventListener('resize', measure)
+    measure()
+    return () => {
+      observer.disconnect()
+      layoutObserver.disconnect()
+      window.removeEventListener('resize', measure)
+      gesture.current?.scroller?.stop()
+    }
+  }, [])
 
   function cancel() {
     const current = gesture.current
     if (!current) return
+    current.scroller?.stop()
     gesture.current = null
     setOffset(current.offset)
     setDragging(false)
     if (button.current?.hasPointerCapture(current.pointerId)) button.current.releasePointerCapture(current.pointerId)
   }
 
-  useEffect(() => {
-    let width = window.innerWidth
-    const resize = () => {
-      if (width === window.innerWidth) return
-      width = window.innerWidth
-      cancel()
-      setOffset({ x: 0, y: 0 })
-    }
-    window.addEventListener('resize', resize)
-    return () => window.removeEventListener('resize', resize)
-  }, [])
-
   function start(event) {
     if (event.button !== 0 || !event.isPrimary || gesture.current) return
-    // Long notes scroll inside the same fixed paper size as visitor notes.
     const text = event.currentTarget.firstElementChild
     if (text?.contains(event.target) && text.scrollHeight > text.clientHeight) return
     event.preventDefault()
     event.currentTarget.focus({ preventScroll: true })
     const box = event.currentTarget.getBoundingClientRect()
-    gesture.current = {
-      pointerId: event.pointerId,
-      clientX: event.clientX, clientY: event.clientY,
-      scrollX: window.scrollX, scrollY: window.scrollY,
-      box, offset,
-    }
+    gesture.current = { pointerId: event.pointerId, startX: event.clientX, startY: event.clientY,
+      grabX: event.clientX - box.left, grabY: event.clientY - box.top, box, offset,
+      originX: box.left + window.scrollX - offset.x, originY: box.top + window.scrollY - offset.y }
     event.currentTarget.setPointerCapture(event.pointerId)
-    setDragging(true)
   }
 
-  function move(event, drop = false) {
+  function move(event) {
     const current = gesture.current
     if (!current || event.pointerId !== current.pointerId) return
-    if (!current.moved && Math.hypot(event.clientX - current.clientX, event.clientY - current.clientY) < 4) return
+    if (!current.moved && Math.hypot(event.clientX - current.startX, event.clientY - current.startY) < 4) return
     current.moved = true
-    const rawLeft = current.box.left + event.clientX - current.clientX
-    const rawTop = current.box.top + event.clientY - current.clientY
-    const point = constrain(rawLeft, rawTop, current.box, drop)
-    const factor = scale()
-    setOffset({
-      x: current.offset.x + (point.left - current.box.left + window.scrollX - current.scrollX) / factor,
-      y: current.offset.y + (point.top - current.box.top + window.scrollY - current.scrollY) / factor,
-    })
+    current.clientX = event.clientX
+    current.clientY = event.clientY
+    const point = freeDrop(event.clientX - current.grabX, event.clientY - current.grabY, current.box)
+    setOffset({ x: point.left + window.scrollX - current.originX, y: point.top + window.scrollY - current.originY })
+    setDragging(true)
+    if (!current.scroller) current.scroller = createDragScroller(() => move({ pointerId: current.pointerId, clientX: current.clientX, clientY: current.clientY }))
+    current.scroller.update(event.clientX, event.clientY)
   }
 
   function finish(event) {
     if (event.pointerId !== gesture.current?.pointerId) return
-    move(event, true)
+    move(event)
+    gesture.current.scroller?.stop()
     gesture.current = null
     setDragging(false)
     if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId)
@@ -91,16 +96,19 @@ export default function AboutNote({ children }) {
     if (gesture.current) return
     const box = event.currentTarget.getBoundingClientRect()
     const step = event.shiftKey ? 30 : 10
-    const point = constrain(box.left + direction[0] * step, box.top + direction[1] * step, box, true)
-    const factor = scale()
-    setOffset(previous => ({ x: previous.x + (point.left - box.left) / factor, y: previous.y + (point.top - box.top) / factor }))
+    const point = freeDrop(box.left + direction[0] * step, box.top + direction[1] * step, box)
+    setOffset(previous => ({ x: previous.x + point.left - box.left, y: previous.y + point.top - box.top }))
   }
 
-  return <button ref={button} type="button" className={`about-note-paper${dragging ? ' is-dragging' : ''}`}
-    style={{ transform: `translate(${offset.x}px, ${offset.y}px)` }}
-    aria-describedby="about-note-move-help" title="Drag to move. Arrow keys move; Home resets."
-    onPointerDown={start} onPointerMove={move} onPointerUp={finish}
-    onPointerCancel={cancel} onLostPointerCapture={cancel} onKeyDown={key}>
-    <span>{children}</span>
-  </button>
+  return <>
+    <div ref={slot} className="about-note-paper about-note-slot" aria-hidden="true"><span>{children}</span></div>
+    {frame && createPortal(<button ref={button} type="button" className={`about-note-paper about-note-floating${dragging ? ' is-dragging' : ''}`}
+      style={{ left: frame.left + offset.x, top: frame.top + offset.y, width: frame.width, height: frame.height,
+        '--note-color': frame.color, transform: `scale(${frame.scale})` }}
+      aria-describedby="about-note-move-help" title="Drag to move. Arrow keys move; Home resets."
+      onPointerDown={start} onPointerMove={move} onPointerUp={finish}
+      onPointerCancel={cancel} onLostPointerCapture={cancel} onKeyDown={key}>
+      <span>{children}</span>
+    </button>, document.body)}
+  </>
 }

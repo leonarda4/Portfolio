@@ -18,7 +18,7 @@ function authorize(note, key) {
 
 export function validateSticker(input) {
   if (!input || typeof input !== 'object' || !validId(input.id) || !validPage(input.page)) throw error(400, 'Invalid sticker or page.')
-  if (typeof input.text !== 'string' || !input.text.trim() || input.text.length > 280) throw error(400, 'Write a note of up to 280 characters.')
+  if (typeof input.text !== 'string' || input.text.length > 280) throw error(400, 'Write a note of up to 280 characters.')
   if (!colors.has(input.color)) throw error(400, 'Choose a sticker color.')
   const p = input.placement
   if (!p || typeof p.anchor !== 'string' || !/^(page|intro|case-cover|about-page|footer|id:[a-z0-9-]{1,100}|project:#\/project\/[a-z0-9-]{1,80})$/.test(p.anchor)) throw error(400, 'Invalid sticker position.')

@@ -11,8 +11,10 @@
 .layout-sidebar { grid-column:1 / 4; grid-row:1; min-width:0; width:100%; align-self:start; position:sticky; top:var(--nav-sticky-top); z-index:1100; background:transparent; }
 .layout-main { grid-column:4 / -1; min-width:0; }
 .home { --home-section-gap:128px; padding-block:var(--space-8) var(--home-section-gap); }
-.home-nav .theme-control { --theme-art-width:clamp(88px,calc((100svh - 420px) * .9),233px); margin-top:clamp(16px,calc((100svh - 650px) * .6),96px); margin-left:calc(66px - var(--theme-art-width) / 2); }
-.home-nav .theme-toggle { width:var(--theme-art-width); height:auto; aspect-ratio:233 / 257; }
+/* Reserve one shared sun position, regardless of the number of navigation links. */
+:is(.home-nav,.study-nav) { --theme-offset:max(312px,calc(236px + clamp(16px,calc((100svh - 650px) * .6),96px))); --theme-art-width:clamp(88px,calc((100svh - var(--nav-sticky-top) - var(--theme-offset) - 132px) * 233 / 257),233px); min-height:calc(var(--theme-offset) + var(--theme-art-width) * 257 / 233); }
+:is(.home-nav,.study-nav) .theme-control { position:absolute; top:var(--theme-offset); left:calc(66px - var(--theme-art-width) / 2); margin:0; }
+:is(.home-nav,.study-nav) .theme-toggle { width:var(--theme-art-width); height:auto; aspect-ratio:233 / 257; }
 .home .intro { display:block; container-type:inline-size; height:auto; max-width:680px; margin:0; padding:128px 0 0; text-align:left; }
 .home .intro h1 { max-width:none; margin:0; font-size:clamp(24px,9.35cqw,48px); line-height:1.2; }
 .home .intro-statement { display:block; text-wrap:pretty; }
@@ -34,21 +36,31 @@
 .case-study { --page-gutter:48px; --page-width:var(--width-page); }
 .study-layout.page-grid { margin-top:var(--space-16); }
 .study-content { grid-column:4 / -1; justify-self:start; }
-.study-nav.layout-sidebar { max-height:calc(100svh - var(--nav-sticky-top) - var(--space-8)); overflow-y:auto; scrollbar-width:thin; }
+.study-nav.layout-sidebar { display:flex; flex-direction:column; overflow:visible; }
+/* Longer chapter lists scroll inside the shared space above the sun. */
+.study-nav > .desktop-nav { flex-shrink:0; max-height:calc(var(--theme-offset) - 76px); overflow-y:auto; scrollbar-width:thin; }
+.study-nav > .sidebar-heading { flex-shrink:0; }
 .sidebar-heading { display:flex; align-items:center; justify-content:space-between; gap:var(--space-2); margin-bottom:var(--space-6); }
 .sidebar-back-arrow { position:absolute; left:0; }
 .sidebar-back:hover { color:var(--color-text); }
 .about-page.page-grid { padding-block:var(--space-8) 140px; }
 .about-content { padding-top:168px; }
 @media(max-width:1000px) { .case-study { --page-gutter:32px; } }
+@media(min-width:761px) and (max-height:600px) {
+  :is(.home-nav,.study-nav) { --theme-offset:262px; }
+  .study-nav > .sidebar-heading { margin-bottom:var(--space-2); }
+  .study-nav > .desktop-nav { gap:2px; max-height:calc(var(--theme-offset) - 60px); }
+  .study-nav .layout-nav-item { padding-block:6px; }
+}
 @media(max-width:760px) {
   .page-grid { grid-template-columns:repeat(4,minmax(0,1fr)); }
   .layout-sidebar,.layout-main,.study-content { grid-column:1 / -1; grid-row:auto; }
   .home { --home-section-gap:var(--space-16); padding-block:var(--space-4) var(--home-section-gap); }
+  :is(.home-nav,.study-nav) { min-height:0; }
   .home-nav { position:static; display:block; min-height:64px; padding:0; }
   .home .intro { padding:var(--space-12) 0 0; }
-  .home-nav .theme-control { --theme-art-width:64px; position:fixed; top:max(var(--space-4),env(safe-area-inset-top)); left:max(var(--page-gutter),env(safe-area-inset-left)); margin:0; z-index:1100; }
-  .home-nav .theme-toggle { height:64px; aspect-ratio:auto; }
+  :is(.home-nav,.study-nav) .theme-control { --theme-art-width:64px; position:fixed; top:max(var(--space-4),env(safe-area-inset-top)); left:max(var(--page-gutter),env(safe-area-inset-left)); margin:0; z-index:1100; }
+  :is(.home-nav,.study-nav) .theme-toggle { height:64px; aspect-ratio:auto; }
   .home :is(.intro,.home-work,.home-section) { scroll-margin-top:96px; }
   .home .about-columns { grid-template-columns:1fr; gap:var(--space-8); }
   .home .about-columns img { max-width:360px; }

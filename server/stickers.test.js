@@ -29,10 +29,11 @@ test('concurrent visitors persist without losing notes; retries do not duplicate
 })
 
 test('rejects invalid content and placements instead of writing them', () => {
-  for (const invalid of [note({ text: ' ' }), note({ text: 'x'.repeat(281) }), note({ color: 'red' }), note({ page: '/private' }), note({ placement: { anchor: 'intro', x: Infinity, y: 0 } }), note({ placement: { anchor: 'intro', x: .5, y: 2 } })]) {
+  for (const invalid of [note({ text: null }), note({ text: 'x'.repeat(281) }), note({ color: 'red' }), note({ page: '/private' }), note({ placement: { anchor: 'intro', x: Infinity, y: 0 } }), note({ placement: { anchor: 'intro', x: .5, y: 2 } })]) {
     assert.throws(() => validateSticker(invalid), { status: 400 })
   }
   assert.equal(validateSticker(note({ text: '  hello  ' })).text, 'hello')
+  assert.equal(validateSticker(note({ text: ' ' })).text, '')
 })
 
 test('visitors share notes, can edit their own, and cannot change someone else’s', async t => {

@@ -60,13 +60,21 @@ export function positionOf(placement) {
   const box = boxForAnchor(placement.anchor)
   const x = box ? box.left + box.width * placement.x : window.innerWidth * placement.x
   const y = box ? box.top + box.height * placement.y : placement.y - window.scrollY
-  return { left: clamp(x - STICKER_SIZE / 2, 8, window.innerWidth - STICKER_SIZE - 8), top: y - STICKER_SIZE / 2 }
+  return { left: clamp(x - STICKER_SIZE / 2, 0, window.innerWidth - STICKER_SIZE), top: y - STICKER_SIZE / 2 }
 }
 
 export function clampDrop(left, top, { width = STICKER_SIZE, height = STICKER_SIZE } = {}) {
   return {
     left: clamp(left, 8, window.innerWidth - width - 8),
     top: clamp(top, 8, window.innerHeight - height - 8),
+  }
+}
+
+// User placement only respects the page edges, never content or section boundaries.
+export function freeDrop(left, top, { width = STICKER_SIZE, height = STICKER_SIZE } = {}) {
+  return {
+    left: clamp(left, 0, window.innerWidth - width),
+    top: clamp(top + window.scrollY, 0, document.documentElement.scrollHeight - height) - window.scrollY,
   }
 }
 

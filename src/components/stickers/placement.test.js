@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { clampDrop, placementAt, positionOf, safeDrop, STICKER_SIZE } from './placement.js'
+import { clampDrop, freeDrop, placementAt, positionOf, safeDrop, STICKER_SIZE } from './placement.js'
 
 const rect = (left, top, width, height) => ({ left, top, width, height, right: left + width, bottom: top + height })
 
@@ -34,6 +34,7 @@ function browser(t, { width = 1440, height = 900, scrollY = 0, elements = [] } =
   const globals = {
     window: { innerWidth: width, innerHeight: height, scrollX: 0, scrollY },
     document: {
+      documentElement: { scrollHeight: 6000 },
       querySelectorAll: selector => elements.filter(node => node.matches(selector)),
       createRange() {
         let selected
@@ -200,4 +201,14 @@ test('responsive About notes use their rendered size at viewport and navigation 
   assertPoint(safeDrop(24, 8, size), { left: 24, top: 72 })
   assertPoint(safeDrop(24, 650, size), { left: 24, top: 522 })
   assertPoint(safeDrop(100, 200, size), { left: 100, top: 200 })
+})
+
+
+test('manual placement can overlap navigation and leave the viewport while staying on the page', t => {
+  const nav = element('.layout-nav-item', rect(48, 32, 300, 40))
+  browser(t, { scrollY: 800, elements: [nav] })
+  assertPoint(freeDrop(48, 32), { left: 48, top: 32 })
+  assertPoint(freeDrop(48, -200), { left: 48, top: -200 })
+  assertPoint(positionOf(placementAt(0, 32)), { left: 0, top: 32 })
+  assertPoint(freeDrop(-100, -1000), { left: 0, top: -800 })
 })

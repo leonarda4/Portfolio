@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react'
 import { createPortal } from 'react-dom'
-import { clampDrop, COLORS, placementAt, positionOf, safeDrop, STICKER_SIZE } from './stickers/placement'
+import { clampDrop, freeDrop, COLORS, placementAt, positionOf, safeDrop, STICKER_SIZE } from './stickers/placement'
 import { createEditKey, deleteSticker, editKeys, getShowOthers, readStickers, saveShowOthers, saveSticker } from './stickers/api'
+import { createDragScroller } from './stickers/drag-scroll'
 import { aboutNoteIds } from '../content/about-collage'
 import PlayfulToolbar from './PlayfulToolbar'
 import PlayfulDrawing from './PlayfulDrawing'
@@ -90,8 +91,7 @@ export default function StickerBoard({ page, localOnly = false }) {
     const note = selection.current
     if (!note || gesture.current) return
     select(null)
-    if (note.text.trim()) persist({ ...note, text: note.text.trim() })
-    else remove(note)
+    persist({ ...note, text: note.text.trim() })
   }
 
   useEffect(() => {
@@ -99,7 +99,7 @@ export default function StickerBoard({ page, localOnly = false }) {
       const note = selection.current
       if (!note) return
       const remaining = (localNotes.get(page) || []).filter(item => item.id !== note.id)
-      localNotes.set(page, note.text.trim() ? [...remaining, { ...note, text: note.text.trim() }] : remaining)
+      localNotes.set(page, [...remaining, { ...note, text: note.text.trim() }])
     }
     mounted.current = true
     const controller = new AbortController()
@@ -137,10 +137,10 @@ export default function StickerBoard({ page, localOnly = false }) {
     return () => { observer.disconnect(); cancelAnimationFrame(frame); window.removeEventListener('resize', update) }
   }, [])
 
-  function create(position) {
+  function create(position, automatic = true) {
     finishEditing()
     setDrawing(false)
-    const point = safeDrop(position.left, position.top)
+    const point = (automatic ? safeDrop : freeDrop)(position.left, position.top)
     const note = { id: crypto.randomUUID(), page, text: '', color: nextColor.current, placement: placementAt(point.left, point.top) }
     nextColor.current = COLORS[Math.floor(Math.random() * COLORS.length)].name
     setNoteColor(nextColor.current)
@@ -159,23 +159,28 @@ export default function StickerBoard({ page, localOnly = false }) {
       if (distance < 5 && !current.moved) return
       event.preventDefault()
       current.moved = true
-      current.position = clampDrop(event.clientX - current.offsetX, event.clientY - current.offsetY)
+      current.clientX = event.clientX
+      current.clientY = event.clientY
+      current.position = freeDrop(event.clientX - current.offsetX, event.clientY - current.offsetY)
+      if (!current.scroller) current.scroller = createDragScroller(() => move({ pointerId: current.pointerId, clientX: current.clientX, clientY: current.clientY, preventDefault() {} }))
+      current.scroller.update(event.clientX, event.clientY)
       setDrag({ ...current.position, progress: Math.min(distance / 150, 1), note: current.note })
     }
     function finish(event) {
       const current = gesture.current
       if (!current || event.pointerId !== current.pointerId) return
+      current.scroller?.stop()
       gesture.current = null
       suppressClick.current = current.moved
       setDrag(null)
       if (event.type === 'pointercancel' || !current.moved) return
       if (current.note) {
-        const point = safeDrop(current.position.left, current.position.top)
+        const point = current.position
         const note = { ...selection.current, placement: placementAt(point.left, point.top) }
         select(note)
         requestAnimationFrame(() => editor.current?.focus({ preventScroll: true }))
-        if (note.text.trim()) persist(note)
-      } else create(current.position)
+        persist(note)
+      } else create(current.position, false)
     }
     function key(event) {
       const note = selection.current
@@ -183,7 +188,7 @@ export default function StickerBoard({ page, localOnly = false }) {
       const typing = event.target.matches('textarea, input, [contenteditable="true"]')
       if (event.key === 'Escape' || ((event.metaKey || event.ctrlKey) && event.key === 'Enter')) {
         event.preventDefault()
-        if (gesture.current) { gesture.current = null; setDrag(null) }
+        if (gesture.current) { gesture.current.scroller?.stop(); gesture.current = null; setDrag(null) }
         finishEditing()
         tray.current?.querySelector('button')?.focus({ preventScroll: true })
       } else if (!typing && (event.key === 'Delete' || event.key === 'Backspace')) {
@@ -192,7 +197,7 @@ export default function StickerBoard({ page, localOnly = false }) {
         event.preventDefault()
         const position = positionOf(note.placement)
         const step = event.shiftKey ? 30 : 10
-        const point = safeDrop(position.left + (event.key === 'ArrowRight' ? step : event.key === 'ArrowLeft' ? -step : 0), position.top + (event.key === 'ArrowDown' ? step : event.key === 'ArrowUp' ? -step : 0))
+        const point = freeDrop(position.left + (event.key === 'ArrowRight' ? step : event.key === 'ArrowLeft' ? -step : 0), position.top + (event.key === 'ArrowDown' ? step : event.key === 'ArrowUp' ? -step : 0))
         select({ ...note, placement: placementAt(point.left, point.top) })
       }
     }
@@ -203,7 +208,7 @@ export default function StickerBoard({ page, localOnly = false }) {
     window.addEventListener('pointercancel', finish)
     window.addEventListener('keydown', key)
     window.addEventListener('pagehide', pagehide)
-    return () => { document.removeEventListener('pointerdown', outside, true); window.removeEventListener('pointermove', move); window.removeEventListener('pointerup', finish); window.removeEventListener('pointercancel', finish); window.removeEventListener('keydown', key); window.removeEventListener('pagehide', pagehide) }
+    return () => { gesture.current?.scroller?.stop(); document.removeEventListener('pointerdown', outside, true); window.removeEventListener('pointermove', move); window.removeEventListener('pointerup', finish); window.removeEventListener('pointercancel', finish); window.removeEventListener('keydown', key); window.removeEventListener('pagehide', pagehide) }
   }, [])
 
   useEffect(() => {
@@ -239,7 +244,7 @@ export default function StickerBoard({ page, localOnly = false }) {
         const box = tray.current.getBoundingClientRect()
         create(clampDrop(box.left + 2, box.top - STICKER_SIZE - 24))
       }} showOthers={showOthers} onToggleOthers={() => { setShowOthers(!showOthers); saveShowOthers(!showOthers) }} strokeCount={strokeCount} onUndo={() => crayon.current?.undo()} onClear={() => crayon.current?.clear()} />
-    <div className="sticker-layer" aria-label="Visitor stickers">
+    {createPortal(<div className="sticker-layer" role="group" aria-label="Visitor stickers">
       {visible.map(note => {
         const position = positionOf(note.placement)
         const pagePosition = { left: position.left + window.scrollX, top: position.top + window.scrollY }
@@ -255,7 +260,7 @@ export default function StickerBoard({ page, localOnly = false }) {
           <Paper color={note.color}>{active ? <textarea ref={textarea} aria-label="Note text" maxLength={280} value={note.text} spellCheck={false} onChange={event => select({ ...selection.current, text: event.target.value })} /> : <p className="sticker-message">{note.text}</p>}</Paper>
         </div>
       })}
-    </div>
+    </div>, document.body)}
     {drag && createPortal(<div className="sticker-in-flight" style={{ left: drag.left, top: drag.top, '--peel': `${16 + Math.sin(drag.progress * Math.PI) * 72}px`, '--lift': `${-8 + drag.progress * 5}deg`, '--lift-scale': drag.note ? 1.02 : .32 + drag.progress * .68 }} aria-hidden="true"><Paper color={drag.note?.color || noteColor}><p className="sticker-message">{drag.note?.text}</p></Paper></div>, document.body)}
     {failure && <div className="sticker-save-error" role="alert">Couldn’t {failure.action} your note. <button onClick={() => { setFailure(null); failure.action === 'save' ? persist(failure.note) : remove(failure.note) }}>Retry</button></div>}
   </>

@@ -27,6 +27,9 @@
   -webkit-user-select:none;
 }
 .about-note-paper > span { width:100%; max-height:100%; overflow:auto; overflow-wrap:anywhere; scrollbar-width:thin; touch-action:pan-y; }
+.about-note-slot { visibility:hidden; pointer-events:none; }
+.about-note-floating { position:absolute; z-index:5000; transform-origin:top left; }
+.about-note-floating:focus, .about-note-floating.is-dragging { z-index:5001; }
 .about-note-paper.is-dragging { cursor:grabbing; box-shadow:0 8px 18px #00000026; }
 .about-note-move-help { position:absolute; width:1px; height:1px; padding:0; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
 .about-drawing { position:absolute; display:flex; align-items:center; justify-content:center; pointer-events:none; z-index:4; }
