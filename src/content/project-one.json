@@ -147,27 +147,20 @@
       ]
     },
     {
-      "id": "atmospheres",
-      "label": "Audiovisual atmospheres",
-      "navLabel": "Atmospheres",
-      "useSectionHeading": true,
-      "blocks": [],
-      "subsections": [
+      "id": "soundscapes",
+      "label": "Soundscape examples",
+      "blocks": [
         {
-          "id": "soundscapes",
-          "label": "Soundscape examples",
-          "blocks": [
-            {
-              "type": "text",
-              "title": "Sound layers for six emotional atmospheres",
-              "body": "Press play, then mute layers or adjust sliders to hear their contribution."
-            },
-            {
-              "type": "soundscapes"
-            }
-          ],
-          "navLabel": "Sounds"
+          "type": "text",
+          "title": "Sound layers for six emotional atmospheres",
+          "body": "Press play, then mute layers or adjust sliders to hear their contribution."
         },
+        {
+          "type": "soundscapes"
+        }
+      ],
+      "navLabel": "Atmospheres",
+      "subsections": [
         {
           "id": "gradients",
           "label": "Gradient studies",
@@ -186,113 +179,106 @@
       ]
     },
     {
-      "id": "design",
-      "label": "Research and interaction design",
-      "navLabel": "Design",
-      "useSectionHeading": true,
-      "blocks": [],
-      "subsections": [
+      "id": "research",
+      "label": "Research foundations",
+      "blocks": [
         {
-          "id": "research",
-          "label": "Research foundations",
-          "blocks": [
+          "type": "text",
+          "title": "Embodied cognition and interaction",
+          "body": "Embodied cognition and interaction informed the design of a feedback loop in which movement, emotion, and the audiovisual environment continuously influence one another.",
+          "sources": [
             {
-              "type": "text",
-              "title": "Embodied cognition and interaction",
-              "body": "Embodied cognition and interaction informed the design of a feedback loop in which movement, emotion, and the audiovisual environment continuously influence one another.",
-              "sources": [
-                {
-                  "label": "Varela et al., 1991",
-                  "url": "https://mitpress.mit.edu/9780262720212/the-embodied-mind/"
-                },
-                {
-                  "label": "Dourish, 2001",
-                  "url": "https://mitpress.mit.edu/9780262541787/where-the-action-is/"
-                }
-              ]
+              "label": "Varela et al., 1991",
+              "url": "https://mitpress.mit.edu/9780262720212/the-embodied-mind/"
             },
             {
-              "type": "text",
-              "title": "Understanding movement and emotion",
-              "body": "Laban’s movement analysis and research on emotional expression informed my choice to analyze strength, suddenness, continuity, and bodily openness rather than movement quantity alone.",
-              "sources": [
-                {
-                  "label": "Laban & Lawrence, 1947",
-                  "url": "https://archive.org/search?query=Laban+Lawrence+Effort+1947"
-                },
-                {
-                  "label": "Shafir et al., 2013",
-                  "url": "https://doi.org/10.1016/j.bandc.2013.03.001"
-                },
-                {
-                  "label": "Shafir et al., 2016",
-                  "url": "https://doi.org/10.3389/fpsyg.2015.02030"
-                }
-              ]
-            },
-            {
-              "type": "text",
-              "title": "Translating movement into measurable features",
-              "body": "Research on computational movement analysis informed the selection of features such as Quantity of Motion, Contraction Index, and fluency. I adapted these features and designed the rules connecting them to six emotional prototypes.",
-              "sources": [
-                {
-                  "label": "Camurri et al., 2000",
-                  "url": "https://scholar.google.com/scholar?q=EyesWeb+Toward+Gesture+and+Affect+Recognition+in+Interactive+Dance+and+Music+Systems"
-                },
-                {
-                  "label": "Camurri et al., 2004",
-                  "url": "https://doi.org/10.1007/978-3-540-24598-8_42"
-                },
-                {
-                  "label": "Castellano et al., 2007",
-                  "url": "https://doi.org/10.1007/978-3-540-74889-2_7"
-                },
-                {
-                  "label": "Guo et al., 2022",
-                  "url": "https://doi.org/10.1007/978-3-031-05890-5_16"
-                }
-              ]
-            },
-            {
-              "type": "text",
-              "title": "Expressing emotion through color and form",
-              "body": "Research on color–emotion associations, shape perception, and cross-modal expression informed the design of color palettes, gradients, contrast, and geometric patterns.",
-              "sources": [
-                {
-                  "label": "Fugate & Franco, 2019",
-                  "url": "https://doi.org/10.3389/fpsyg.2019.00206"
-                },
-                {
-                  "label": "Lu et al., 2012",
-                  "url": "https://doi.org/10.1145/2393347.2393384"
-                },
-                {
-                  "label": "Bresin, 2005",
-                  "url": "https://scholar.google.com/scholar?q=Roberto+Bresin+What+is+the+color+of+that+music+performance"
-                }
-              ]
-            },
-            {
-              "type": "text",
-              "title": "Connecting movement and sound",
-              "body": "Research on shared dynamics between music and movement and the emotional effects of audiovisual tempo informed the design of distinct atmospheres through rhythm, harmony, and intensity.",
-              "sources": [
-                {
-                  "label": "Sievers et al., 2013",
-                  "url": "https://doi.org/10.1073/pnas.1209023110"
-                },
-                {
-                  "label": "Wang et al., 2024",
-                  "url": "https://doi.org/10.5964/jbdgm.191"
-                }
-              ]
+              "label": "Dourish, 2001",
+              "url": "https://mitpress.mit.edu/9780262541787/where-the-action-is/"
             }
-          ],
-          "useSectionHeading": true,
-          "navLabel": "Research",
-          "summary": "Laban’s movement qualities and Shafir et al.’s work on movement and emotion informed what Echo looks for in a gesture. EyesWeb helped me choose measurable features, while Sievers et al.’s research connected movement and music. Together, these foundations guided the mapping from physical expression to audiovisual atmospheres.",
-          "collapsible": true
+          ]
         },
+        {
+          "type": "text",
+          "title": "Understanding movement and emotion",
+          "body": "Laban’s movement analysis and research on emotional expression informed my choice to analyze strength, suddenness, continuity, and bodily openness rather than movement quantity alone.",
+          "sources": [
+            {
+              "label": "Laban & Lawrence, 1947",
+              "url": "https://archive.org/search?query=Laban+Lawrence+Effort+1947"
+            },
+            {
+              "label": "Shafir et al., 2013",
+              "url": "https://doi.org/10.1016/j.bandc.2013.03.001"
+            },
+            {
+              "label": "Shafir et al., 2016",
+              "url": "https://doi.org/10.3389/fpsyg.2015.02030"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "title": "Translating movement into measurable features",
+          "body": "Research on computational movement analysis informed the selection of features such as Quantity of Motion, Contraction Index, and fluency. I adapted these features and designed the rules connecting them to six emotional prototypes.",
+          "sources": [
+            {
+              "label": "Camurri et al., 2000",
+              "url": "https://scholar.google.com/scholar?q=EyesWeb+Toward+Gesture+and+Affect+Recognition+in+Interactive+Dance+and+Music+Systems"
+            },
+            {
+              "label": "Camurri et al., 2004",
+              "url": "https://doi.org/10.1007/978-3-540-24598-8_42"
+            },
+            {
+              "label": "Castellano et al., 2007",
+              "url": "https://doi.org/10.1007/978-3-540-74889-2_7"
+            },
+            {
+              "label": "Guo et al., 2022",
+              "url": "https://doi.org/10.1007/978-3-031-05890-5_16"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "title": "Expressing emotion through color and form",
+          "body": "Research on color–emotion associations, shape perception, and cross-modal expression informed the design of color palettes, gradients, contrast, and geometric patterns.",
+          "sources": [
+            {
+              "label": "Fugate & Franco, 2019",
+              "url": "https://doi.org/10.3389/fpsyg.2019.00206"
+            },
+            {
+              "label": "Lu et al., 2012",
+              "url": "https://doi.org/10.1145/2393347.2393384"
+            },
+            {
+              "label": "Bresin, 2005",
+              "url": "https://scholar.google.com/scholar?q=Roberto+Bresin+What+is+the+color+of+that+music+performance"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "title": "Connecting movement and sound",
+          "body": "Research on shared dynamics between music and movement and the emotional effects of audiovisual tempo informed the design of distinct atmospheres through rhythm, harmony, and intensity.",
+          "sources": [
+            {
+              "label": "Sievers et al., 2013",
+              "url": "https://doi.org/10.1073/pnas.1209023110"
+            },
+            {
+              "label": "Wang et al., 2024",
+              "url": "https://doi.org/10.5964/jbdgm.191"
+            }
+          ]
+        }
+      ],
+      "useSectionHeading": true,
+      "navLabel": "Design",
+      "summary": "Laban’s movement qualities and Shafir et al.’s work on movement and emotion informed what Echo looks for in a gesture. EyesWeb helped me choose measurable features, while Sievers et al.’s research connected movement and music. Together, these foundations guided the mapping from physical expression to audiovisual atmospheres.",
+      "collapsible": true,
+      "subsections": [
         {
           "id": "interaction",
           "label": "Interaction design",
